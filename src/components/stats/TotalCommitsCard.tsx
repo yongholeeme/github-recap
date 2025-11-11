@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { getCommitsCount } from '@/lib/github';
+import { getCommitsCount } from '@/lib/github/commits';;
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
 import { queryKeys } from '@/lib/queryKeys';
 

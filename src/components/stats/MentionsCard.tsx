@@ -1,7 +1,7 @@
 
 import StatCard from '@/components/StatCard';
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
-import { getMentionsCount } from '@/lib/github';
+import { getMentionsCount } from '@/lib/github/issues';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function MentionsCard() {

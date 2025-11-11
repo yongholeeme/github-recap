@@ -1,5 +1,5 @@
 import CommitMessageCard from '@/components/CommitMessageCard';
-import { calculateLongestCommitMessage } from '@/lib/github';
+import { calculateLongestCommitMessage } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function LongestCommitCard() {

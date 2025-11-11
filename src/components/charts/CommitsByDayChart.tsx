@@ -1,5 +1,5 @@
 import ChartCard from '@/components/ChartCard';
-import { calculateCommitsByDayOfWeek } from '@/lib/github';
+import { calculateCommitsByDayOfWeek } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function CommitsByDayChart() {

@@ -1,5 +1,5 @@
 import ChartCard from '@/components/ChartCard';
-import { calculateCommitsByHour } from '@/lib/github';
+import { calculateCommitsByHour } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function CommitsByHourChart() {

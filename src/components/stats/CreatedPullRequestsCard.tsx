@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { getPullRequestsCount } from '@/lib/github';
+import { getPullRequestsCount } from '@/lib/github/pullRequests';;
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
 import { queryKeys } from '@/lib/queryKeys';
 

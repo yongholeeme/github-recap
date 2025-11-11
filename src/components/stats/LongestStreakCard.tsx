@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { calculateLongestStreak } from '@/lib/github';
+import { calculateLongestStreak } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function LongestStreakCard() {

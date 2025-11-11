@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { calculateAverageCommitMessageLength } from '@/lib/github';
+import { calculateAverageCommitMessageLength } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function AverageCommitMessageLengthCard() {

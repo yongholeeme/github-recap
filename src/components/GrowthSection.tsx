@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { getLastYearStats } from '@/lib/github';
+import { getLastYearStats } from '@/lib/github/stats';;
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
 import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { queryKeys } from '@/lib/queryKeys';

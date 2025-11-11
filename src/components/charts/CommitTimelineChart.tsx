@@ -1,5 +1,5 @@
 import ChartCard from '@/components/ChartCard';
-import { calculateCommitTimeline } from '@/lib/github';
+import { calculateCommitTimeline } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function CommitTimelineChart() {

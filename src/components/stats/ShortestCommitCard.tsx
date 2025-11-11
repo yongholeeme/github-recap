@@ -1,5 +1,5 @@
 import CommitMessageCard from '@/components/CommitMessageCard';
-import { calculateShortestCommitMessage } from '@/lib/github';
+import { calculateShortestCommitMessage } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function ShortestCommitCard() {

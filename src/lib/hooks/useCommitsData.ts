@@ -1,4 +1,4 @@
-import { getAllCommitsData } from "@/lib/github";
+import { getAllCommitsData } from '@/lib/github/commits';;
 import { queryKeys } from "@/lib/queryKeys";
 import { useInViewQuery } from "@/lib/hooks/useInViewQuery";
 

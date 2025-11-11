@@ -1,4 +1,4 @@
-import { calculateTopLanguages } from '@/lib/github';
+import { calculateTopLanguages } from '@/lib/github/repositories';;
 import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
 
 export default function TopLanguagesCard() {

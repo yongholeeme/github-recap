@@ -1,4 +1,4 @@
-import { getAllRepositoriesData } from "@/lib/github";
+import { getAllRepositoriesData } from '@/lib/github/repositories';;
 import { queryKeys } from "@/lib/queryKeys";
 import { useInViewQuery } from "@/lib/hooks/useInViewQuery";
 

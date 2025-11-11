@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { calculateActiveDaysCount } from '@/lib/github';
+import { calculateActiveDaysCount } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function ActiveDaysCard() {

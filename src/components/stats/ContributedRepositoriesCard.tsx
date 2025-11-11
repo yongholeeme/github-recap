@@ -1,7 +1,7 @@
 
 import StatCard from '@/components/StatCard';
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
-import { getContributedReposCount } from '@/lib/github';
+import { getContributedReposCount } from '@/lib/github/repositories';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function ContributedRepositoriesCard() {

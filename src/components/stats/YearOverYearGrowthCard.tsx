@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getLastYearStats } from '@/lib/github';
+import { getLastYearStats } from '@/lib/github/stats';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function YearOverYearGrowthCard() {

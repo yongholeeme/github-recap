@@ -1,5 +1,5 @@
 import StatCard from '@/components/StatCard';
-import { calculateNightOwlScore } from '@/lib/github';
+import { calculateNightOwlScore } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function NightOwlScoreCard() {
