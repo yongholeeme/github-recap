@@ -36,7 +36,13 @@ export const queryKeys = {
   },
 
   // Mentions
-  mentions: () => ["github-mentions"] as const,
+  mentions: {
+    all: () => ["github-mentions"] as const,
+    received: () => ["github-mentions-received"] as const,
+    receivedBy: () => ["github-mentions-received-by"] as const,
+    sent: () => ["github-mentions-sent"] as const,
+    sentTo: () => ["github-mentions-sent-to"] as const,
+  },
 
   // Stats 관련
   stats: {
