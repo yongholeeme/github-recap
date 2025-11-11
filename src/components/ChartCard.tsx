@@ -1,28 +1,37 @@
-import { useQuery } from "@tanstack/react-query";
-import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar } from "recharts";
-
+import {
+	ResponsiveContainer,
+	BarChart,
+	CartesianGrid,
+	XAxis,
+	YAxis,
+	Tooltip,
+	Bar,
+} from "recharts";
 
 interface ChartCardProps {
-title: string;
-    description: string;
-    queryKey: string[];
-    queryFn: () => Promise<Array<{ hour?: number; day?: string; count: number }>>;
-    enabled: boolean;
-    dataKey: string;
+	title: string;
+	description: string;
+	data: Array<{ hour?: number; day?: string; count: number }> | undefined;
+	isLoading: boolean;
+	isFetching: boolean;
+	error: Error | null;
+	onRefetch: () => void;
+	dataKey: string;
 }
 
-export default function ChartCard({ title, description, queryKey, queryFn, enabled, dataKey }: ChartCardProps) {
-    const { data, isLoading, isFetching, error, refetch } = useQuery({
-        queryKey,
-        queryFn,
-        enabled,
-        staleTime: 1000 * 60 * 10,
-        retry: 2,
-    });
-
-    const handleRefresh = () => {
-        refetch();
-    };
+export default function ChartCard({
+	title,
+	description,
+	data,
+	isLoading,
+	isFetching,
+	error,
+	onRefetch,
+	dataKey,
+}: ChartCardProps) {
+	const handleRefresh = () => {
+		onRefetch();
+	};
 
     return (
         <div className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] transition-all duration-300 col-span-full overflow-hidden backdrop-blur-sm ${isFetching ? 'pointer-events-none' : ''}`}>

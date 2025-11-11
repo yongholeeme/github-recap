@@ -1,24 +1,13 @@
-import type { User } from "@supabase/supabase-js";
-import StatCard from "./StatCard";
-import CommitMessageCard from "./CommitMessageCard";
-import {
-	getCommitsCount,
-	getLongestCommitMessage,
-	getShortestCommitMessage,
-	getAverageCommitMessageLength,
-	getLatestCommitHour,
-	getActiveDaysCount,
-	getLongestStreak,
-	getMostActiveHour,
-} from "../lib/github";
+import TotalCommitsCard from "./stats/TotalCommitsCard";
+import LongestCommitCard from "./stats/LongestCommitCard";
+import ShortestCommitCard from "./stats/ShortestCommitCard";
+import AverageCommitMessageLengthCard from "./stats/AverageCommitMessageLengthCard";
+import LatestCommitHourCard from "./stats/LatestCommitHourCard";
+import ActiveDaysCard from "./stats/ActiveDaysCard";
+import LongestStreakCard from "./stats/LongestStreakCard";
+import MostActiveHourCard from "./stats/MostActiveHourCard";
 
-interface CommitActivitySectionProps {
-	user: User;
-}
-
-export default function CommitActivitySection({
-	user,
-}: CommitActivitySectionProps) {
+export default function CommitActivitySection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			{/* Section Background */}
@@ -42,68 +31,14 @@ export default function CommitActivitySection({
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-					<StatCard
-						title="총 커밋"
-						description="올해 작성한 커밋"
-						queryKey={["github-commits", user?.id]}
-						queryFn={() => getCommitsCount()}
-						enabled={!!user}
-					/>
-					<CommitMessageCard
-						title="가장 긴 커밋"
-						description="가장 긴 커밋 메시지 길이"
-						queryKey={["github-longest-commit-message", user?.id]}
-						queryFn={() => getLongestCommitMessage()}
-						enabled={!!user}
-						onShowMessage={(data) => {
-							window.open(data.url, "_blank");
-						}}
-					/>
-					<CommitMessageCard
-						title="가장 짧은 커밋"
-						description="가장 짧은 커밋 메시지 길이"
-						queryKey={["github-shortest-commit-message", user?.id]}
-						queryFn={() => getShortestCommitMessage()}
-						enabled={!!user}
-						onShowMessage={(data) => {
-							window.open(data.url, "_blank");
-						}}
-					/>
-					<StatCard
-						title="평균 커밋 메시지 길이"
-						description="커밋 메시지 평균 글자 수"
-						queryKey={["github-average-commit-message", user?.id]}
-						queryFn={() => getAverageCommitMessageLength()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="최근 커밋 시간"
-						description="가장 최근 커밋한 시간 (24시간 기준)"
-						queryKey={["github-latest-commit-hour", user?.id]}
-						queryFn={() => getLatestCommitHour()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="활동한 날"
-						description="기여한 날짜 수"
-						queryKey={["github-active-days", user?.id]}
-						queryFn={() => getActiveDaysCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="최장 연속 기여"
-						description="연속으로 기여한 최대 일수"
-						queryKey={["github-longest-streak", user?.id]}
-						queryFn={() => getLongestStreak()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="가장 활발한 시간"
-						description="커밋이 가장 많은 시간대"
-						queryKey={["github-most-active-hour", user?.id]}
-						queryFn={() => getMostActiveHour()}
-						enabled={!!user}
-					/>
+					<TotalCommitsCard />
+					<LongestCommitCard />
+					<ShortestCommitCard />
+					<AverageCommitMessageLengthCard />
+					<LatestCommitHourCard />
+					<ActiveDaysCard />
+					<LongestStreakCard />
+					<MostActiveHourCard />
 				</div>
 			</div>
 		</div>

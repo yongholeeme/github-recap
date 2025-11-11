@@ -1,22 +1,12 @@
-import type { User } from "@supabase/supabase-js";
-import StatCard from "./StatCard";
-import {
-	getPullRequestsCount,
-	getMergedPullRequestsCount,
-	getPullRequestReviewsCount,
-	getPullRequestReviewCommentsCount,
-	getApprovedPullRequestsCount,
-	getRequestedChangesPullRequestsCount,
-	getPullRequestDiscussionsCount,
-} from "../lib/github";
+import CreatedPullRequestsCard from "./stats/CreatedPullRequestsCard";
+import MergedPullRequestsCard from "./stats/MergedPullRequestsCard";
+import PullRequestReviewsCard from "./stats/PullRequestReviewsCard";
+import PullRequestReviewCommentsCard from "./stats/PullRequestReviewCommentsCard";
+import ApprovedPullRequestsCard from "./stats/ApprovedPullRequestsCard";
+import RequestedChangesPullRequestsCard from "./stats/RequestedChangesPullRequestsCard";
+import PullRequestDiscussionsCard from "./stats/PullRequestDiscussionsCard";
 
-interface PullRequestActivitySectionProps {
-	user: User;
-}
-
-export default function PullRequestActivitySection({
-	user,
-}: PullRequestActivitySectionProps) {
+export default function PullRequestActivitySection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			<div className="absolute inset-0 bg-gradient-to-br from-orange-950 via-red-950 to-pink-950" />
@@ -38,55 +28,13 @@ export default function PullRequestActivitySection({
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-					<StatCard
-						title="생성한 PR"
-						description="작성한 풀 리퀘스트"
-						queryKey={["github-pull-requests", user?.id]}
-						queryFn={() => getPullRequestsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="머지된 PR"
-						description="병합 완료"
-						queryKey={["github-merged-prs", user?.id]}
-						queryFn={() => getMergedPullRequestsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="PR 리뷰"
-						description="리뷰한 PR"
-						queryKey={["github-pr-reviews", user?.id]}
-						queryFn={() => getPullRequestReviewsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="리뷰 댓글"
-						description="코드 리뷰 댓글"
-						queryKey={["github-pr-review-comments", user?.id]}
-						queryFn={() => getPullRequestReviewCommentsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="승인한 PR"
-						description="Approve"
-						queryKey={["github-approved-prs", user?.id]}
-						queryFn={() => getApprovedPullRequestsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="변경 요청"
-						description="Request Changes"
-						queryKey={["github-requested-changes", user?.id]}
-						queryFn={() => getRequestedChangesPullRequestsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="PR 토론"
-						description="토론 참여"
-						queryKey={["github-pr-discussions", user?.id]}
-						queryFn={() => getPullRequestDiscussionsCount()}
-						enabled={!!user}
-					/>
+					<CreatedPullRequestsCard />
+					<MergedPullRequestsCard />
+					<PullRequestReviewsCard />
+					<PullRequestReviewCommentsCard />
+					<ApprovedPullRequestsCard />
+					<RequestedChangesPullRequestsCard />
+					<PullRequestDiscussionsCard />
 				</div>
 			</div>
 		</div>

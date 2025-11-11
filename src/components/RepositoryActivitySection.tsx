@@ -1,19 +1,9 @@
-import type { User } from "@supabase/supabase-js";
-import StatCard from "./StatCard";
-import {
-	getCreatedReposCount,
-	getContributedReposCount,
-	getTotalStarsReceived,
-	getTotalForksReceived,
-} from "../lib/github";
+import CreatedRepositoriesCard from "./stats/CreatedRepositoriesCard";
+import ContributedRepositoriesCard from "./stats/ContributedRepositoriesCard";
+import TotalStarsCard from "./stats/TotalStarsCard";
+import TotalForksCard from "./stats/TotalForksCard";
 
-interface RepositoryActivitySectionProps {
-	user: User;
-}
-
-export default function RepositoryActivitySection({
-	user,
-}: RepositoryActivitySectionProps) {
+export default function RepositoryActivitySection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			<div className="absolute inset-0 bg-gradient-to-br from-cyan-950 via-blue-950 to-indigo-950" />
@@ -35,34 +25,10 @@ export default function RepositoryActivitySection({
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-					<StatCard
-						title="생성한 저장소"
-						description="올해 생성한 저장소"
-						queryKey={["github-created-repos", user?.id]}
-						queryFn={() => getCreatedReposCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="기여한 외부 저장소"
-						description="다른 저장소 기여"
-						queryKey={["github-contributed-repos", user?.id]}
-						queryFn={() => getContributedReposCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="받은 스타"
-						description="모든 저장소의 스타"
-						queryKey={["github-total-stars", user?.id]}
-						queryFn={() => getTotalStarsReceived()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="받은 포크"
-						description="모든 저장소의 포크"
-						queryKey={["github-total-forks", user?.id]}
-						queryFn={() => getTotalForksReceived()}
-						enabled={!!user}
-					/>
+					<CreatedRepositoriesCard />
+					<ContributedRepositoriesCard />
+					<TotalStarsCard />
+					<TotalForksCard />
 				</div>
 			</div>
 		</div>

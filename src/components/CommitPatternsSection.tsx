@@ -1,14 +1,7 @@
-import type { User } from "@supabase/supabase-js";
-import ChartCard from "./ChartCard";
-import { getCommitsByHour, getCommitsByDayOfWeek } from "../lib/github";
+import CommitsByHourChart from "./charts/CommitsByHourChart";
+import CommitsByDayChart from "./charts/CommitsByDayChart";
 
-interface CommitPatternsSectionProps {
-	user: User;
-}
-
-export default function CommitPatternsSection({
-	user,
-}: CommitPatternsSectionProps) {
+export default function CommitPatternsSection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			<div className="absolute inset-0 bg-gradient-to-br from-purple-950 via-pink-950 to-rose-950" />
@@ -30,22 +23,8 @@ export default function CommitPatternsSection({
 					</div>
 				</div>
 				<div className="grid grid-cols-1 gap-3 sm:gap-4">
-					<ChartCard
-						title="시간대별 커밋 분포"
-						description="24시간 동안 시간대별 커밋 활동"
-						queryKey={["github-commits-by-hour", user?.id]}
-						queryFn={() => getCommitsByHour()}
-						enabled={!!user}
-						dataKey="hour"
-					/>
-					<ChartCard
-						title="요일별 커밋 분포"
-						description="일주일 동안 요일별 커밋 활동"
-						queryKey={["github-commits-by-day", user?.id]}
-						queryFn={() => getCommitsByDayOfWeek()}
-						enabled={!!user}
-						dataKey="day"
-					/>
+					<CommitsByHourChart />
+					<CommitsByDayChart />
 				</div>
 			</div>
 		</div>

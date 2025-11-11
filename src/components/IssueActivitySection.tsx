@@ -1,19 +1,9 @@
-import type { User } from "@supabase/supabase-js";
-import StatCard from "./StatCard";
-import {
-	getIssuesCount,
-	getClosedIssuesCount,
-	getIssueCommentsCount,
-	getMentionsCount,
-} from "../lib/github";
+import CreatedIssuesCard from "./stats/CreatedIssuesCard";
+import ClosedIssuesCard from "./stats/ClosedIssuesCard";
+import IssueCommentsCard from "./stats/IssueCommentsCard";
+import MentionsCard from "./stats/MentionsCard";
 
-interface IssueActivitySectionProps {
-	user: User;
-}
-
-export default function IssueActivitySection({
-	user,
-}: IssueActivitySectionProps) {
+export default function IssueActivitySection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			<div className="absolute inset-0 bg-gradient-to-br from-green-950 via-emerald-950 to-teal-950" />
@@ -35,34 +25,10 @@ export default function IssueActivitySection({
 					</div>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-					<StatCard
-						title="생성한 이슈"
-						description="작성한 이슈"
-						queryKey={["github-issues", user?.id]}
-						queryFn={() => getIssuesCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="닫은 이슈"
-						description="해결한 이슈"
-						queryKey={["github-closed-issues", user?.id]}
-						queryFn={() => getClosedIssuesCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="이슈 댓글"
-						description="이슈 토론 참여"
-						queryKey={["github-issue-comments", user?.id]}
-						queryFn={() => getIssueCommentsCount()}
-						enabled={!!user}
-					/>
-					<StatCard
-						title="멘션"
-						description="멘션된 횟수"
-						queryKey={["github-mentions", user?.id]}
-						queryFn={() => getMentionsCount()}
-						enabled={!!user}
-					/>
+					<CreatedIssuesCard />
+					<ClosedIssuesCard />
+					<IssueCommentsCard />
+					<MentionsCard />
 				</div>
 			</div>
 		</div>

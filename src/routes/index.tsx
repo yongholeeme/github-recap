@@ -58,11 +58,11 @@ function Index() {
 		return (
 			<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
 				<HeroSection user={user} onLogout={() => setUser(null)} />
-				<CommitActivitySection user={user} />
-				<CommitPatternsSection user={user} />
-				<IssueActivitySection user={user} />
-				<PullRequestActivitySection user={user} />
-				<RepositoryActivitySection user={user} />
+				<CommitActivitySection />
+				<CommitPatternsSection />
+				<IssueActivitySection />
+				<PullRequestActivitySection />
+				<RepositoryActivitySection />
 				<EndingSection />
 			</div>
 		);
