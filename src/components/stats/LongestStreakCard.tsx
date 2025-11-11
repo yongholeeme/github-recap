@@ -9,6 +9,7 @@ export default function LongestStreakCard() {
 
 	return (
 		<StatCard
+			ref={ref}
 			title="최장 연속 기여"
 			description="연속으로 기여한 최대 일수"
 			value={data as number | undefined}

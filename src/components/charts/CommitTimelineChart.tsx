@@ -9,6 +9,7 @@ export default function CommitTimelineChart() {
 
 	return (
 		<ChartCard
+			ref={ref}
 			title="월별 커밋 타임라인"
 			description="올해 월별 커밋 활동 추세"
 			data={data}

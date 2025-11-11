@@ -9,6 +9,7 @@ export default function NightOwlScoreCard() {
 
 	return (
 		<StatCard
+			ref={ref}
 			title="야행성 지수 🦉"
 			description="자정~오전 6시 커밋 비율"
 			value={data as number | undefined}

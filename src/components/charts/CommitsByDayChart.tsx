@@ -9,6 +9,7 @@ export default function CommitsByDayChart() {
 
 	return (
 		<ChartCard
+			ref={ref}
 			title="요일별 커밋 분포"
 			description="일주일 동안 요일별 커밋 활동"
 			data={data}

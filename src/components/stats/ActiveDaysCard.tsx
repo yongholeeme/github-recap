@@ -9,6 +9,7 @@ export default function ActiveDaysCard() {
 
 	return (
 		<StatCard
+			ref={ref}
 			title="활동한 날"
 			description="기여한 날짜 수"
 			value={data as number | undefined}

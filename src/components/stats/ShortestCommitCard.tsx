@@ -9,6 +9,7 @@ export default function ShortestCommitCard() {
 
 	return (
 		<CommitMessageCard
+			ref={ref}
 			title="가장 짧은 커밋"
 			description="가장 짧은 커밋 메시지 길이"
 			value={data?.length}
