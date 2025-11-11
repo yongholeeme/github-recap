@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { getTotalForksReceived } from "../../lib/github";
+import { calculateTotalForksReceived } from "../../lib/github";
+import { useRepositoriesData } from "../../lib/hooks";
 
 export default function TotalForksCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-total-forks"],
-		queryFn: () => getTotalForksReceived(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: repos, isLoading, isFetching, error, refetch } = useRepositoriesData();
+	
+	const data = useMemo(() => {
+		if (!repos) return undefined;
+		return calculateTotalForksReceived(repos);
+	}, [repos]);
 
 	return (
 		<StatCard

@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import ChartCard from "../ChartCard";
-import { getCommitsByHour } from "../../lib/github";
+import { calculateCommitsByHour } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function CommitsByHourChart() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-commits-by-hour"],
-		queryFn: () => getCommitsByHour(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateCommitsByHour(commits);
+	}, [commits]);
 
 	return (
 		<ChartCard

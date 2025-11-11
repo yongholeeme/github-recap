@@ -6,7 +6,7 @@ export default function MergedPullRequestsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-merged-prs"],
 		queryFn: () => getMergedPullRequestsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

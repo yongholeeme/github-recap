@@ -6,7 +6,7 @@ export default function TotalCommitsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-commits"],
 		queryFn: () => getCommitsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

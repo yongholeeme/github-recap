@@ -1,25 +1,26 @@
 import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { calculateMostActiveHour } from "../../lib/github";
+import { calculateNightOwlScore } from "../../lib/github";
 import { useCommitsData } from "../../lib/hooks";
 
-export default function MostActiveHourCard() {
+export default function NightOwlScoreCard() {
 	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
 	
 	const data = useMemo(() => {
 		if (!commits) return undefined;
-		return calculateMostActiveHour(commits);
+		return calculateNightOwlScore(commits);
 	}, [commits]);
 
 	return (
 		<StatCard
-			title="가장 활발한 시간"
-			description="커밋이 가장 많은 시간대"
+			title="야행성 지수 🦉"
+			description="자정~오전 6시 커밋 비율"
 			value={data as number | undefined}
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			suffix="%"
 		/>
 	);
 }

@@ -6,7 +6,7 @@ export default function PullRequestReviewsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-pr-reviews"],
 		queryFn: () => getPullRequestReviewsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

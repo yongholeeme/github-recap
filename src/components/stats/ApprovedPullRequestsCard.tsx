@@ -6,7 +6,7 @@ export default function ApprovedPullRequestsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-approved-prs"],
 		queryFn: () => getApprovedPullRequestsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

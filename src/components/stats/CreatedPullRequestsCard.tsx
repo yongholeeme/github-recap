@@ -6,7 +6,7 @@ export default function CreatedPullRequestsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-pull-requests"],
 		queryFn: () => getPullRequestsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

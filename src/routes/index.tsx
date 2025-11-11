@@ -8,6 +8,8 @@ import CommitPatternsSection from "../components/CommitPatternsSection";
 import IssueActivitySection from "../components/IssueActivitySection";
 import PullRequestActivitySection from "../components/PullRequestActivitySection";
 import RepositoryActivitySection from "../components/RepositoryActivitySection";
+import InsightsSection from "../components/InsightsSection";
+import GrowthSection from "../components/GrowthSection";
 import EndingSection from "../components/EndingSection";
 
 export const Route = createFileRoute("/")({
@@ -63,6 +65,8 @@ function Index() {
 				<IssueActivitySection />
 				<PullRequestActivitySection />
 				<RepositoryActivitySection />
+				<InsightsSection />
+				<GrowthSection />
 				<EndingSection />
 			</div>
 		);

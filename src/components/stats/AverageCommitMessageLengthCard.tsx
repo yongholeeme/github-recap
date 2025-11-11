@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { getAverageCommitMessageLength } from "../../lib/github";
+import { calculateAverageCommitMessageLength } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function AverageCommitMessageLengthCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-average-commit-message"],
-		queryFn: () => getAverageCommitMessageLength(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateAverageCommitMessageLength(commits);
+	}, [commits]);
 
 	return (
 		<StatCard

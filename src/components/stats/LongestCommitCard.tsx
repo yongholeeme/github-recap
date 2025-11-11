@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import CommitMessageCard from "../CommitMessageCard";
-import { getLongestCommitMessage } from "../../lib/github";
+import { calculateLongestCommitMessage } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function LongestCommitCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-longest-commit-message"],
-		queryFn: () => getLongestCommitMessage(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateLongestCommitMessage(commits);
+	}, [commits]);
 
 	return (
 		<CommitMessageCard

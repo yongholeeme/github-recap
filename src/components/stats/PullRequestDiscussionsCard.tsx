@@ -6,7 +6,7 @@ export default function PullRequestDiscussionsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-pr-discussions"],
 		queryFn: () => getPullRequestDiscussionsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

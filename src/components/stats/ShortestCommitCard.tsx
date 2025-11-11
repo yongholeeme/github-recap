@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import CommitMessageCard from "../CommitMessageCard";
-import { getShortestCommitMessage } from "../../lib/github";
+import { calculateShortestCommitMessage } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function ShortestCommitCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-shortest-commit-message"],
-		queryFn: () => getShortestCommitMessage(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateShortestCommitMessage(commits);
+	}, [commits]);
 
 	return (
 		<CommitMessageCard

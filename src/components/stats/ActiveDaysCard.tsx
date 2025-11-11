@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { getActiveDaysCount } from "../../lib/github";
+import { calculateActiveDaysCount } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function ActiveDaysCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-active-days"],
-		queryFn: () => getActiveDaysCount(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateActiveDaysCount(commits);
+	}, [commits]);
 
 	return (
 		<StatCard

@@ -6,7 +6,7 @@ export default function ContributedRepositoriesCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-contributed-repos"],
 		queryFn: () => getContributedReposCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

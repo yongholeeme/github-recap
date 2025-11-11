@@ -6,7 +6,7 @@ export default function CreatedIssuesCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-issues"],
 		queryFn: () => getIssuesCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

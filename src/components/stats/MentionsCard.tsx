@@ -6,7 +6,7 @@ export default function MentionsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-mentions"],
 		queryFn: () => getMentionsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

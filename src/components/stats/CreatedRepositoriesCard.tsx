@@ -6,7 +6,7 @@ export default function CreatedRepositoriesCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-created-repos"],
 		queryFn: () => getCreatedReposCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

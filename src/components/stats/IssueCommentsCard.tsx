@@ -6,7 +6,7 @@ export default function IssueCommentsCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-issue-comments"],
 		queryFn: () => getIssueCommentsCount(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

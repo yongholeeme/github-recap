@@ -6,7 +6,7 @@ export default function LatestCommitHourCard() {
 	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: ["github-latest-commit-hour"],
 		queryFn: () => getLatestCommitHour(),
-		staleTime: 1000 * 60 * 10,
+		
 	});
 
 	return (

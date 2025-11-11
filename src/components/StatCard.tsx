@@ -8,6 +8,7 @@ interface StatCardProps {
 	onRefetch: () => void;
 	isClickable?: boolean;
 	onClick?: () => void;
+	suffix?: string; // e.g., "%", "일", "개" etc.
 }
 
 export default function StatCard({
@@ -20,6 +21,7 @@ export default function StatCard({
 	onRefetch,
 	isClickable,
 	onClick,
+	suffix,
 }: StatCardProps) {
 	const handleRefresh = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -101,6 +103,7 @@ export default function StatCard({
 							<div className="flex items-center gap-2">
 								<p className="text-3xl font-bold text-white drop-shadow-lg">
 									{value.toLocaleString()}
+									{suffix && <span className="text-2xl">{suffix}</span>}
 								</p>
 								{isClickable && (
 									<span className="text-xs text-white/60">클릭하여 보기</span>
@@ -112,6 +115,7 @@ export default function StatCard({
 						<div className="flex items-center gap-2">
 							<p className="text-3xl sm:text-4xl font-black text-white drop-shadow-lg">
 								{value.toLocaleString()}
+								{suffix && <span className="text-2xl sm:text-3xl">{suffix}</span>}
 							</p>
 							{isClickable && (
 								<span className="text-[10px] sm:text-xs text-white/60">

@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { getTotalStarsReceived } from "../../lib/github";
+import { calculateTotalStarsReceived } from "../../lib/github";
+import { useRepositoriesData } from "../../lib/hooks";
 
 export default function TotalStarsCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-total-stars"],
-		queryFn: () => getTotalStarsReceived(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: repos, isLoading, isFetching, error, refetch } = useRepositoriesData();
+	
+	const data = useMemo(() => {
+		if (!repos) return undefined;
+		return calculateTotalStarsReceived(repos);
+	}, [repos]);
 
 	return (
 		<StatCard

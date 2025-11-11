@@ -1,13 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import StatCard from "../StatCard";
-import { getLongestStreak } from "../../lib/github";
+import { calculateLongestStreak } from "../../lib/github";
+import { useCommitsData } from "../../lib/hooks";
 
 export default function LongestStreakCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-longest-streak"],
-		queryFn: () => getLongestStreak(),
-		staleTime: 1000 * 60 * 10,
-	});
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	
+	const data = useMemo(() => {
+		if (!commits) return undefined;
+		return calculateLongestStreak(commits);
+	}, [commits]);
 
 	return (
 		<StatCard
@@ -18,6 +20,7 @@ export default function LongestStreakCard() {
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			suffix="일"
 		/>
 	);
 }

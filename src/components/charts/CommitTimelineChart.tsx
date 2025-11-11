@@ -1,25 +1,26 @@
 import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateMostActiveHour } from "../../lib/github";
+import ChartCard from "../ChartCard";
+import { calculateCommitTimeline } from "../../lib/github";
 import { useCommitsData } from "../../lib/hooks";
 
-export default function MostActiveHourCard() {
+export default function CommitTimelineChart() {
 	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
 	
 	const data = useMemo(() => {
 		if (!commits) return undefined;
-		return calculateMostActiveHour(commits);
+		return calculateCommitTimeline(commits);
 	}, [commits]);
 
 	return (
-		<StatCard
-			title="가장 활발한 시간"
-			description="커밋이 가장 많은 시간대"
-			value={data as number | undefined}
+		<ChartCard
+			title="월별 커밋 타임라인"
+			description="올해 월별 커밋 활동 추세"
+			data={data}
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			dataKey="month"
 		/>
 	);
 }
