@@ -1,6 +1,32 @@
 import CommitMessageCard from '@/components/CommitMessageCard';
-import { calculateShortestCommitMessage } from '@/lib/github/commits';;
+import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+function calculateShortestCommitMessage(commits: CommitData): {
+  message: string;
+  length: number;
+  repository: string;
+  url: string;
+} {
+  if (commits.length === 0) {
+    return { message: "", length: 0, repository: "", url: "" };
+  }
+
+  let shortestCommit = commits[0];
+  for (const item of commits) {
+    if (item.commit.message.length < shortestCommit.commit.message.length) {
+      shortestCommit = item;
+    }
+  }
+
+  return {
+    message: shortestCommit.commit.message,
+    length: shortestCommit.commit.message.length,
+    repository: shortestCommit.repository.full_name,
+    url: shortestCommit.html_url,
+  };
+}
+
 
 export default function ShortestCommitCard() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();

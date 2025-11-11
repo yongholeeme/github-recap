@@ -1,6 +1,36 @@
 import StatCard from '@/components/StatCard';
-import { calculateLongestStreak } from '@/lib/github/commits';;
+import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+ function calculateLongestStreak(commits: CommitData): number {
+  const dates = new Set<string>();
+  for (const item of commits) {
+    const date = new Date(item.commit.author?.date || "");
+    const dateStr = date.toISOString().split("T")[0];
+    dates.add(dateStr);
+  }
+
+  const sortedDates = Array.from(dates).sort();
+  let currentStreak = 1;
+  let longestStreak = 1;
+
+  for (let i = 1; i < sortedDates.length; i++) {
+    const prevDate = new Date(sortedDates[i - 1]);
+    const currDate = new Date(sortedDates[i]);
+    const diffDays = Math.floor(
+      (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (diffDays === 1) {
+      currentStreak++;
+      longestStreak = Math.max(longestStreak, currentStreak);
+    } else {
+      currentStreak = 1;
+    }
+  }
+
+  return longestStreak;
+}
 
 export default function LongestStreakCard() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();

@@ -1,6 +1,31 @@
 import ChartCard from '@/components/ChartCard';
-import { calculateCommitsByDayOfWeek } from '@/lib/github/commits';;
+import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+
+ function calculateCommitsByDayOfWeek(
+  commits: CommitData
+): Array<{ day: string; count: number }> {
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const dayCounts: Record<number, number> = {};
+
+  // Initialize all days with 0
+  for (let i = 0; i < 7; i++) {
+    dayCounts[i] = 0;
+  }
+
+  for (const item of commits) {
+    const date = new Date(item.commit.author?.date || "");
+    const dayOfWeek = date.getDay();
+    dayCounts[dayOfWeek] = (dayCounts[dayOfWeek] || 0) + 1;
+  }
+
+  return Object.entries(dayCounts).map(([day, count]) => ({
+    day: dayNames[Number(day)],
+    count,
+  }));
+}
+
 
 export default function CommitsByDayChart() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();

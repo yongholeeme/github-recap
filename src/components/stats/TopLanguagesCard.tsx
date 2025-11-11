@@ -1,5 +1,43 @@
-import { calculateTopLanguages } from '@/lib/github/repositories';;
+import type { RepoData } from '@/lib/github/repositories';
+import { getDateRange } from '@/lib/github/utils';
 import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
+
+function calculateTopLanguages(
+  repos: RepoData,
+  year: number = new Date().getFullYear()
+): Array<{ language: string; count: number; percentage: number }> {
+  // Filter repos by creation or update date in the year
+  const { startDate, endDate } = getDateRange(year);
+  const filteredRepos = repos.filter((repo) => {
+    if (!repo.updated_at) return false;
+    const updatedAt = new Date(repo.updated_at);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return updatedAt >= start && updatedAt <= end;
+  });
+
+  const languageCounts: Record<string, number> = {};
+  let totalCount = 0;
+
+  for (const repo of filteredRepos) {
+    if (repo.language) {
+      languageCounts[repo.language] = (languageCounts[repo.language] || 0) + 1;
+      totalCount++;
+    }
+  }
+
+  const sortedLanguages = Object.entries(languageCounts)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 5)
+    .map(([language, count]) => ({
+      language,
+      count,
+      percentage: Math.round((count / totalCount) * 100),
+    }));
+
+  return sortedLanguages;
+}
+
 
 export default function TopLanguagesCard() {
 	const { data: repos, isLoading, isFetching, error, refetch, ref } = useRepositoriesData();

@@ -1,6 +1,27 @@
 import StatCard from '@/components/StatCard';
-import { calculateMostActiveHour } from '@/lib/github/commits';;
+import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+function calculateMostActiveHour(commits: CommitData): number {
+  const hourCounts: Record<number, number> = {};
+  for (const item of commits) {
+    const date = new Date(item.commit.author?.date || "");
+    const hour = date.getHours();
+    hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+  }
+
+  let mostActiveHour = 0;
+  let maxCount = 0;
+  for (const [hour, count] of Object.entries(hourCounts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      mostActiveHour = Number(hour);
+    }
+  }
+
+  return mostActiveHour;
+}
+
 
 export default function MostActiveHourCard() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();

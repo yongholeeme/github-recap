@@ -1,6 +1,23 @@
 import StatCard from '@/components/StatCard';
-import { calculateNightOwlScore } from '@/lib/github/commits';;
+import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+function calculateNightOwlScore(commits: CommitData): number {
+  if (commits.length === 0) return 0;
+
+  let nightCommits = 0;
+  for (const item of commits) {
+	const date = new Date(item.commit.author?.date || "");
+	const hour = date.getHours();
+	// 자정(0시)부터 오전 6시까지
+	if (hour >= 0 && hour < 6) {
+	  nightCommits++;
+	}
+  }
+
+  return Math.round((nightCommits / commits.length) * 100);
+}
+
 
 export default function NightOwlScoreCard() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();

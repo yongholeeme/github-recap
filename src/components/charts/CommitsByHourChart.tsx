@@ -1,6 +1,28 @@
 import ChartCard from '@/components/ChartCard';
-import { calculateCommitsByHour } from '@/lib/github/commits';;
+import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+
+function calculateCommitsByHour(
+  commits: CommitData
+): Array<{ hour: number; count: number }> {
+  const hourCounts: Record<number, number> = {};
+  // Initialize all hours with 0
+  for (let i = 0; i < 24; i++) {
+    hourCounts[i] = 0;
+  }
+
+  for (const item of commits) {
+    const date = new Date(item.commit.author?.date || "");
+    const hour = date.getHours();
+    hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+  }
+
+  return Object.entries(hourCounts).map(([hour, count]) => ({
+    hour: Number(hour),
+    count,
+  }));
+}
+
 
 export default function CommitsByHourChart() {
 	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
