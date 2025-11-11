@@ -98,20 +98,3 @@ export async function getPullRequestReviewCommentsCount(
 
   return data.total_count || 0;
 }
-
-export async function getPullRequestDiscussionsCount(
-  year: number = new Date().getFullYear()
-): Promise<number> {
-  const octokit = await getOctokit();
-  const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
-
-  // Count PRs where user commented (participated in discussion)
-  const query = `commenter:${username} type:pr updated:${startDate}..${endDate}`;
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
-    per_page: 100,
-  });
-
-  return data.total_count || 0;
-}

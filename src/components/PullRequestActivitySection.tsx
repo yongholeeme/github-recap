@@ -4,7 +4,6 @@ import PullRequestReviewsCard from '@/components/stats/PullRequestReviewsCard';
 import PullRequestReviewCommentsCard from '@/components/stats/PullRequestReviewCommentsCard';
 import ApprovedPullRequestsCard from '@/components/stats/ApprovedPullRequestsCard';
 import RequestedChangesPullRequestsCard from '@/components/stats/RequestedChangesPullRequestsCard';
-import PullRequestDiscussionsCard from '@/components/stats/PullRequestDiscussionsCard';
 
 export default function PullRequestActivitySection() {
 	return (
@@ -27,14 +26,13 @@ export default function PullRequestActivitySection() {
 						</p>
 					</div>
 				</div>
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
 					<CreatedPullRequestsCard />
 					<MergedPullRequestsCard />
 					<PullRequestReviewsCard />
 					<PullRequestReviewCommentsCard />
 					<ApprovedPullRequestsCard />
 					<RequestedChangesPullRequestsCard />
-					<PullRequestDiscussionsCard />
 				</div>
 			</div>
 		</div>

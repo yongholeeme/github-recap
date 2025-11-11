@@ -8,7 +8,6 @@ export const queryKeys = {
     all: () => ["github-commits"] as const,
     data: (year: number = new Date().getFullYear()) =>
       ["github-commit-data", year] as const,
-    latest: () => ["github-latest-commit-hour"] as const,
   },
 
   // Pull Requests 관련
@@ -19,7 +18,6 @@ export const queryKeys = {
     requestedChanges: () => ["github-requested-changes"] as const,
     reviews: () => ["github-pr-reviews"] as const,
     reviewComments: () => ["github-pr-review-comments"] as const,
-    discussions: () => ["github-pr-discussions"] as const,
   },
 
   // Issues 관련
