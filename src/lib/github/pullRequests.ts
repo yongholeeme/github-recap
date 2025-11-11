@@ -98,3 +98,19 @@ export async function getPullRequestReviewCommentsCount(
 
   return data.total_count || 0;
 }
+
+export async function getClosedNotMergedPullRequestsCount(
+  year: number = new Date().getFullYear()
+): Promise<number> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  const query = `author:${username} type:pr is:closed is:unmerged closed:${startDate}..${endDate}`;
+  const { data } = await octokit.rest.search.issuesAndPullRequests({
+    q: query,
+    per_page: 100,
+  });
+
+  return data.total_count || 0;
+}

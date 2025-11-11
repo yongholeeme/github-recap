@@ -7,8 +7,7 @@ import CommitActivitySection from '@/components/CommitActivitySection';
 import CommitPatternsSection from '@/components/CommitPatternsSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
-import RepositoryActivitySection from '@/components/RepositoryActivitySection';
-import InsightsSection from '@/components/InsightsSection';
+import LanguagesSection from '@/components/LanguagesSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
 
@@ -64,8 +63,7 @@ function Index() {
 				<CommitPatternsSection />
 				<IssueActivitySection />
 				<PullRequestActivitySection />
-				<RepositoryActivitySection />
-				<InsightsSection />
+				<LanguagesSection />
 				<GrowthSection />
 				<EndingSection />
 			</div>

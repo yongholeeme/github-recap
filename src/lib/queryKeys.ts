@@ -18,6 +18,7 @@ export const queryKeys = {
     requestedChanges: () => ["github-requested-changes"] as const,
     reviews: () => ["github-pr-reviews"] as const,
     reviewComments: () => ["github-pr-review-comments"] as const,
+    closedNotMerged: () => ["github-closed-not-merged-prs"] as const,
   },
 
   // Issues 관련

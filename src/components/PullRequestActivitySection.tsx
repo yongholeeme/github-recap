@@ -1,5 +1,6 @@
 import CreatedPullRequestsCard from '@/components/stats/CreatedPullRequestsCard';
 import MergedPullRequestsCard from '@/components/stats/MergedPullRequestsCard';
+import ClosedNotMergedPullRequestsCard from '@/components/stats/ClosedNotMergedPullRequestsCard';
 import PullRequestReviewsCard from '@/components/stats/PullRequestReviewsCard';
 import PullRequestReviewCommentsCard from '@/components/stats/PullRequestReviewCommentsCard';
 import ApprovedPullRequestsCard from '@/components/stats/ApprovedPullRequestsCard';
@@ -29,6 +30,7 @@ export default function PullRequestActivitySection() {
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
 					<CreatedPullRequestsCard />
 					<MergedPullRequestsCard />
+					<ClosedNotMergedPullRequestsCard />
 					<PullRequestReviewsCard />
 					<PullRequestReviewCommentsCard />
 					<ApprovedPullRequestsCard />

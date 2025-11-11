@@ -1,5 +1,6 @@
 import CommitsByHourChart from '@/components/charts/CommitsByHourChart';
 import CommitsByDayChart from '@/components/charts/CommitsByDayChart';
+import CommitTimelineChart from '@/components/charts/CommitTimelineChart';
 
 export default function CommitPatternsSection() {
 	return (
@@ -25,6 +26,7 @@ export default function CommitPatternsSection() {
 				<div className="grid grid-cols-1 gap-3 sm:gap-4">
 					<CommitsByHourChart />
 					<CommitsByDayChart />
+					<CommitTimelineChart />
 				</div>
 			</div>
 		</div>

@@ -3,8 +3,6 @@ import LongestCommitCard from '@/components/stats/LongestCommitCard';
 import ShortestCommitCard from '@/components/stats/ShortestCommitCard';
 import AverageCommitMessageLengthCard from '@/components/stats/AverageCommitMessageLengthCard';
 import ActiveDaysCard from '@/components/stats/ActiveDaysCard';
-import LongestStreakCard from '@/components/stats/LongestStreakCard';
-import MostActiveHourCard from '@/components/stats/MostActiveHourCard';
 
 export default function CommitActivitySection() {
 	return (
@@ -35,8 +33,6 @@ export default function CommitActivitySection() {
 					<ShortestCommitCard />
 					<AverageCommitMessageLengthCard />
 					<ActiveDaysCard />
-					<LongestStreakCard />
-					<MostActiveHourCard />
 				</div>
 			</div>
 		</div>
