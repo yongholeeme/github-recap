@@ -1,11 +1,11 @@
-import TotalCommitsCard from "./stats/TotalCommitsCard";
-import LongestCommitCard from "./stats/LongestCommitCard";
-import ShortestCommitCard from "./stats/ShortestCommitCard";
-import AverageCommitMessageLengthCard from "./stats/AverageCommitMessageLengthCard";
-import LatestCommitHourCard from "./stats/LatestCommitHourCard";
-import ActiveDaysCard from "./stats/ActiveDaysCard";
-import LongestStreakCard from "./stats/LongestStreakCard";
-import MostActiveHourCard from "./stats/MostActiveHourCard";
+import TotalCommitsCard from '@/components/stats/TotalCommitsCard';
+import LongestCommitCard from '@/components/stats/LongestCommitCard';
+import ShortestCommitCard from '@/components/stats/ShortestCommitCard';
+import AverageCommitMessageLengthCard from '@/components/stats/AverageCommitMessageLengthCard';
+import LatestCommitHourCard from '@/components/stats/LatestCommitHourCard';
+import ActiveDaysCard from '@/components/stats/ActiveDaysCard';
+import LongestStreakCard from '@/components/stats/LongestStreakCard';
+import MostActiveHourCard from '@/components/stats/MostActiveHourCard';
 
 export default function CommitActivitySection() {
 	return (

@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import ChartCard from "../ChartCard";
-import { calculateCommitTimeline } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import ChartCard from '@/components/ChartCard';
+import { calculateCommitTimeline } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function CommitTimelineChart() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateCommitTimeline(commits);
-	}, [commits]);
+	const data = commits ? calculateCommitTimeline(commits) : undefined;
 
 	return (
 		<ChartCard

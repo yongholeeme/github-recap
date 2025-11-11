@@ -1,16 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import StatCard from "../StatCard";
-import { getMentionsCount } from "../../lib/github";
+
+import StatCard from '@/components/StatCard';
+import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { getMentionsCount } from '@/lib/github';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function MentionsCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-mentions"],
+	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+		queryKey: queryKeys.mentions(),
 		queryFn: () => getMentionsCount(),
 		
 	});
 
 	return (
 		<StatCard
+			ref={ref}
 			title="멘션"
 			description="멘션된 횟수"
 			value={data as number | undefined}

@@ -1,5 +1,5 @@
-import CommitsByHourChart from "./charts/CommitsByHourChart";
-import CommitsByDayChart from "./charts/CommitsByDayChart";
+import CommitsByHourChart from '@/components/charts/CommitsByHourChart';
+import CommitsByDayChart from '@/components/charts/CommitsByDayChart';
 
 export default function CommitPatternsSection() {
 	return (

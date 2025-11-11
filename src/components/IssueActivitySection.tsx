@@ -1,7 +1,7 @@
-import CreatedIssuesCard from "./stats/CreatedIssuesCard";
-import ClosedIssuesCard from "./stats/ClosedIssuesCard";
-import IssueCommentsCard from "./stats/IssueCommentsCard";
-import MentionsCard from "./stats/MentionsCard";
+import CreatedIssuesCard from '@/components/stats/CreatedIssuesCard';
+import ClosedIssuesCard from '@/components/stats/ClosedIssuesCard';
+import IssueCommentsCard from '@/components/stats/IssueCommentsCard';
+import MentionsCard from '@/components/stats/MentionsCard';
 
 export default function IssueActivitySection() {
 	return (

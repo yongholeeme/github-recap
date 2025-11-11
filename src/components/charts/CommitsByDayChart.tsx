@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import ChartCard from "../ChartCard";
-import { calculateCommitsByDayOfWeek } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import ChartCard from '@/components/ChartCard';
+import { calculateCommitsByDayOfWeek } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function CommitsByDayChart() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateCommitsByDayOfWeek(commits);
-	}, [commits]);
+	const data = commits ? calculateCommitsByDayOfWeek(commits) : undefined;
 
 	return (
 		<ChartCard

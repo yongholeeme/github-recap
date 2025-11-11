@@ -1,15 +1,12 @@
-import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateTotalForksReceived } from "../../lib/github";
-import { useRepositoriesData } from "../../lib/hooks";
+import StatCard from '@/components/StatCard';
+import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
 
 export default function TotalForksCard() {
-	const { data: repos, isLoading, isFetching, error, refetch } = useRepositoriesData();
+	const { data: repos, isLoading, isFetching, error, refetch, ref } = useRepositoriesData();
 	
-	const data = useMemo(() => {
-		if (!repos) return undefined;
-		return calculateTotalForksReceived(repos);
-	}, [repos]);
+	const data = repos
+		? repos.reduce((total, repo) => total + (repo.forks_count || 0), 0)
+		: undefined;
 
 	return (
 		<StatCard
@@ -20,6 +17,7 @@ export default function TotalForksCard() {
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			ref={ref}
 		/>
 	);
 }

@@ -1,18 +1,15 @@
-import { useMemo } from "react";
-import CommitMessageCard from "../CommitMessageCard";
-import { calculateLongestCommitMessage } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import CommitMessageCard from '@/components/CommitMessageCard';
+import { calculateLongestCommitMessage } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function LongestCommitCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateLongestCommitMessage(commits);
-	}, [commits]);
+	const data = commits ? calculateLongestCommitMessage(commits) : undefined;
 
 	return (
 		<CommitMessageCard
+			ref={ref}
 			title="가장 긴 커밋"
 			description="가장 긴 커밋 메시지 길이"
 			value={data?.length}

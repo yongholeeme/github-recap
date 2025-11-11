@@ -1,16 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import StatCard from "../StatCard";
-import { getIssuesCount } from "../../lib/github";
+import StatCard from '@/components/StatCard';
+import { getIssuesCount } from '@/lib/github';
+import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function CreatedIssuesCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-issues"],
+	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+		queryKey: queryKeys.issues.all(),
 		queryFn: () => getIssuesCount(),
-		
 	});
 
 	return (
 		<StatCard
+			ref={ref}
 			title="생성한 이슈"
 			description="작성한 이슈"
 			value={data as number | undefined}

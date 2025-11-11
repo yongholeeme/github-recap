@@ -1,7 +1,7 @@
-import NightOwlScoreCard from "./stats/NightOwlScoreCard";
-import TopLanguagesCard from "./stats/TopLanguagesCard";
-import LongestStreakCard from "./stats/LongestStreakCard";
-import CommitTimelineChart from "./charts/CommitTimelineChart";
+import NightOwlScoreCard from '@/components/stats/NightOwlScoreCard';
+import TopLanguagesCard from '@/components/stats/TopLanguagesCard';
+import LongestStreakCard from '@/components/stats/LongestStreakCard';
+import CommitTimelineChart from '@/components/charts/CommitTimelineChart';
 
 export default function InsightsSection() {
 	return (

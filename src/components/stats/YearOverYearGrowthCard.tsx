@@ -1,42 +1,42 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getLastYearStats } from "../../lib/github";
-import { useMemo } from "react";
+import { getLastYearStats } from '@/lib/github';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function YearOverYearGrowthCard() {
 	const queryClient = useQueryClient();
 
 	// 작년 데이터만 가져오기 (4개 요청)
 	const { data: lastYearData, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-last-year-stats"],
+		queryKey: queryKeys.stats.lastYear(),
 		queryFn: () => getLastYearStats(),
 		
 	});
 
 	// 올해 데이터는 캐시에서 가져오기 (0개 요청)
-	const currentCommits = queryClient.getQueryData<number>(["github-commits"]);
-	const currentPRs = queryClient.getQueryData<number>(["github-pull-requests"]);
-	const currentIssues = queryClient.getQueryData<number>(["github-issues"]);
-	const currentReviews = queryClient.getQueryData<number>(["github-pr-reviews"]);
+	const currentCommits = queryClient.getQueryData<number>(queryKeys.commits.all());
+	const currentPRs = queryClient.getQueryData<number>(queryKeys.pullRequests.all());
+	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all());
+	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews());
 
 	// 성장률 계산
-	const data = useMemo(() => {
-		if (!lastYearData || currentCommits === undefined || currentPRs === undefined || 
-		    currentIssues === undefined || currentReviews === undefined) {
-			return undefined;
-		}
+	const calculateGrowth = (current: number, last: number): number => {
+		if (last === 0) return current > 0 ? 100 : 0;
+		return Math.round(((current - last) / last) * 100);
+	};
 
-		const calculateGrowth = (current: number, last: number): number => {
-			if (last === 0) return current > 0 ? 100 : 0;
-			return Math.round(((current - last) / last) * 100);
-		};
-
-		return {
-			commits: calculateGrowth(currentCommits, lastYearData.commits),
-			prs: calculateGrowth(currentPRs, lastYearData.prs),
-			issues: calculateGrowth(currentIssues, lastYearData.issues),
-			reviews: calculateGrowth(currentReviews, lastYearData.reviews),
-		};
-	}, [lastYearData, currentCommits, currentPRs, currentIssues, currentReviews]);
+	const data =
+		!lastYearData ||
+		currentCommits === undefined ||
+		currentPRs === undefined ||
+		currentIssues === undefined ||
+		currentReviews === undefined
+			? undefined
+			: {
+					commits: calculateGrowth(currentCommits, lastYearData.commits),
+					prs: calculateGrowth(currentPRs, lastYearData.prs),
+					issues: calculateGrowth(currentIssues, lastYearData.issues),
+					reviews: calculateGrowth(currentReviews, lastYearData.reviews),
+			  };
 
 	const handleRefresh = () => {
 		refetch();

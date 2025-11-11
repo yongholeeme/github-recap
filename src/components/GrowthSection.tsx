@@ -1,74 +1,67 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getLastYearStats } from "../lib/github";
-import { useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { getLastYearStats } from '@/lib/github';
+import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { CountUpAnimation } from '@/components/CountUpAnimation';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function GrowthSection() {
 	const queryClient = useQueryClient();
 
 	// 작년 데이터만 가져오기 (4개 요청)
-	const { data: lastYearData, isLoading, isFetching } = useQuery({
-		queryKey: ["github-last-year-stats"],
+	const { data: lastYearData, isLoading, isFetching, ref } = useInViewQuery({
+		queryKey: queryKeys.stats.lastYear(),
 		queryFn: () => getLastYearStats(),
 	});
 
 	// 올해 데이터는 캐시에서 가져오기 (0개 요청)
-	const currentCommits = queryClient.getQueryData<number>(["github-commits"]);
-	const currentPRs = queryClient.getQueryData<number>([
-		"github-pull-requests",
-	]);
-	const currentIssues = queryClient.getQueryData<number>(["github-issues"]);
-	const currentReviews = queryClient.getQueryData<number>([
-		"github-pr-reviews",
-	]);
+	const currentCommits = queryClient.getQueryData<number>(queryKeys.commits.all());
+	const currentPRs = queryClient.getQueryData<number>(queryKeys.pullRequests.all());
+	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all());
+	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews());
 
 	// 성장률 계산
-	const growthData = useMemo(() => {
-		if (
-			!lastYearData ||
-			currentCommits === undefined ||
-			currentPRs === undefined ||
-			currentIssues === undefined ||
-			currentReviews === undefined
-		) {
-			return undefined;
-		}
+	const calculateGrowth = (current: number, last: number): number => {
+		if (last === 0) return current > 0 ? 100 : 0;
+		return Math.round(((current - last) / last) * 100);
+	};
 
-		const calculateGrowth = (current: number, last: number): number => {
-			if (last === 0) return current > 0 ? 100 : 0;
-			return Math.round(((current - last) / last) * 100);
-		};
-
-		return [
-			{
-				title: "커밋",
-				icon: "💻",
-				current: currentCommits,
-				last: lastYearData.commits,
-				growth: calculateGrowth(currentCommits, lastYearData.commits),
-			},
-			{
-				title: "Pull Request",
-				icon: "🔀",
-				current: currentPRs,
-				last: lastYearData.prs,
-				growth: calculateGrowth(currentPRs, lastYearData.prs),
-			},
-			{
-				title: "이슈",
-				icon: "🎯",
-				current: currentIssues,
-				last: lastYearData.issues,
-				growth: calculateGrowth(currentIssues, lastYearData.issues),
-			},
-			{
-				title: "리뷰",
-				icon: "👀",
-				current: currentReviews,
-				last: lastYearData.reviews,
-				growth: calculateGrowth(currentReviews, lastYearData.reviews),
-			},
-		];
-	}, [lastYearData, currentCommits, currentPRs, currentIssues, currentReviews]);
+	const growthData =
+		!lastYearData ||
+		currentCommits === undefined ||
+		currentPRs === undefined ||
+		currentIssues === undefined ||
+		currentReviews === undefined
+			? undefined
+			: [
+					{
+						title: "커밋",
+						icon: "💻",
+						current: currentCommits,
+						last: lastYearData.commits,
+						growth: calculateGrowth(currentCommits, lastYearData.commits),
+					},
+					{
+						title: "Pull Request",
+						icon: "🔀",
+						current: currentPRs,
+						last: lastYearData.prs,
+						growth: calculateGrowth(currentPRs, lastYearData.prs),
+					},
+					{
+						title: "이슈",
+						icon: "🎯",
+						current: currentIssues,
+						last: lastYearData.issues,
+						growth: calculateGrowth(currentIssues, lastYearData.issues),
+					},
+					{
+						title: "리뷰",
+						icon: "👀",
+						current: currentReviews,
+						last: lastYearData.reviews,
+						growth: calculateGrowth(currentReviews, lastYearData.reviews),
+					},
+			  ];
 
 	const getGrowthColor = (growth: number) => {
 		if (growth > 0) return "from-green-400 to-emerald-500";
@@ -89,7 +82,7 @@ export default function GrowthSection() {
 	};
 
 	return (
-		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
+		<div ref={ref} className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			{/* Section Background */}
 			<div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950" />
 			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
@@ -166,7 +159,8 @@ export default function GrowthSection() {
 													item.growth
 												)} bg-clip-text text-transparent drop-shadow-lg`}
 											>
-												{getGrowthIcon(item.growth)} {Math.abs(item.growth)}
+												{getGrowthIcon(item.growth)}{" "}
+												<CountUpAnimation value={Math.abs(item.growth)} />
 											</span>
 											<span
 												className={`text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r ${getGrowthColor(
@@ -190,7 +184,7 @@ export default function GrowthSection() {
 												올해
 											</p>
 											<p className="text-2xl sm:text-3xl font-black text-white">
-												{item.current.toLocaleString()}
+												<CountUpAnimation value={item.current} duration={1200} />
 											</p>
 										</div>
 										<div className="space-y-1">
@@ -198,7 +192,7 @@ export default function GrowthSection() {
 												작년
 											</p>
 											<p className="text-2xl sm:text-3xl font-black text-white/70">
-												{item.last.toLocaleString()}
+												<CountUpAnimation value={item.last} duration={1200} />
 											</p>
 										</div>
 									</div>

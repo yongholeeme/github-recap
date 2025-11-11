@@ -1,13 +1,10 @@
 import { Octokit } from "octokit";
-import { supabase } from "./supabase";
+import { supabase } from "@/lib/supabase";
 
 async function getOctokit(): Promise<Octokit> {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-
-  console.log("Session:", session);
-  console.log("Provider token:", session?.provider_token);
 
   const token = session?.provider_token;
   if (!token) {
@@ -163,24 +160,6 @@ export async function getAllRepositoriesData(): Promise<RepoData> {
   });
 
   return repos;
-}
-
-export function calculateTotalStarsReceived(repos: RepoData): number {
-  return repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0);
-}
-
-export async function getTotalStarsReceived(): Promise<number> {
-  const repos = await getAllRepositoriesData();
-  return calculateTotalStarsReceived(repos);
-}
-
-export function calculateTotalForksReceived(repos: RepoData): number {
-  return repos.reduce((total, repo) => total + (repo.forks_count || 0), 0);
-}
-
-export async function getTotalForksReceived(): Promise<number> {
-  const repos = await getAllRepositoriesData();
-  return calculateTotalForksReceived(repos);
 }
 
 export async function getPullRequestReviewCommentsCount(
@@ -400,26 +379,6 @@ export async function getAverageCommitMessageLength(
 ): Promise<number> {
   const commits = await getAllCommitsData(year);
   return calculateAverageCommitMessageLength(commits);
-}
-
-export function calculateLatestCommitHour(commits: CommitData): number {
-  let latestHour = 0;
-  for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
-    const hour = date.getHours();
-    if (hour > latestHour) {
-      latestHour = hour;
-    }
-  }
-
-  return latestHour;
-}
-
-export async function getLatestCommitHour(
-  year: number = new Date().getFullYear()
-): Promise<number> {
-  const commits = await getAllCommitsData(year);
-  return calculateLatestCommitHour(commits);
 }
 
 export function calculateMostActiveHour(commits: CommitData): number {

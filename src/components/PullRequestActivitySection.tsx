@@ -1,10 +1,10 @@
-import CreatedPullRequestsCard from "./stats/CreatedPullRequestsCard";
-import MergedPullRequestsCard from "./stats/MergedPullRequestsCard";
-import PullRequestReviewsCard from "./stats/PullRequestReviewsCard";
-import PullRequestReviewCommentsCard from "./stats/PullRequestReviewCommentsCard";
-import ApprovedPullRequestsCard from "./stats/ApprovedPullRequestsCard";
-import RequestedChangesPullRequestsCard from "./stats/RequestedChangesPullRequestsCard";
-import PullRequestDiscussionsCard from "./stats/PullRequestDiscussionsCard";
+import CreatedPullRequestsCard from '@/components/stats/CreatedPullRequestsCard';
+import MergedPullRequestsCard from '@/components/stats/MergedPullRequestsCard';
+import PullRequestReviewsCard from '@/components/stats/PullRequestReviewsCard';
+import PullRequestReviewCommentsCard from '@/components/stats/PullRequestReviewCommentsCard';
+import ApprovedPullRequestsCard from '@/components/stats/ApprovedPullRequestsCard';
+import RequestedChangesPullRequestsCard from '@/components/stats/RequestedChangesPullRequestsCard';
+import PullRequestDiscussionsCard from '@/components/stats/PullRequestDiscussionsCard';
 
 export default function PullRequestActivitySection() {
 	return (

@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import CommitMessageCard from "../CommitMessageCard";
-import { calculateShortestCommitMessage } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import CommitMessageCard from '@/components/CommitMessageCard';
+import { calculateShortestCommitMessage } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function ShortestCommitCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateShortestCommitMessage(commits);
-	}, [commits]);
+	const data = commits ? calculateShortestCommitMessage(commits) : undefined;
 
 	return (
 		<CommitMessageCard

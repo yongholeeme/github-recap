@@ -1,16 +1,16 @@
 import type { User } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
-import HeroSection from "../components/HeroSection";
-import CommitActivitySection from "../components/CommitActivitySection";
-import CommitPatternsSection from "../components/CommitPatternsSection";
-import IssueActivitySection from "../components/IssueActivitySection";
-import PullRequestActivitySection from "../components/PullRequestActivitySection";
-import RepositoryActivitySection from "../components/RepositoryActivitySection";
-import InsightsSection from "../components/InsightsSection";
-import GrowthSection from "../components/GrowthSection";
-import EndingSection from "../components/EndingSection";
+import { supabase } from '@/lib/supabase';
+import HeroSection from '@/components/HeroSection';
+import CommitActivitySection from '@/components/CommitActivitySection';
+import CommitPatternsSection from '@/components/CommitPatternsSection';
+import IssueActivitySection from '@/components/IssueActivitySection';
+import PullRequestActivitySection from '@/components/PullRequestActivitySection';
+import RepositoryActivitySection from '@/components/RepositoryActivitySection';
+import InsightsSection from '@/components/InsightsSection';
+import GrowthSection from '@/components/GrowthSection';
+import EndingSection from '@/components/EndingSection';
 
 export const Route = createFileRoute("/")({
 	component: Index,

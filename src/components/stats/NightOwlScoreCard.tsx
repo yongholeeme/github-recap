@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateNightOwlScore } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import StatCard from '@/components/StatCard';
+import { calculateNightOwlScore } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function NightOwlScoreCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateNightOwlScore(commits);
-	}, [commits]);
+	const data = commits ? calculateNightOwlScore(commits) : undefined;
 
 	return (
 		<StatCard

@@ -1,7 +1,7 @@
-import CreatedRepositoriesCard from "./stats/CreatedRepositoriesCard";
-import ContributedRepositoriesCard from "./stats/ContributedRepositoriesCard";
-import TotalStarsCard from "./stats/TotalStarsCard";
-import TotalForksCard from "./stats/TotalForksCard";
+import CreatedRepositoriesCard from '@/components/stats/CreatedRepositoriesCard';
+import ContributedRepositoriesCard from '@/components/stats/ContributedRepositoriesCard';
+import TotalStarsCard from '@/components/stats/TotalStarsCard';
+import TotalForksCard from '@/components/stats/TotalForksCard';
 
 export default function RepositoryActivitySection() {
 	return (

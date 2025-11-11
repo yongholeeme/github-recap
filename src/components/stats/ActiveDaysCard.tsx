@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateActiveDaysCount } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import StatCard from '@/components/StatCard';
+import { calculateActiveDaysCount } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function ActiveDaysCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateActiveDaysCount(commits);
-	}, [commits]);
+	const data = commits ? calculateActiveDaysCount(commits) : undefined;
 
 	return (
 		<StatCard

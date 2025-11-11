@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateAverageCommitMessageLength } from "../../lib/github";
-import { useCommitsData } from "../../lib/hooks";
+import StatCard from '@/components/StatCard';
+import { calculateAverageCommitMessageLength } from '@/lib/github';
+import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 export default function AverageCommitMessageLengthCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
 	
-	const data = useMemo(() => {
-		if (!commits) return undefined;
-		return calculateAverageCommitMessageLength(commits);
-	}, [commits]);
+	const data = commits ? calculateAverageCommitMessageLength(commits) : undefined;
 
 	return (
 		<StatCard
@@ -20,6 +16,7 @@ export default function AverageCommitMessageLengthCard() {
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			ref={ref}
 		/>
 	);
 }

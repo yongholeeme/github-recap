@@ -1,16 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import StatCard from "../StatCard";
-import { getClosedIssuesCount } from "../../lib/github";
+
+import StatCard from '@/components/StatCard';
+import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { getClosedIssuesCount } from '@/lib/github';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function ClosedIssuesCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
-		queryKey: ["github-closed-issues"],
+	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+		queryKey: queryKeys.issues.closed(),
 		queryFn: () => getClosedIssuesCount(),
 		
 	});
 
 	return (
 		<StatCard
+			ref={ref}
 			title="닫은 이슈"
 			description="해결한 이슈"
 			value={data as number | undefined}

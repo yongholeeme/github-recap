@@ -1,15 +1,12 @@
-import { useMemo } from "react";
-import StatCard from "../StatCard";
-import { calculateTotalStarsReceived } from "../../lib/github";
-import { useRepositoriesData } from "../../lib/hooks";
+import StatCard from '@/components/StatCard';
+import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
 
 export default function TotalStarsCard() {
-	const { data: repos, isLoading, isFetching, error, refetch } = useRepositoriesData();
+	const { data: repos, isLoading, isFetching, error, refetch, ref } = useRepositoriesData();
 	
-	const data = useMemo(() => {
-		if (!repos) return undefined;
-		return calculateTotalStarsReceived(repos);
-	}, [repos]);
+	const data = repos
+		? repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0)
+		: undefined;
 
 	return (
 		<StatCard
@@ -20,6 +17,7 @@ export default function TotalStarsCard() {
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
+			ref={ref}
 		/>
 	);
 }

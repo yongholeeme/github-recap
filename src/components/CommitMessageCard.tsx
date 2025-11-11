@@ -8,6 +8,7 @@ interface CommitMessageCardProps {
 	error: Error | null;
 	onRefetch: () => void;
 	onShowMessage: () => void;
+	ref?: React.Ref<HTMLDivElement>;
 }
 
 export default function CommitMessageCard({
@@ -20,18 +21,20 @@ export default function CommitMessageCard({
 	error,
 	onRefetch,
 	onShowMessage,
+	ref,
 }: CommitMessageCardProps) {
-	const handleRefresh = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		onRefetch();
-	};
+		const handleRefresh = (e: React.MouseEvent) => {
+			e.stopPropagation();
+			onRefetch();
+		};
 
-	return (
-		<div
-			className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] hover:border-white/40 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm ${
-				commitMessage ? "cursor-pointer" : ""
-			} ${isFetching ? "pointer-events-none" : ""}`}
-		>
+		return (
+			<div
+				ref={ref}
+				className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] hover:border-white/40 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm ${
+					commitMessage ? "cursor-pointer" : ""
+				} ${isFetching ? "pointer-events-none" : ""}`}
+			>
 			{isFetching && (
 				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite] z-10" />
 			)}
