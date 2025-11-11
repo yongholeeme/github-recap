@@ -15,14 +15,27 @@ export async function getOctokit(): Promise<Octokit> {
 }
 
 let cachedUsername: string | null = null;
+let usernamePromise: Promise<string> | null = null;
 
 export async function getUsername(): Promise<string> {
   if (cachedUsername) {
     return cachedUsername;
   }
 
-  const octokit = await getOctokit();
-  const { data: user } = await octokit.rest.users.getAuthenticated();
-  cachedUsername = user.login;
-  return cachedUsername;
+  if (usernamePromise) {
+    return usernamePromise;
+  }
+
+  usernamePromise = (async () => {
+    try {
+      const octokit = await getOctokit();
+      const { data: user } = await octokit.rest.users.getAuthenticated();
+      cachedUsername = user.login;
+      return cachedUsername;
+    } finally {
+      usernamePromise = null;
+    }
+  })();
+
+  return usernamePromise;
 }
