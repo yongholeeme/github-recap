@@ -75,7 +75,7 @@ export function CountUpAnimation({
   }, [value, duration, inView]);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={`px-8${className}`}>
       {displayValue.toLocaleString()}
       {suffix}
     </span>
