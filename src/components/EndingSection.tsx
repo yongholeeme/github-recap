@@ -10,9 +10,6 @@ export default function EndingSection() {
 
 			<div className="relative z-10 text-center w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 px-4">
 				<div className="space-y-6 sm:space-y-8">
-					<div className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl drop-shadow-2xl">
-						✨
-					</div>
 					<div className="space-y-4 sm:space-y-6">
 						<h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 tracking-tight leading-none drop-shadow-2xl">
 							{currentYear}년
@@ -34,14 +31,23 @@ export default function EndingSection() {
 					</p>
 				</div>
 
-				<div className="pt-8 sm:pt-10 md:pt-12 border-t border-white/20">
-					<div className="flex items-center justify-center gap-2 sm:gap-3 text-white/60 text-sm sm:text-base md:text-lg">
-						<span>Made with</span>
-						<span className="text-xl sm:text-2xl text-red-400 animate-pulse">
-							❤️
-						</span>
-						<span>by <a href="https://github.com/yongholeeme" target="_blank" rel="noopener noreferrer">@yongholeeme</a></span>
-					</div>
+				{/* Credit */}
+				<div className="inline-flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-lg">
+					<span className="text-sm sm:text-base text-white/70 font-medium">
+						Made with
+					</span>
+					<span className="text-lg text-red-400">❤️</span>
+					<span className="text-sm sm:text-base text-white/70 font-medium">
+						by
+					</span>
+					<a 
+						href="https://github.com/yongholeeme" 
+						target="_blank" 
+						rel="noopener noreferrer"
+						className="text-sm sm:text-base text-white/90 font-semibold hover:text-white transition-colors"
+					>
+						@yongholeeme
+					</a>
 				</div>
 			</div>
 		</div>
