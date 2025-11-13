@@ -1,5 +1,4 @@
 import { Octokit } from "octokit";
-import { supabase } from "@/lib/supabase";
 import { config } from "@/../config";
 
 // PAT token storage key
@@ -23,41 +22,18 @@ export function hasPAT(): boolean {
 }
 
 export async function getOctokit(): Promise<Octokit> {
-  // First, try PAT
   const pat = getPAT();
-  if (pat) {
-    console.log({
-      auth: pat,
-      baseUrl: config.github.baseUrl,
-    });
-    return new Octokit({
-      auth: pat,
-      baseUrl: config.github.baseUrl,
-    });
-  }
 
-  throw new Error("@_@!!!");
-
-  // Fallback to OAuth
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const token = session?.provider_token;
-  if (!token) {
-    throw new Error("GitHub 액세스 토큰이 없습니다. 다시 로그인해주세요.");
+  if (!pat) {
+    throw new Error(
+      "GitHub Personal Access Token이 없습니다. 다시 로그인해주세요."
+    );
   }
 
   return new Octokit({
-    auth: token,
+    auth: pat,
     baseUrl: config.github.baseUrl,
   });
-}
-
-export function getAuthType(): "PAT" | "OAuth" | null {
-  if (getPAT()) return "PAT";
-  // We could check for session here, but it's async
-  return "OAuth";
 }
 
 export async function getRateLimit(): Promise<{

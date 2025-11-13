@@ -14,8 +14,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
     dayCounts[i] = 0;
   }
 
-  for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
+  for (const commit of commits) {
+    const date = new Date(commit.committedDate);
     const dayOfWeek = date.getDay();
     dayCounts[dayOfWeek] = (dayCounts[dayOfWeek] || 0) + 1;
   }

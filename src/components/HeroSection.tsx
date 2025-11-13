@@ -1,5 +1,4 @@
 import type { User } from "@supabase/supabase-js";
-import { supabase } from '@/lib/supabase';
 
 interface HeroSectionProps {
 	user: User;
@@ -7,7 +6,6 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ user, onLogout }: HeroSectionProps) {
-	const isPAT = user.id === 'pat-user';
 	const userMetadata = user.user_metadata;
 	const avatarUrl = userMetadata?.avatar_url || "";
 	const name = userMetadata?.full_name || userMetadata?.user_name || user.email;
@@ -15,13 +13,9 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 	const bio = userMetadata?.bio || "";
 	const currentYear = new Date().getFullYear();
 
-	const handleLogout = async () => {
-		// If using PAT, remove it from sessionStorage (more secure than localStorage)
-		if (isPAT) {
-			sessionStorage.removeItem('github_pat_token');
-		} else {
-			await supabase.auth.signOut();
-		}
+	const handleLogout = () => {
+		// Remove PAT from sessionStorage
+		sessionStorage.removeItem('github_pat_token');
 		onLogout();
 	};
 

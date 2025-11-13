@@ -11,8 +11,8 @@ function calculateCommitsByHour(
     hourCounts[i] = 0;
   }
 
-  for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
+  for (const commit of commits) {
+    const date = new Date(commit.committedDate);
     const hour = date.getHours();
     hourCounts[hour] = (hourCounts[hour] || 0) + 1;
   }

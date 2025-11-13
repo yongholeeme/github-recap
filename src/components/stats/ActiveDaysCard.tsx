@@ -4,8 +4,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 function calculateActiveDaysCount(commits: CommitData): number {
   const uniqueDates = new Set<string>();
-  for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
+  for (const commit of commits) {
+    const date = new Date(commit.committedDate);
     const dateStr = date.toISOString().split("T")[0];
     uniqueDates.add(dateStr);
   }

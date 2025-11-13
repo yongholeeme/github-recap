@@ -7,7 +7,7 @@ interface CommitMessageCardProps {
 	isFetching: boolean;
 	error: Error | null;
 	onRefetch: () => void;
-	onShowMessage: () => void;
+	onShowMessage?: () => void;
 	ref?: React.Ref<HTMLDivElement>;
 }
 

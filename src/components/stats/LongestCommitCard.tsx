@@ -5,25 +5,21 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
  function calculateLongestCommitMessage(commits: CommitData): {
   message: string;
   length: number;
-  repository: string;
-  url: string;
 } {
   if (commits.length === 0) {
-    return { message: "", length: 0, repository: "", url: "" };
+    return { message: "", length: 0 };
   }
 
   let longestCommit = commits[0];
-  for (const item of commits) {
-    if (item.commit.message.length > longestCommit.commit.message.length) {
-      longestCommit = item;
+  for (const commit of commits) {
+    if (commit.message.length > longestCommit.message.length) {
+      longestCommit = commit;
     }
   }
 
   return {
-    message: longestCommit.commit.message,
-    length: longestCommit.commit.message.length,
-    repository: longestCommit.repository.full_name,
-    url: longestCommit.html_url,
+    message: longestCommit.message,
+    length: longestCommit.message.length,
   };
 }
 
@@ -44,11 +40,6 @@ export default function LongestCommitCard() {
 			isFetching={isFetching}
 			error={error}
 			onRefetch={refetch}
-			onShowMessage={() => {
-				if (data?.url) {
-					window.open(data.url, "_blank");
-				}
-			}}
 		/>
 	);
 }

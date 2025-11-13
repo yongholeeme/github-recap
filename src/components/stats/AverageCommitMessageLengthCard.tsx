@@ -8,8 +8,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
   if (commits.length === 0) return 0;
 
   let totalLength = 0;
-  for (const item of commits) {
-    totalLength += item.commit.message.length;
+  for (const commit of commits) {
+    totalLength += commit.message.length;
   }
 
   return Math.round(totalLength / commits.length);

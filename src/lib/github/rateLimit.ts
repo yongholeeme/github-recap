@@ -1,4 +1,4 @@
-import { getOctokit, getAuthType } from "./auth";
+import { getOctokit } from "./auth";
 
 export async function logRateLimit(): Promise<void> {
   try {
@@ -8,12 +8,11 @@ export async function logRateLimit(): Promise<void> {
     const core = data.resources.core;
     const percentage = ((core.remaining / core.limit) * 100).toFixed(1);
     const resetDate = new Date(core.reset * 1000);
-    const authType = getAuthType();
 
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("📊 GitHub API Rate Limit Status");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log(`🔐 Auth Type: ${authType}`);
+    console.log(`🔐 Auth Type: PAT`);
     console.log(`📈 Limit: ${core.limit.toLocaleString()} requests/hour`);
     console.log(
       `✅ Remaining: ${core.remaining.toLocaleString()} (${percentage}%)`
