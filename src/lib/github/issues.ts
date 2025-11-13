@@ -11,7 +11,7 @@ export async function getIssuesCount(
   const query = `author:${username} type:issue created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1, // Only need total_count
   });
 
   return data.total_count || 0;
@@ -27,7 +27,7 @@ export async function getClosedIssuesCount(
   const query = `author:${username} type:issue closed:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1, // Only need total_count
   });
 
   return data.total_count || 0;
@@ -43,7 +43,7 @@ export async function getIssueCommentsCount(
   const query = `commenter:${username} type:issue updated:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1, // Only need total_count
   });
 
   return data.total_count || 0;
@@ -59,7 +59,7 @@ export async function getMentionsCount(
   const query = `mentions:${username} created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1, // Only need total_count
   });
 
   return data.total_count || 0;
@@ -79,22 +79,34 @@ export async function getTopMentionedBy(
   const { startDate, endDate } = getDateRange(year);
 
   // GitHub Search API searches both body and comments!
-  // Just use mentions: qualifier - it already includes comments
   const query = `mentions:${username} created:${startDate}..${endDate}`;
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
-    per_page: 100,
-  });
 
-  // Count mentions by the issue/PR author (simplified approach)
-  // For more accurate count, we'd need to parse all comments which is expensive
+  // Fetch with pagination
+  const allItems = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore && page <= 10) {
+    // Max 1000 items
+    const { data } = await octokit.rest.search.issuesAndPullRequests({
+      q: query,
+      per_page: 100,
+      page,
+    });
+
+    allItems.push(...data.items);
+    hasMore = data.items.length === 100;
+    page++;
+  }
+
+  // Count mentions by the issue/PR author
   const mentionCounts = new Map<string, number>();
 
   console.log(
-    `[getTopMentionedBy] Found ${data.items.length} items where @${username} was mentioned`
+    `[getTopMentionedBy] Found ${allItems.length} items where @${username} was mentioned`
   );
 
-  for (const item of data.items) {
+  for (const item of allItems) {
     const author = item.user?.login;
     if (author && author !== username) {
       mentionCounts.set(author, (mentionCounts.get(author) || 0) + 1);
@@ -104,6 +116,8 @@ export async function getTopMentionedBy(
       );
     }
   }
+
+  console.log(mentionCounts);
 
   // Sort and return top mentions
   const results = Array.from(mentionCounts.entries())
@@ -116,6 +130,43 @@ export async function getTopMentionedBy(
   return results;
 }
 
+type GitHubIssueOrPR = Awaited<
+  ReturnType<
+    Awaited<
+      ReturnType<typeof getOctokit>
+    >["rest"]["search"]["issuesAndPullRequests"]
+  >
+>["data"]["items"][number];
+
+async function fetchAllPages(
+  octokit: Awaited<ReturnType<typeof getOctokit>>,
+  query: string
+): Promise<GitHubIssueOrPR[]> {
+  const allItems = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore && page <= 10) {
+    // Max 1000 items
+    try {
+      const { data } = await octokit.rest.search.issuesAndPullRequests({
+        q: query,
+        per_page: 100,
+        page,
+      });
+
+      allItems.push(...data.items);
+      hasMore = data.items.length === 100;
+      page++;
+    } catch (error) {
+      console.error("Error fetching page:", page, error);
+      break;
+    }
+  }
+
+  return allItems;
+}
+
 export async function getTopMentionedUsers(
   year: number = new Date().getFullYear(),
   limit: number = 5
@@ -124,40 +175,26 @@ export async function getTopMentionedUsers(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // Smart approach: Use GitHub Code Search to find @mentions in content
-  // Search in issues and PRs authored or commented by user
   const mentionCounts = new Map<string, number>();
 
   try {
-    // Search for @mentions in issues/PRs where user is author or commenter
-    // GitHub search includes body and comments automatically!
+    // Fetch all queries with pagination in parallel
     const queries = [
       `author:${username} type:issue created:${startDate}..${endDate}`,
       `author:${username} type:pr created:${startDate}..${endDate}`,
       `commenter:${username} created:${startDate}..${endDate}`,
     ];
 
-    // Fetch all queries in parallel
     const results = await Promise.all(
-      queries.map((query) =>
-        octokit.rest.search
-          .issuesAndPullRequests({
-            q: query,
-            per_page: 100,
-          })
-          .catch((error) => {
-            console.error("Error in query:", query, error);
-            return { data: { items: [] } };
-          })
-      )
+      queries.map((query) => fetchAllPages(octokit, query))
     );
 
     // Deduplicate items by URL
     const processedUrls = new Set<string>();
     const uniqueItems = [];
 
-    for (const result of results) {
-      for (const item of result.data.items) {
+    for (const items of results) {
+      for (const item of items) {
         if (!processedUrls.has(item.url)) {
           processedUrls.add(item.url);
           uniqueItems.push(item);
@@ -166,8 +203,6 @@ export async function getTopMentionedUsers(
     }
 
     // Only scan body text for mentions (lightweight)
-    // Note: This won't catch mentions in comments, but it's much faster
-    // For full accuracy, would need to fetch all comments (expensive)
     console.log(
       `[getTopMentionedUsers] Processing ${uniqueItems.length} unique items`
     );
@@ -229,8 +264,36 @@ export async function getTopMentionedUsers(
 export async function getMentionedByCount(
   year: number = new Date().getFullYear()
 ): Promise<number> {
-  const details = await getTopMentionedBy(year, 100);
-  return details.reduce((sum, detail) => sum + detail.count, 0);
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  const query = `mentions:${username} created:${startDate}..${endDate}`;
+
+  // Fetch with pagination to count all items
+  let totalCount = 0;
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore && page <= 10) {
+    // Max 1000 items
+    const { data } = await octokit.rest.search.issuesAndPullRequests({
+      q: query,
+      per_page: 100,
+      page,
+    });
+
+    // Count items where author is not the current user
+    const validItems = data.items.filter(
+      (item) => item.user?.login && item.user.login !== username
+    );
+    totalCount += validItems.length;
+
+    hasMore = data.items.length === 100;
+    page++;
+  }
+
+  return totalCount;
 }
 
 export async function getMentionedUsersCount(

@@ -23,6 +23,7 @@ export function useInViewQuery<
   const { ref, inView } = useInView({
     triggerOnce: true, // 한 번만 트리거
     threshold: 0.1, // 10% 보이면 트리거
+    rootMargin: "500px", // 뷰포트 500px 전에 미리 로드
   });
 
   const query = useQuery({

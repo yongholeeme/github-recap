@@ -5,7 +5,7 @@ import { queryKeys } from '@/lib/queryKeys';
 export default function TopMentionedByCard() {
 	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
 		queryKey: queryKeys.mentions.receivedBy(),
-		queryFn: () => getTopMentionedBy(),
+		queryFn: () => getTopMentionedBy(new Date().getFullYear(), 10),
 	});
 
 	const handleRefresh = (e: React.MouseEvent) => {
@@ -31,7 +31,7 @@ export default function TopMentionedByCard() {
 							누가 나를 가장 많이 멘션했나요?
 						</h3>
 						<p className="text-[10px] sm:text-xs text-white/60">
-							TOP 5 멘션러
+							TOP 10 멘션러
 						</p>
 					</div>
 					<button
@@ -70,7 +70,7 @@ export default function TopMentionedByCard() {
 
 				{data && data.length > 0 && (
 					<div className="space-y-2">
-						{(data as MentionDetail[]).map((item, index) => (
+						{(data as MentionDetail[]).slice(0, 10).map((item, index) => (
 							<div
 								key={item.username}
 								className="flex items-center justify-between p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
@@ -89,10 +89,6 @@ export default function TopMentionedByCard() {
 							</div>
 						))}
 					</div>
-				)}
-
-				{data && data.length === 0 && (
-					<p className="text-sm text-white/60">데이터가 없습니다</p>
 				)}
 			</div>
 		</div>

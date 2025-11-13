@@ -9,7 +9,6 @@ import CommitPatternsSection from '@/components/CommitPatternsSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
 import MentionsSection from '@/components/MentionsSection';
-import LanguagesSection from '@/components/LanguagesSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
 import { config } from "@/../config";
@@ -119,7 +118,6 @@ function Index() {
 				<IssueActivitySection />
 				<PullRequestActivitySection />
 				<MentionsSection />
-				<LanguagesSection />
 				<GrowthSection />
 				<EndingSection />
 			</div>
