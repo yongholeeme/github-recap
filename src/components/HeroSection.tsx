@@ -7,6 +7,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ user, onLogout }: HeroSectionProps) {
+	const isPAT = user.id === 'pat-user';
 	const userMetadata = user.user_metadata;
 	const avatarUrl = userMetadata?.avatar_url || "";
 	const name = userMetadata?.full_name || userMetadata?.user_name || user.email;
@@ -15,7 +16,12 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 	const currentYear = new Date().getFullYear();
 
 	const handleLogout = async () => {
-		await supabase.auth.signOut();
+		// If using PAT, remove it from sessionStorage (more secure than localStorage)
+		if (isPAT) {
+			sessionStorage.removeItem('github_pat_token');
+		} else {
+			await supabase.auth.signOut();
+		}
 		onLogout();
 	};
 

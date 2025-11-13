@@ -1,7 +1,34 @@
 import { Octokit } from "octokit";
 import { supabase } from "@/lib/supabase";
 
+// PAT token storage key
+const PAT_STORAGE_KEY = "github_pat_token";
+
+export function savePAT(token: string): void {
+  // Use sessionStorage for better security - token is cleared when tab closes
+  sessionStorage.setItem(PAT_STORAGE_KEY, token);
+}
+
+export function getPAT(): string | null {
+  return sessionStorage.getItem(PAT_STORAGE_KEY);
+}
+
+export function removePAT(): void {
+  sessionStorage.removeItem(PAT_STORAGE_KEY);
+}
+
+export function hasPAT(): boolean {
+  return !!getPAT();
+}
+
 export async function getOctokit(): Promise<Octokit> {
+  // First, try PAT
+  const pat = getPAT();
+  if (pat) {
+    return new Octokit({ auth: pat });
+  }
+
+  // Fallback to OAuth
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -12,6 +39,34 @@ export async function getOctokit(): Promise<Octokit> {
   }
 
   return new Octokit({ auth: token });
+}
+
+export function getAuthType(): "PAT" | "OAuth" | null {
+  if (getPAT()) return "PAT";
+  // We could check for session here, but it's async
+  return "OAuth";
+}
+
+export async function getRateLimit(): Promise<{
+  limit: number;
+  remaining: number;
+  used: number;
+  reset: Date;
+  percentage: number;
+}> {
+  const octokit = await getOctokit();
+  const { data } = await octokit.rest.rateLimit.get();
+
+  const core = data.resources.core;
+  const percentage = (core.remaining / core.limit) * 100;
+
+  return {
+    limit: core.limit,
+    remaining: core.remaining,
+    used: core.used,
+    reset: new Date(core.reset * 1000),
+    percentage,
+  };
 }
 
 let cachedUsername: string | null = null;
