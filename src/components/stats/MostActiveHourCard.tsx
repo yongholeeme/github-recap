@@ -5,7 +5,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 function calculateMostActiveHour(commits: CommitData): number {
   const hourCounts: Record<number, number> = {};
   for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
+    if (!item.committedDate) continue;
+    const date = new Date(item.committedDate);
     const hour = date.getHours();
     hourCounts[hour] = (hourCounts[hour] || 0) + 1;
   }

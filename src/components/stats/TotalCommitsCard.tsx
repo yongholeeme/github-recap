@@ -1,24 +1,30 @@
-import StatCard from '@/components/StatCard';
+import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { getCommitsCount } from '@/lib/github/commits';;
 import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function TotalCommitsCard() {
-	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+	const { data, isLoading, error, ref } = useInViewQuery({
 		queryKey: queryKeys.commits.all(),
 		queryFn: () => getCommitsCount(),
 	});
 
 	return (
-		<StatCard
-			ref={ref}
-			title="총 커밋"
-			description="올해 작성한 커밋"
-			value={data as number | undefined}
-			isLoading={isLoading}
-			isFetching={isFetching}
-			error={error}
-			onRefetch={refetch}
-		/>
+		<div ref={ref} className="flex items-center justify-center">
+			{isLoading ? (
+				<div className="text-8xl sm:text-9xl md:text-[12rem] lg:text-[14rem] font-black text-gray-700 animate-pulse">
+					···
+				</div>
+			) : error ? (
+				<div className="text-center">
+					<div className="text-4xl sm:text-5xl text-red-400 mb-2">오류</div>
+					<p className="text-sm text-gray-400">데이터를 불러올 수 없습니다</p>
+				</div>
+			) : (
+				<div className="text-8xl sm:text-9xl md:text-[12rem] lg:text-[14rem] font-black text-gray-200 leading-none">
+					<CountUpAnimation value={data as number} />
+				</div>
+			)}
+		</div>
 	);
 }

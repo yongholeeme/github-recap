@@ -1,6 +1,8 @@
 import CommitsByHourChart from '@/components/charts/CommitsByHourChart';
 import CommitsByDayChart from '@/components/charts/CommitsByDayChart';
 import CommitTimelineChart from '@/components/charts/CommitTimelineChart';
+import MostActiveHourCard from '@/components/stats/MostActiveHourCard';
+import NightOwlScoreCard from '@/components/stats/NightOwlScoreCard';
 
 export default function CommitPatternsSection() {
 	return (
@@ -9,21 +11,25 @@ export default function CommitPatternsSection() {
 			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-			<div className="relative z-10 w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12">
-				<div className="text-center space-y-4 sm:space-y-6 mb-8 sm:mb-10 md:mb-12">
-					<div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-purple-400 via-pink-500 to-rose-600 rounded-2xl sm:rounded-3xl shadow-2xl">
-						<span className="text-3xl sm:text-4xl md:text-5xl">📊</span>
-					</div>
-					<div>
-						<h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-3 md:mb-4 tracking-tight drop-shadow-xl">
-							당신의 코딩 타임
-						</h3>
-						<p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 font-medium px-4">
-							언제 가장 열정적이었나요?
-						</p>
-					</div>
+			<div className="relative z-10 w-full max-w-6xl mx-auto">
+				{/* Header */}
+				<div className="text-center mb-16 sm:mb-20">
+					<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-200 leading-[0.9] tracking-[-0.02em] mb-6">
+						당신의 코딩 리듬
+					</h2>
+					<p className="text-lg sm:text-xl text-gray-400 font-medium">
+						언제 가장 활발하게 코드를 작성하셨나요?
+					</p>
 				</div>
-				<div className="grid grid-cols-1 gap-3 sm:gap-4">
+
+				{/* Pattern Stats */}
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-12">
+					<MostActiveHourCard />
+					<NightOwlScoreCard />
+				</div>
+
+				{/* Charts */}
+				<div className="space-y-6 sm:space-y-8">
 					<CommitsByHourChart />
 					<CommitsByDayChart />
 					<CommitTimelineChart />

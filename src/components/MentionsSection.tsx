@@ -8,28 +8,22 @@ export default function MentionsSection() {
 			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-			<div className="relative z-10 w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12">
-				<div className="text-center space-y-4 sm:space-y-6 mb-8 sm:mb-10 md:mb-12">
-					<div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-indigo-400 via-purple-500 to-fuchsia-600 rounded-2xl sm:rounded-3xl shadow-2xl">
-						<span className="text-3xl sm:text-4xl md:text-5xl">💬</span>
-					</div>
-					<div>
-						<h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-3 md:mb-4 tracking-tight drop-shadow-xl">
-							소통의 연결고리
-						</h3>
-						<p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 font-medium px-4">
-							함께 나눈 대화의 기록
-						</p>
-					</div>
+			<div className="relative z-10 w-full max-w-6xl mx-auto">
+				{/* Header */}
+				<div className="text-center mb-16 sm:mb-20">
+					<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-200 leading-[0.9] tracking-[-0.02em] mb-6">
+						커뮤니티와
+						<br />
+						연결됩니다
+					</h2>
+					<p className="text-lg sm:text-xl text-gray-400 font-medium">
+						함께 나눈 대화의 기록
+					</p>
 				</div>
 
-				{/* Count Card */}
-				<div className="grid grid-cols-1 gap-3 sm:gap-4 mb-4">
+				{/* Content */}
+				<div className="space-y-6 sm:space-y-8">
 					<MentionedByCountCard />
-				</div>
-
-				{/* Top 5 Card */}
-				<div className="grid grid-cols-1 gap-3 sm:gap-4">
 					<TopMentionedByCard />
 				</div>
 			</div>
