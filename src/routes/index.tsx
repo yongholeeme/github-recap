@@ -35,6 +35,7 @@ function Index() {
 					const { data: githubUser } = await octokit.rest.users.getAuthenticated();
 					
 					// Create a pseudo User object with GitHub data
+					// Use avatar_url from API response (handles redirects properly)
 					setUser({
 						id: 'pat-user',
 						app_metadata: {},
@@ -77,7 +78,7 @@ function Index() {
 		try {
 			const { Octokit } = await import('octokit');
 			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.baseUrl });
-			await octokit.rest.users.getAuthenticated();
+			const { data: githubUser } = await octokit.rest.users.getAuthenticated();
 			
 			// Clear previous user's cache
 			queryClient.clear();
@@ -85,7 +86,20 @@ function Index() {
 			
 			// Valid token, save it (sessionStorage for better security)
 			sessionStorage.setItem('github_pat_token', patToken);
-			setUser({ id: 'pat-user' } as User);
+			
+			// Use avatar_url from API response (handles redirects properly)
+			setUser({
+				id: 'pat-user',
+				app_metadata: {},
+				aud: 'authenticated',
+				created_at: new Date().toISOString(),
+				user_metadata: {
+					avatar_url: githubUser.avatar_url,
+					full_name: githubUser.name,
+					user_name: githubUser.login,
+					bio: githubUser.bio,
+				},
+			} as User);
 		} catch (error) {
 			setPATError('유효하지 않은 토큰입니다');
 			console.error('PAT validation error:', error);
@@ -110,6 +124,7 @@ function Index() {
 	};
 
 	if (user) {
+		console.log(user)
 		return (
 			<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
 				<HeroSection user={user} onLogout={handleLogout} />
