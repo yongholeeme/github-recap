@@ -25,13 +25,12 @@ function calculateCommitsByHour(
 
 
 export default function CommitsByHourChart() {
-	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
 	
 	const data = commits ? calculateCommitsByHour(commits) : undefined;
 
 	return (
 		<ChartCard
-			ref={ref}
 			title="시간대별 커밋 분포"
 			description="24시간 동안 시간대별 커밋 활동"
 			data={data}

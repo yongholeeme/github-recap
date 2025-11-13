@@ -1,11 +1,11 @@
 
 import StatCard from '@/components/StatCard';
-import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { useQuery } from '@tanstack/react-query';
 import { getClosedNotMergedPullRequestsCount } from '@/lib/github/pullRequests';
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function ClosedNotMergedPullRequestsCard() {
-	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: queryKeys.pullRequests.closedNotMerged(),
 		queryFn: () => getClosedNotMergedPullRequestsCount(),
 		
@@ -13,7 +13,6 @@ export default function ClosedNotMergedPullRequestsCard() {
 
 	return (
 		<StatCard
-			ref={ref}
 			title="닫힌 PR"
 			description="머지되지 않음"
 			value={data as number | undefined}

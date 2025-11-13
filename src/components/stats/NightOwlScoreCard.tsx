@@ -7,7 +7,8 @@ function calculateNightOwlScore(commits: CommitData): number {
 
   let nightCommits = 0;
   for (const item of commits) {
-	const date = new Date(item.commit.author?.date || "");
+    if (!item.committedDate) continue;
+    const date = new Date(item.committedDate);
 	const hour = date.getHours();
 	// 자정(0시)부터 오전 6시까지
 	if (hour >= 0 && hour < 6) {
@@ -20,13 +21,12 @@ function calculateNightOwlScore(commits: CommitData): number {
 
 
 export default function NightOwlScoreCard() {
-	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
 	
 	const data = commits ? calculateNightOwlScore(commits) : undefined;
 
 	return (
 		<StatCard
-			ref={ref}
 			title="야행성 지수 🦉"
 			description="자정~오전 6시 커밋 비율"
 			value={data as number | undefined}

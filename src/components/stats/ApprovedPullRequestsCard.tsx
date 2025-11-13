@@ -1,11 +1,11 @@
 
 import StatCard from '@/components/StatCard';
-import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { useQuery } from '@tanstack/react-query';
 import { getApprovedPullRequestsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function ApprovedPullRequestsCard() {
-	const { data, isLoading, isFetching, error, refetch, ref } = useInViewQuery({
+	const { data, isLoading, isFetching, error, refetch } = useQuery({
 		queryKey: queryKeys.pullRequests.approved(),
 		queryFn: () => getApprovedPullRequestsCount(),
 		
@@ -13,7 +13,6 @@ export default function ApprovedPullRequestsCard() {
 
 	return (
 		<StatCard
-			ref={ref}
 			title="승인한 PR"
 			description="Approve"
 			value={data as number | undefined}

@@ -17,7 +17,6 @@ interface ChartCardProps {
 	error: Error | null;
 	onRefetch: () => void;
 	dataKey: string;
-	ref?: React.Ref<HTMLDivElement>;
 }
 
 export default function ChartCard({
@@ -29,7 +28,6 @@ export default function ChartCard({
 	error,
 	onRefetch,
 	dataKey,
-	ref,
 }: ChartCardProps) {
 		const handleRefresh = () => {
 			onRefetch();
@@ -37,7 +35,6 @@ export default function ChartCard({
 
 		return (
 			<div
-				ref={ref}
 				className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] transition-all duration-300 col-span-full overflow-hidden backdrop-blur-sm ${
 					isFetching ? "pointer-events-none" : ""
 				}`}

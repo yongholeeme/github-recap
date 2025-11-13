@@ -1,16 +1,16 @@
 import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { getCommitsCount } from '@/lib/github/commits';;
-import { useInViewQuery } from '@/lib/hooks/useInViewQuery';
+import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function TotalCommitsCard() {
-	const { data, isLoading, error, ref } = useInViewQuery({
+	const { data, isLoading, error } = useQuery({
 		queryKey: queryKeys.commits.all(),
 		queryFn: () => getCommitsCount(),
 	});
 
 	return (
-		<div ref={ref} className="flex items-center justify-center">
+		<div className="flex items-center justify-center">
 			{isLoading ? (
 				<div className="text-8xl sm:text-9xl md:text-[12rem] lg:text-[14rem] font-black text-gray-700 animate-pulse">
 					···

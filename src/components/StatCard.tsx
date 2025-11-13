@@ -11,7 +11,6 @@ interface StatCardProps {
 	isClickable?: boolean;
 	onClick?: () => void;
 	suffix?: string; // e.g., "%", "일", "개" etc.
-	ref?: React.Ref<HTMLDivElement>;
 }
 
 export default function StatCard({
@@ -25,7 +24,6 @@ export default function StatCard({
 	isClickable,
 	onClick,
 	suffix,
-	ref,
 }: StatCardProps) {
 	const handleRefresh = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -34,7 +32,6 @@ export default function StatCard({
 
 	return (
 		<div
-			ref={ref}
 			className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] hover:border-white/40 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm ${
 				isClickable ? "cursor-pointer" : ""
 			} ${isFetching ? "pointer-events-none" : ""}`}

@@ -5,7 +5,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
  function calculateLongestStreak(commits: CommitData): number {
   const dates = new Set<string>();
   for (const item of commits) {
-    const date = new Date(item.commit.author?.date || "");
+    if (!item.committedDate) continue;
+    const date = new Date(item.committedDate);
     const dateStr = date.toISOString().split("T")[0];
     dates.add(dateStr);
   }
@@ -33,13 +34,12 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 }
 
 export default function LongestStreakCard() {
-	const { data: commits, isLoading, isFetching, error, refetch, ref } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
 	
 	const data = commits ? calculateLongestStreak(commits) : undefined;
 
 	return (
 		<StatCard
-			ref={ref}
 			title="최장 연속 기여"
 			description="연속으로 기여한 최대 일수"
 			value={data as number | undefined}
