@@ -1,5 +1,6 @@
 import { Octokit } from "octokit";
 import { supabase } from "@/lib/supabase";
+import { config } from "@/../config";
 
 // PAT token storage key
 const PAT_STORAGE_KEY = "github_pat_token";
@@ -25,8 +26,17 @@ export async function getOctokit(): Promise<Octokit> {
   // First, try PAT
   const pat = getPAT();
   if (pat) {
-    return new Octokit({ auth: pat });
+    console.log({
+      auth: pat,
+      baseUrl: config.github.baseUrl,
+    });
+    return new Octokit({
+      auth: pat,
+      baseUrl: config.github.baseUrl,
+    });
   }
+
+  throw new Error("@_@!!!");
 
   // Fallback to OAuth
   const {
@@ -38,7 +48,10 @@ export async function getOctokit(): Promise<Octokit> {
     throw new Error("GitHub 액세스 토큰이 없습니다. 다시 로그인해주세요.");
   }
 
-  return new Octokit({ auth: token });
+  return new Octokit({
+    auth: token,
+    baseUrl: config.github.baseUrl,
+  });
 }
 
 export function getAuthType(): "PAT" | "OAuth" | null {

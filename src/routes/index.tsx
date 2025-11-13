@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from '@/lib/supabase';
+import { queryClient } from '@/main';
 import '@/lib/github/rateLimit'; // Auto-logs rate limit
 import HeroSection from '@/components/HeroSection';
 import CommitActivitySection from '@/components/CommitActivitySection';
@@ -12,6 +13,7 @@ import MentionsSection from '@/components/MentionsSection';
 import LanguagesSection from '@/components/LanguagesSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
+import { config } from "@/../config";
 
 export const Route = createFileRoute("/")({
 	component: Index,
@@ -50,8 +52,10 @@ function Index() {
 					} as User);
 				} catch (error) {
 					console.error('Failed to fetch PAT user:', error);
-					// Invalid PAT, remove it
+					// Invalid PAT, remove it and clear cache
 					sessionStorage.removeItem('github_pat_token');
+					queryClient.clear();
+					localStorage.removeItem('github-recap-cache');
 					setUser(null);
 				} finally {
 					setIsLoading(false);
@@ -71,6 +75,11 @@ function Index() {
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((_event, session) => {
+			// Clear cache on auth state change (login/logout)
+			if (!session) {
+				queryClient.clear();
+				localStorage.removeItem('github-recap-cache');
+			}
 			setUser(session?.user ?? null);
 		});
 
@@ -97,8 +106,12 @@ function Index() {
 		// Validate PAT by making a test request
 		try {
 			const { Octokit } = await import('octokit');
-			const octokit = new Octokit({ auth: patToken });
+			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.baseUrl });
 			await octokit.rest.users.getAuthenticated();
+			
+			// Clear previous user's cache
+			queryClient.clear();
+			localStorage.removeItem('github-recap-cache');
 			
 			// Valid token, save it (sessionStorage for better security)
 			sessionStorage.setItem('github_pat_token', patToken);
@@ -117,10 +130,19 @@ function Index() {
 		);
 	}
 
+	const handleLogout = () => {
+		// Clear all React Query cache
+		queryClient.clear();
+		// Clear localStorage cache
+		localStorage.removeItem('github-recap-cache');
+		// Reset user state
+		setUser(null);
+	};
+
 	if (user) {
 		return (
 			<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-				<HeroSection user={user} onLogout={() => setUser(null)} />
+				<HeroSection user={user} onLogout={handleLogout} />
 				<CommitActivitySection />
 				<CommitPatternsSection />
 				<IssueActivitySection />

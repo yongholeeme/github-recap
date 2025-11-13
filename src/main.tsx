@@ -13,7 +13,7 @@ import { routeTree } from '@/routeTree.gen'
 const router = createRouter({ routeTree })
 
 // Create a query client
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 60 * 24, // 24 hours
