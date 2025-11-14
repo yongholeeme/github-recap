@@ -1,8 +1,10 @@
 import StatCard from '@/components/StatCard';
 import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
+import { useYear } from '@/contexts/YearContext';
 
 export default function TotalStarsCard() {
-	const { data: repos, isLoading, isFetching, error } = useRepositoriesData();
+	const { year } = useYear();
+	const { data: repos, isLoading, isFetching, error } = useRepositoriesData(year);
 	
 	const data = repos
 		? repos.reduce((total, repo) => total + (repo.stargazers_count || 0), 0)

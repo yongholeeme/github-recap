@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
  function calculateAverageCommitMessageLength(
   commits: CommitData
@@ -16,7 +17,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 }
 
 export default function AverageCommitMessageLengthCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateAverageCommitMessageLength(commits) : undefined;
 

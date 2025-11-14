@@ -5,13 +5,15 @@ import {
   getPullRequestReviewsCount,
 } from "@/lib/github/pullRequests";
 
-export async function getLastYearStats(): Promise<{
+export async function getLastYearStats(
+  year: number = new Date().getFullYear()
+): Promise<{
   commits: number;
   prs: number;
   issues: number;
   reviews: number;
 }> {
-  const lastYear = new Date().getFullYear() - 1;
+  const lastYear = year - 1;
 
   // 작년 데이터만 병렬로 가져오기 (4개 요청)
   const [lastCommits, lastPRs, lastIssues, lastReviews] = await Promise.all([

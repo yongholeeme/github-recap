@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateLongestCommitMessageLength(commits: CommitData): number {
   if (commits.length === 0) {
@@ -19,7 +20,8 @@ function calculateLongestCommitMessageLength(commits: CommitData): number {
 
 
 export default function LongestCommitCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateLongestCommitMessageLength(commits) : undefined;
 

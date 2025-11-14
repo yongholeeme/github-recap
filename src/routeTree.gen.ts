@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OauthRouteImport } from './routes/oauth'
+import { Route as YearRouteImport } from './routes/$year'
 import { Route as IndexRouteImport } from './routes/index'
 
 const OauthRoute = OauthRouteImport.update({
   id: '/oauth',
   path: '/oauth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YearRoute = YearRouteImport.update({
+  id: '/$year',
+  path: '/$year',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$year': typeof YearRoute
   '/oauth': typeof OauthRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$year': typeof YearRoute
   '/oauth': typeof OauthRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$year': typeof YearRoute
   '/oauth': typeof OauthRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/oauth'
+  fullPaths: '/' | '/$year' | '/oauth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/oauth'
-  id: '__root__' | '/' | '/oauth'
+  to: '/' | '/$year' | '/oauth'
+  id: '__root__' | '/' | '/$year' | '/oauth'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  YearRoute: typeof YearRoute
   OauthRoute: typeof OauthRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/oauth'
       fullPath: '/oauth'
       preLoaderRoute: typeof OauthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$year': {
+      id: '/$year'
+      path: '/$year'
+      fullPath: '/$year'
+      preLoaderRoute: typeof YearRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  YearRoute: YearRoute,
   OauthRoute: OauthRoute,
 }
 export const routeTree = rootRouteImport

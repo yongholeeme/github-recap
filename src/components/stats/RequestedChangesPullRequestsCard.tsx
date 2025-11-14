@@ -3,11 +3,13 @@ import StatCard from '@/components/StatCard';
 import { useQuery } from '@tanstack/react-query';
 import { getRequestedChangesPullRequestsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function RequestedChangesPullRequestsCard() {
+	const { year } = useYear();
 	const { data, isLoading, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.requestedChanges(),
-		queryFn: () => getRequestedChangesPullRequestsCount(),
+		queryKey: queryKeys.pullRequests.requestedChanges(year),
+		queryFn: () => getRequestedChangesPullRequestsCount(year),
 		
 	});
 

@@ -3,11 +3,13 @@ import StatCard from '@/components/StatCard';
 import { useQuery } from '@tanstack/react-query';
 import { getMergedPullRequestsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function MergedPullRequestsCard() {
+	const { year } = useYear();
 	const { data, isLoading, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.merged(),
-		queryFn: () => getMergedPullRequestsCount(),
+		queryKey: queryKeys.pullRequests.merged(year),
+		queryFn: () => getMergedPullRequestsCount(year),
 		
 	});
 

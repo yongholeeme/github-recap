@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateNightOwlScore(commits: CommitData): number {
   if (commits.length === 0) return 0;
@@ -21,7 +22,8 @@ function calculateNightOwlScore(commits: CommitData): number {
 
 
 export default function NightOwlScoreCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateNightOwlScore(commits) : undefined;
 

@@ -1,6 +1,7 @@
 import ChartCard from '@/components/ChartCard';
 import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateCommitTimeline(
   commits: CommitData
@@ -39,7 +40,8 @@ function calculateCommitTimeline(
 }
 
 export default function CommitTimelineChart() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateCommitTimeline(commits) : undefined;
 

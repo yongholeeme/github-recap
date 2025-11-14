@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getTopMentionedUsers, type MentionDetail } from '@/lib/github/issues';
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function TopMentionedUsersCard() {
+	const { year } = useYear();
 	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.mentions.sentTo(),
-		queryFn: () => getTopMentionedUsers(),
+		queryKey: queryKeys.mentions.sentTo(year),
+		queryFn: () => getTopMentionedUsers(year),
 	});
 
 	return (

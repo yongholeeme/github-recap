@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateMostActiveHour(commits: CommitData): number {
   const hourCounts: Record<number, number> = {};
@@ -25,7 +26,8 @@ function calculateMostActiveHour(commits: CommitData): number {
 
 
 export default function MostActiveHourCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateMostActiveHour(commits) : undefined;
 

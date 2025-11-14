@@ -1,5 +1,8 @@
+import { useYear } from '@/contexts/YearContext';
+
 export default function EndingSection() {
-	const currentYear = new Date().getFullYear();
+	const { year } = useYear();
+	const currentYear = year;
 
 	return (
 		<div className="h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">

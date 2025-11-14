@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateShortestCommitMessageLength(commits: CommitData): number {
   if (commits.length === 0) {
@@ -19,7 +20,8 @@ function calculateShortestCommitMessageLength(commits: CommitData): number {
 
 
 export default function ShortestCommitCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateShortestCommitMessageLength(commits) : undefined;
 

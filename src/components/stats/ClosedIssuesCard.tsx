@@ -3,11 +3,13 @@ import StatCard from '@/components/StatCard';
 import { useQuery } from '@tanstack/react-query';
 import { getClosedIssuesCount } from '@/lib/github/issues';;
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function ClosedIssuesCard() {
+	const { year } = useYear();
 	const { data, isLoading, isFetching, error } = useQuery({
-		queryKey: queryKeys.issues.closed(),
-		queryFn: () => getClosedIssuesCount(),
+		queryKey: queryKeys.issues.closed(year),
+		queryFn: () => getClosedIssuesCount(year),
 		
 	});
 

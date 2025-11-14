@@ -3,11 +3,13 @@ import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/queryKeys';
 import { getMentionsCount } from '@/lib/github/issues';
+import { useYear } from '@/contexts/YearContext';
 
 export default function MentionedByCountCard() {
+	const { year } = useYear();
 	const { data, isLoading, error } = useQuery({
-		queryKey: queryKeys.mentions.received(),
-		queryFn: () => getMentionsCount(),
+		queryKey: queryKeys.mentions.received(year),
+		queryFn: () => getMentionsCount(year),
 	});
 
 	return (

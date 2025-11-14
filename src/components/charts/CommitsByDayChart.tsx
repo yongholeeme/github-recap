@@ -1,6 +1,7 @@
 import ChartCard from '@/components/ChartCard';
 import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 
  function calculateCommitsByDayOfWeek(
@@ -28,7 +29,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 
 export default function CommitsByDayChart() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateCommitsByDayOfWeek(commits) : undefined;
 

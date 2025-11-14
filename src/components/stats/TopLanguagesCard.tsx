@@ -1,6 +1,7 @@
 import type { RepoData } from '@/lib/github/repositories';
 import { getDateRange } from '@/lib/github/utils';
 import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateTopLanguages(
   repos: RepoData,
@@ -40,9 +41,10 @@ function calculateTopLanguages(
 
 
 export default function TopLanguagesCard() {
-	const { data: repos, isFetching, error } = useRepositoriesData();
+	const { year } = useYear();
+	const { data: repos, isFetching, error } = useRepositoriesData(year);
 	
-	const data = repos ? calculateTopLanguages(repos) : undefined;
+	const data = repos ? calculateTopLanguages(repos, year) : undefined;
 
 	return (
 		<div

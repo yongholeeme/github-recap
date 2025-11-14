@@ -2,14 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getCommitsCount } from "@/lib/github/commits";
 import { queryKeys } from "@/lib/queryKeys";
 import { CountUpAnimation } from "@/components/CountUpAnimation";
-import LongestCommitCard from '@/components/stats/LongestCommitCard';
-import ShortestCommitCard from '@/components/stats/ShortestCommitCard';
-import AverageCommitMessageLengthCard from '@/components/stats/AverageCommitMessageLengthCard';
+import { useYear } from '@/contexts/YearContext';
 
 export default function CommitActivitySection() {
+	const { year } = useYear();
 	const { data: commitsCount, isLoading } = useQuery({
-		queryKey: queryKeys.commits.all(),
-		queryFn: () => getCommitsCount(),
+		queryKey: queryKeys.commits.all(year),
+		queryFn: () => getCommitsCount(year),
 	});
 	
 	return (
@@ -46,12 +45,6 @@ export default function CommitActivitySection() {
 					<p className="text-base sm:text-lg text-white/50 max-w-2xl mx-auto">
 						한 줄 한 줄 쌓아올린 당신의 기록
 					</p>
-				</div>
-
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-					<LongestCommitCard />
-					<ShortestCommitCard />
-					<AverageCommitMessageLengthCard />
 				</div>
 			</div>
 		</div>

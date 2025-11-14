@@ -3,11 +3,13 @@ import StatCard from '@/components/StatCard';
 import { useQuery } from '@tanstack/react-query';
 import { getMentionedUsersCount } from '@/lib/github/issues';
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function MentionedUsersCountCard() {
+	const { year } = useYear();
 	const { data, isLoading, isFetching, error } = useQuery({
-		queryKey: queryKeys.mentions.sent(),
-		queryFn: () => getMentionedUsersCount(),
+		queryKey: queryKeys.mentions.sent(year),
+		queryFn: () => getMentionedUsersCount(year),
 		
 	});
 

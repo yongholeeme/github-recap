@@ -3,21 +3,23 @@ import { getLastYearStats } from '@/lib/github/stats';;
 import { useQuery } from '@tanstack/react-query';
 import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function GrowthSection() {
+	const { year } = useYear();
 	const queryClient = useQueryClient();
 
 	// 작년 데이터만 가져오기 (4개 요청)
 	const { data: lastYearData, isLoading, isFetching } = useQuery({
-		queryKey: queryKeys.stats.lastYear(),
-		queryFn: () => getLastYearStats(),
+		queryKey: queryKeys.stats.lastYear(year),
+		queryFn: () => getLastYearStats(year),
 	});
 
 	// 올해 데이터는 캐시에서 가져오기 (0개 요청)
-	const currentCommits = queryClient.getQueryData<number>(queryKeys.commits.all());
-	const currentPRs = queryClient.getQueryData<number>(queryKeys.pullRequests.all());
-	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all());
-	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews());
+	const currentCommits = queryClient.getQueryData<number>(queryKeys.commits.all(year));
+	const currentPRs = queryClient.getQueryData<number>(queryKeys.pullRequests.all(year));
+	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all(year));
+	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews(year));
 
 	// 변화량 계산
 	const calculateChange = (current: number, last: number): number => {

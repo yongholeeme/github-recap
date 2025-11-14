@@ -1,6 +1,7 @@
 import ChartCard from '@/components/ChartCard';
 import { type CommitData } from '@/lib/github/commits';;
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
 function calculateCommitsByHour(
   commits: CommitData
@@ -25,7 +26,8 @@ function calculateCommitsByHour(
 
 
 export default function CommitsByHourChart() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateCommitsByHour(commits) : undefined;
 

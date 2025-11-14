@@ -1,5 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import { useState } from "react";
+import { useYear } from '@/contexts/YearContext';
 
 interface HeroSectionProps {
 	user: User | null;
@@ -7,10 +8,11 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ user, onLogout }: HeroSectionProps) {
+	const { year } = useYear();
 	const userMetadata = user?.user_metadata;
 	const avatarUrl = userMetadata?.avatar_url || "";
 	const userName = userMetadata?.user_name || "";
-	const currentYear = new Date().getFullYear();
+	const currentYear = year;
 	const [showAvatar, setShowAvatar] = useState(false);
 
 	const handleLogout = () => {

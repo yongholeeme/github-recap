@@ -1,6 +1,7 @@
 import StatCard from '@/components/StatCard';
 import type { CommitData } from '@/lib/github/commits';
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
+import { useYear } from '@/contexts/YearContext';
 
  function calculateLongestStreak(commits: CommitData): number {
   const dates = new Set<string>();
@@ -34,7 +35,8 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 }
 
 export default function LongestStreakCard() {
-	const { data: commits, isLoading, isFetching, error } = useCommitsData();
+	const { year } = useYear();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateLongestStreak(commits) : undefined;
 

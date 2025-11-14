@@ -2,11 +2,13 @@ import { CountUpAnimation } from '@/components/CountUpAnimation';
 import { getCommitsCount } from '@/lib/github/commits';;
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function TotalCommitsCard() {
+	const { year } = useYear();
 	const { data, isLoading, error } = useQuery({
-		queryKey: queryKeys.commits.all(),
-		queryFn: () => getCommitsCount(),
+		queryKey: queryKeys.commits.all(year),
+		queryFn: () => getCommitsCount(year),
 	});
 
 	return (

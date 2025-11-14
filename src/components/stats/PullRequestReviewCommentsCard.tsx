@@ -3,11 +3,13 @@ import StatCard from '@/components/StatCard';
 import { useQuery } from '@tanstack/react-query';
 import { getPullRequestReviewCommentsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
+import { useYear } from '@/contexts/YearContext';
 
 export default function PullRequestReviewCommentsCard() {
+	const { year } = useYear();
 	const { data, isLoading, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.reviewComments(),
-		queryFn: () => getPullRequestReviewCommentsCount(),
+		queryKey: queryKeys.pullRequests.reviewComments(year),
+		queryFn: () => getPullRequestReviewCommentsCount(year),
 		
 	});
 
