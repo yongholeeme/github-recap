@@ -11,7 +11,7 @@ export async function getPullRequestsCount(
   const query = `author:${username} type:pr created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -27,7 +27,7 @@ export async function getMergedPullRequestsCount(
   const query = `author:${username} type:pr is:merged merged:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -43,7 +43,7 @@ export async function getPullRequestReviewsCount(
   const query = `reviewed-by:${username} type:pr created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -60,7 +60,7 @@ export async function getApprovedPullRequestsCount(
   const query = `reviewed-by:${username} type:pr review:approved created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -77,7 +77,7 @@ export async function getRequestedChangesPullRequestsCount(
   const query = `reviewed-by:${username} type:pr review:changes_requested created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -93,7 +93,7 @@ export async function getPullRequestReviewCommentsCount(
   const query = `commenter:${username} type:pr updated:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -109,7 +109,7 @@ export async function getClosedNotMergedPullRequestsCount(
   const query = `author:${username} type:pr is:closed is:unmerged closed:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
     q: query,
-    per_page: 100,
+    per_page: 1,
   });
 
   return data.total_count || 0;

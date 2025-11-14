@@ -8,6 +8,8 @@ import CommitsByDaySection from '@/components/CommitsByDaySection';
 import CommitTimelineSection from '@/components/CommitTimelineSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
+import ContributedPullRequestsSection from '@/components/ContributedPullRequestsSection';
+import ContributedIssuesSection from '@/components/ContributedIssuesSection';
 import MentionsSection from '@/components/MentionsSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
@@ -161,11 +163,13 @@ export default function YearRecap({ year }: YearRecapProps) {
 
 						{/* PR 섹션 - 오렌지 계열 배경 */}
 						<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
+							<ContributedPullRequestsSection />
 							<PullRequestActivitySection />
 						</div>
 
 						{/* 이슈 섹션 - 그린 계열 배경 */}
 						<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
+							<ContributedIssuesSection />
 							<IssueActivitySection />
 						</div>
 
