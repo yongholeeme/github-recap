@@ -1,0 +1,11 @@
+# Configure lefthook
+# @see https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+
+# Note: commit-msg hook takes a single parameter,
+#       the name of the file that holds the proposed commit log message.
+# @see https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md#git-arguments
+pre-commit:
+  parallel: true
+  commands:
+    unused:
+      run: pnpm knip
