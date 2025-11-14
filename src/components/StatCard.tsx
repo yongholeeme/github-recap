@@ -2,13 +2,14 @@ import { CountUpAnimation } from '@/components/CountUpAnimation';
 
 interface StatCardProps {
 	title: string;
-	description: string;
-	value: number | undefined;
+	description?: string;
+	value?: number | string;
 	isFetching: boolean;
-	error: Error | null;
+	error?: Error | null;
 	isClickable?: boolean;
 	onClick?: () => void;
-	suffix?: string; // e.g., "%", "일", "개" etc.
+	suffix?: string;
+	link?: string;
 }
 
 export default function StatCard({
@@ -20,12 +21,14 @@ export default function StatCard({
 	isClickable,
 	onClick,
 	suffix,
+	link,
 }: StatCardProps) {
-
-	return (
+	const isNumberValue = typeof value === 'number';
+	
+	const content = (
 		<div
 			className={`group relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300 ${
-				isClickable ? "cursor-pointer" : ""
+				isClickable || link ? "cursor-pointer" : ""
 			} ${isFetching ? "pointer-events-none opacity-60" : ""}`}
 			onClick={
 				isClickable && value !== undefined && !isFetching ? onClick : undefined
@@ -40,16 +43,18 @@ export default function StatCard({
 					<h3 className="text-sm font-bold text-white mb-1">
 						{title}
 					</h3>
-					<p className="text-xs text-white/60">
-						{description}
-					</p>
+					{description && (
+						<p className="text-xs text-white/60 line-clamp-2">
+							{description}
+						</p>
+					)}
 				</div>
 
 				<div className="mt-auto">
 					{error && value === undefined && (
 						<p className="text-sm text-red-400 font-semibold">오류 발생</p>
 					)}
-					{error && value !== undefined && (
+					{error && value !== undefined && isNumberValue && (
 						<>
 							<div className="flex items-center gap-1 mb-2">
 								<svg
@@ -79,12 +84,17 @@ export default function StatCard({
 						</>
 					)}
 					{!error && value !== undefined && (
-						<div className="flex items-baseline gap-1 flex-wrap">
+						<div className="flex items-baseline gap-2 flex-wrap">
 							<span className="text-3xl sm:text-4xl font-black text-white tabular-nums">
-								<CountUpAnimation value={value} />
+								{isNumberValue ? <CountUpAnimation value={value} /> : value}
 							</span>
 							{suffix && (
 								<span className="text-2xl sm:text-3xl font-bold text-white/80">{suffix}</span>
+							)}
+							{link && (
+								<svg className="w-4 h-4 text-white/50 group-hover:text-white/80 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+								</svg>
 							)}
 							{isClickable && (
 								<span className="text-xs text-white/50 ml-auto">클릭하여 보기</span>
@@ -95,4 +105,14 @@ export default function StatCard({
 			</div>
 		</div>
 	);
+
+	if (link) {
+		return (
+			<a href={link} target="_blank" rel="noopener noreferrer" className="block">
+				{content}
+			</a>
+		);
+	}
+
+	return content;
 }

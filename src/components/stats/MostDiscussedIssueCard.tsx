@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getMostDiscussedIssue } from '@/lib/github/issues';
 import { queryKeys } from '@/lib/queryKeys';
-import DetailCard from '@/components/DetailCard';
+import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
 
 export default function MostDiscussedIssueCard() {
@@ -13,20 +13,20 @@ export default function MostDiscussedIssueCard() {
 
 	if (!data) {
 		return (
-			<DetailCard
+			<StatCard
 				title="가장 치열했던 이슈"
 				value="-"
-				subtitle="코멘트 수 기준"
+				description="코멘트 수 기준"
 				isFetching={isFetching}
 			/>
 		);
 	}
 
 	return (
-		<DetailCard
+		<StatCard
 			title="가장 치열했던 이슈"
 			value={`${data.comments}개`}
-			subtitle={data.title}
+			description={data.title}
 			link={data.url}
 			isFetching={isFetching}
 		/>

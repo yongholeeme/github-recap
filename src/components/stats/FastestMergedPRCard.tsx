@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getFastestMergedPR } from '@/lib/github/pullRequests';
 import { queryKeys } from '@/lib/queryKeys';
-import DetailCard from '@/components/DetailCard';
+import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
 
 export default function FastestMergedPRCard() {
@@ -13,10 +13,10 @@ export default function FastestMergedPRCard() {
 
 	if (!data || !data.mergedAt) {
 		return (
-			<DetailCard
+			<StatCard
 				title="가장 빨리 머지된 PR"
 				value="-"
-				subtitle="머지 속도"
+				description="머지 속도"
 				isFetching={isFetching}
 			/>
 		);
@@ -37,10 +37,10 @@ export default function FastestMergedPRCard() {
 	};
 
 	return (
-		<DetailCard
+		<StatCard
 			title="가장 빨리 머지된 PR"
 			value={formatTime(hours)}
-			subtitle={data.title}
+			description={data.title}
 			link={data.url}
 			isFetching={isFetching}
 		/>

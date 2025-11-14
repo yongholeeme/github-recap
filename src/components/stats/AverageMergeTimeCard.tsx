@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAverageMergeTime } from '@/lib/github/pullRequests';
 import { queryKeys } from '@/lib/queryKeys';
-import DetailCard from '@/components/DetailCard';
+import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
 
 export default function AverageMergeTimeCard() {
@@ -13,10 +13,10 @@ export default function AverageMergeTimeCard() {
 
 	if (data === null || data === undefined) {
 		return (
-			<DetailCard
+			<StatCard
 				title="PR 평균 머지 속도"
 				value="-"
-				subtitle="생성부터 머지까지"
+				description="생성부터 머지까지"
 				isFetching={isFetching}
 			/>
 		);
@@ -35,10 +35,10 @@ export default function AverageMergeTimeCard() {
 	};
 
 	return (
-		<DetailCard
+		<StatCard
 			title="PR 평균 머지 속도"
 			value={formatTime(data)}
-			subtitle="생성부터 머지까지"
+			description="생성부터 머지까지"
 			isFetching={isFetching}
 		/>
 	);
