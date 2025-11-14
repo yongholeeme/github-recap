@@ -159,7 +159,7 @@ export default function CommitsByHourSection() {
 					{ label: '최다 커밋', value: hourData?.maxCount || '-' },
 					{ label: '평균 커밋', value: hourData?.avgPerHour || '-' },
 				]}
-				isLoading={isFetching}
+				isFetching={isFetching}
 			/>
 		</div>
 	);

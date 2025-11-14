@@ -74,7 +74,7 @@ export default function CommitsByDaySection() {
 				{ label: '평일 커밋', value: weekdayCommits || '-' },
 				{ label: '주말 커밋', value: weekendCommits || '-' },
 			]}
-			isLoading={isFetching}
+			isFetching={isFetching}
 		/>
 	);
 }

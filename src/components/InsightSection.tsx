@@ -13,7 +13,7 @@ interface InsightSectionProps {
 		label: string;
 		value: string | number;
 	}>;
-	isLoading?: boolean;
+	isFetching?: boolean;
 }
 
 export default function InsightSection({
@@ -22,7 +22,7 @@ export default function InsightSection({
 	chart,
 	topItems,
 	stats,
-	isLoading = false
+	isFetching = false
 }: InsightSectionProps) {
 	const medals = ['🥇', '🥈', '🥉'];
 	const colors = [
@@ -35,11 +35,11 @@ export default function InsightSection({
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 			
-			{isLoading && (
+			{isFetching && (
 				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-[shimmer_2s_infinite] z-20" />
 			)}
 
-			<div className={`relative z-10 w-full max-w-7xl mx-auto ${isLoading ? 'opacity-60 pointer-events-none' : ''}`}>
+			<div className={`relative z-10 w-full max-w-7xl mx-auto ${isFetching ? 'opacity-60 pointer-events-none' : ''}`}>
 				{/* Header */}
 				<div className="text-center mb-8 sm:mb-12">
 					<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.9] tracking-[-0.02em] mb-4">

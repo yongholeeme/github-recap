@@ -153,8 +153,6 @@ export default function YearRecap({ year }: YearRecapProps) {
 					<HeroSection user={user} onLogout={handleLogout} />
 				</div>
 
-				{user && (
-					<>
 						{/* 커밋 섹션들 - 블루 계열 배경 */}
 						<div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
 							<CommitActivitySection />
@@ -189,8 +187,6 @@ export default function YearRecap({ year }: YearRecapProps) {
 						<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950">
 							<EndingSection />
 						</div>
-					</>
-				)}
 			</div>
 		</YearProvider>
 	);

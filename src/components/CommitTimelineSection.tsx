@@ -74,7 +74,7 @@ export default function CommitTimelineSection() {
 				{ label: '월평균 커밋', value: timelineData?.avgPerMonth || '-' },
 				{ label: '최고 기록', value: maxMonth ? `${maxMonth[1]}개` : '-' },
 			]}
-			isLoading={isFetching}
+			isFetching={isFetching}
 		/>
 	);
 }
