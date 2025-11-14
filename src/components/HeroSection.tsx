@@ -72,11 +72,17 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 				)}
 
 				{/* Scroll CTA - Blue accent */}
-				<div className="inline-flex flex-col items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors cursor-default">
-					<span className="text-sm font-semibold">스크롤하여 확인하기</span>
-					<svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-					</svg>
+				<div className="inline-flex flex-col items-center gap-3 text-blue-400 hover:text-blue-300 transition-colors cursor-default">
+					<span className="text-sm font-semibold">스크롤 또는 방향키로 확인하기</span>
+					<div className="flex items-center gap-3 animate-bounce">
+						<svg className="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+						</svg>
+						<div className="flex gap-1.5">
+							<kbd className="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs font-bold text-blue-300">↑</kbd>
+							<kbd className="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs font-bold text-blue-300 ">↓</kbd>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

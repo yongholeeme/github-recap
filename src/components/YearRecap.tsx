@@ -15,7 +15,6 @@ import RefreshButton from '@/components/RefreshButton';
 import ClearDataButton from '@/components/ClearDataButton';
 import LoginModal from '@/components/LoginModal';
 import LoginToast from '@/components/LoginToast';
-import KeyboardHint from '@/components/KeyboardHint';
 import { YearProvider } from '@/contexts/YearContext';
 import { config } from "@/../config";
 
@@ -131,7 +130,6 @@ export default function YearRecap({ year }: YearRecapProps) {
 				<>
 					<RefreshButton />
 					<ClearDataButton />
-					<KeyboardHint />
 				</>
 			)}
 			
