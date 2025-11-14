@@ -10,6 +10,7 @@ export default function TopMentionedByCard() {
 		queryFn: () => getTopMentionedBy(year, 10),
 	});
 
+	console.log('TopMentionedByCard', {isFetching})
 	return (
 		<div
 			className="group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] hover:border-white/40 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm"
@@ -36,30 +37,26 @@ export default function TopMentionedByCard() {
 					<p className="text-sm text-red-400 font-semibold">오류 발생</p>
 				)}
 
-
-
-				{data && data.length > 0 && (
-					<div className="space-y-2">
-						{(data as MentionDetail[]).slice(0, 10).map((item, index) => (
-							<div
-								key={item.username}
-								className="flex items-center justify-between p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
-							>
-								<div className="flex items-center gap-2">
-									<span className="text-lg font-bold text-white/80 w-6">
-										{index + 1}.
-									</span>
-									<span className="text-sm font-semibold text-white">
-										@{item.username}
-									</span>
-								</div>
-								<span className="text-sm font-bold text-blue-400">
-									{item.count}회
+				<div className="space-y-2">
+					{(data && data.length > 0 ? data as MentionDetail[] : Array.from({ length: 10 }, (_, i) => ({ username: '', count: 0, index: i }))).slice(0, 10).map((item, index) => (
+						<div
+							key={item.username || `placeholder-${index}`}
+							className="flex items-center justify-between p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+						>
+							<div className="flex items-center gap-2">
+								<span className="text-lg font-bold text-white/80 w-6">
+									{index + 1}.
+								</span>
+								<span className="text-sm font-semibold text-white">
+									{item.username ? `@${item.username}` : '-'}
 								</span>
 							</div>
-						))}
-					</div>
-				)}
+							<span className="text-sm font-bold text-blue-400">
+								{item.count > 0 ? `${item.count}회` : '-'}
+							</span>
+						</div>
+					))}
+				</div>
 			</div>
 		</div>
 	);

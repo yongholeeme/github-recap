@@ -1,4 +1,5 @@
 import { CountUpAnimation } from '@/components/CountUpAnimation';
+import { useState, useEffect } from 'react';
 
 interface BigNumberSectionProps {
 	value: number | undefined;
@@ -23,6 +24,17 @@ export default function BigNumberSection({
 		text: 'from-white via-blue-50 to-white',
 	},
 }: BigNumberSectionProps) {
+	const [randomNumber, setRandomNumber] = useState(0);
+
+	useEffect(() => {
+		if (!isFetching) return;
+
+		const interval = setInterval(() => {
+			setRandomNumber(Math.floor(Math.random() * 1000));
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, [isFetching]);
 	return (
 		<div className="h-screen snap-start flex items-center justify-center relative overflow-hidden w-full">
 			{/* 애니메이션 그라디언트 오버레이 */}
@@ -52,9 +64,28 @@ export default function BigNumberSection({
 				{/* 메인 숫자 */}
 				<div className="relative mb-12 sm:mb-16">
 					{isFetching ? (
-						<div className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black text-white/10 leading-none animate-pulse">
-							···
-						</div>
+						<>
+							{/* 외곽 글로우 레이어 */}
+							<div className="absolute inset-0 flex items-center justify-center blur-[100px] sm:blur-[120px] opacity-15 animate-pulse">
+								<div className={`text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black bg-gradient-to-r ${colors.glow} bg-clip-text text-transparent`}>
+									{randomNumber}
+								</div>
+							</div>
+							
+							{/* 중간 글로우 레이어 */}
+							<div className="absolute inset-0 flex items-center justify-center blur-[60px] sm:blur-[80px] opacity-20 animate-pulse">
+								<div className={`text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black bg-gradient-to-r ${colors.glow} bg-clip-text text-transparent`}>
+									{randomNumber}
+								</div>
+							</div>
+							
+							{/* 메인 텍스트 레이어 */}
+							<div className="relative text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black leading-none tracking-tighter">
+								<div className={`bg-gradient-to-r ${colors.text} bg-clip-text text-transparent opacity-30 animate-pulse`}>
+									{randomNumber}
+								</div>
+							</div>
+						</>
 					) : (
 						<>
 							{/* 외곽 글로우 레이어 - 가장 큰 블러 */}

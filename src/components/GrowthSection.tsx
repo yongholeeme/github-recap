@@ -110,16 +110,13 @@ export default function GrowthSection() {
 				</div>
 
 				{/* Comparison Cards */}
-				{isFetching || !comparisonData ? (
-					<div className="flex items-center justify-center py-20">
-						<div className="flex items-center gap-3">
-							<div className="w-8 h-8 border-4 border-white/60 border-t-transparent rounded-full animate-spin" />
-							<p className="text-xl text-white/60">데이터 분석 중...</p>
-						</div>
-					</div>
-				) : (
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-						{comparisonData.map((item, index) => (
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+					{(comparisonData || [
+						{ title: "커밋", icon: "💻", current: 0, last: 0, change: 0, changeRate: 0 },
+						{ title: "Pull Request", icon: "🔀", current: 0, last: 0, change: 0, changeRate: 0 },
+						{ title: "이슈", icon: "🎯", current: 0, last: 0, change: 0, changeRate: 0 },
+						{ title: "리뷰", icon: "👀", current: 0, last: 0, change: 0, changeRate: 0 },
+					]).map((item, index) => (
 							<div
 								key={item.title}
 								className={`group relative bg-gradient-to-br ${getChangeBg(
@@ -192,8 +189,7 @@ export default function GrowthSection() {
 								</div>
 							</div>
 						))}
-					</div>
-				)}
+				</div>
 			</div>
 		</div>
 	);
