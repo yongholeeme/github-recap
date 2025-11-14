@@ -107,25 +107,23 @@ export default function CommitsByHourSection() {
 		}
 	}, [hourData?.recommendation, inView]);
 
-	if (isFetching || !hourData) {
-		return (
-			<div className="min-h-screen snap-start flex items-center justify-center">
-				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>
-			</div>
-		);
-	}
-
-	const peakHourNums = hourData.peakHours.map(([h]) => Number.parseInt(h));
-	const chartData = Object.entries(hourData.hourCounts).map(([hour, count]) => ({
-		label: Number.parseInt(hour),
-		value: count,
-		isPeak: peakHourNums.includes(Number.parseInt(hour))
-	}));
+	const peakHourNums = hourData?.peakHours.map(([h]) => Number.parseInt(h)) || [];
+	const chartData = hourData 
+		? Object.entries(hourData.hourCounts).map(([hour, count]) => ({
+			label: Number.parseInt(hour),
+			value: count,
+			isPeak: peakHourNums.includes(Number.parseInt(hour))
+		}))
+		: Array.from({ length: 24 }, (_, i) => ({
+			label: i,
+			value: 0,
+			isPeak: false
+		}));
 
 	return (
 		<div ref={ref} className="relative">
 			{/* Toast for recommendation */}
-			{hourData.recommendation && (
+			{hourData?.recommendation && (
 				<Toast isVisible={showToast} onClose={() => setShowToast(false)}>
 					<div className="text-3xl flex-shrink-0">{hourData.recommendation.emoji}</div>
 					<div className="flex-1 min-w-0">
@@ -151,16 +149,17 @@ export default function CommitsByHourSection() {
 			<InsightSection
 				title="24시간의 흔적"
 				subtitle="하루 중 언제 가장 몰입하시나요?"
-				chart={<BarChart data={chartData} maxValue={hourData.maxCount} />}
-				topItems={hourData.peakHours.map(([hour, count]) => ({
+				chart={<BarChart data={chartData} maxValue={hourData?.maxCount || 0} />}
+				topItems={hourData?.peakHours.map(([hour, count]) => ({
 					label: `${hour}시`,
 					value: `${count}개`,
 					rank: 0
-				}))}
+				})) || []}
 				stats={[
-					{ label: '최다 커밋', value: hourData.maxCount },
-					{ label: '평균 커밋', value: hourData.avgPerHour },
+					{ label: '최다 커밋', value: hourData?.maxCount || '-' },
+					{ label: '평균 커밋', value: hourData?.avgPerHour || '-' },
 				]}
+				isLoading={isFetching}
 			/>
 		</div>
 	);

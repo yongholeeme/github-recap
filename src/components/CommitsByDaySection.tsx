@@ -44,38 +44,37 @@ export default function CommitsByDaySection() {
 		return { dayCounts, topDays, totalCommits };
 	}, [commits]);
 
-	if (isFetching || !dayData) {
-		return (
-			<div className="min-h-screen snap-start flex items-center justify-center">
-				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>
-			</div>
-		);
-	}
+	const weekdayCommits = dayData ? [1, 2, 3, 4, 5].reduce((sum, day) => sum + dayData.dayCounts[day], 0) : 0;
+	const weekendCommits = dayData ? dayData.dayCounts[0] + dayData.dayCounts[6] : 0;
 
-	const weekdayCommits = [1, 2, 3, 4, 5].reduce((sum, day) => sum + dayData.dayCounts[day], 0);
-	const weekendCommits = dayData.dayCounts[0] + dayData.dayCounts[6];
-
-	const maxCount = Math.max(...Object.values(dayData.dayCounts));
-	const chartData = Object.entries(dayData.dayCounts).map(([day, count]) => ({
-		label: getDayName(Number.parseInt(day)),
-		value: count,
-		isPeak: count === maxCount
-	}));
+	const maxCount = dayData ? Math.max(...Object.values(dayData.dayCounts)) : 0;
+	const chartData = dayData 
+		? Object.entries(dayData.dayCounts).map(([day, count]) => ({
+			label: getDayName(Number.parseInt(day)),
+			value: count,
+			isPeak: count === maxCount
+		}))
+		: Array.from({ length: 7 }, (_, i) => ({
+			label: getDayName(i),
+			value: 0,
+			isPeak: false
+		}));
 
 	return (
 		<InsightSection
 			title="7일의 패턴"
 			subtitle="일주일 동안 어떤 리듬으로 작업하셨나요?"
 			chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
-			topItems={dayData.topDays.map(([day, count]) => ({
+			topItems={dayData?.topDays.map(([day, count]) => ({
 				label: `${getDayName(Number.parseInt(day))}요일`,
 				value: `${count}개`,
 				rank: 0
-			}))}
+			})) || []}
 			stats={[
-				{ label: '평일 커밋', value: weekdayCommits },
-				{ label: '주말 커밋', value: weekendCommits },
+				{ label: '평일 커밋', value: weekdayCommits || '-' },
+				{ label: '주말 커밋', value: weekendCommits || '-' },
 			]}
+			isLoading={isFetching}
 		/>
 	);
 }

@@ -45,38 +45,36 @@ export default function CommitTimelineSection() {
 		return { monthCounts, topMonths, totalCommits, activeMonths, avgPerMonth };
 	}, [commits]);
 
-	if (isFetching || !timelineData) {
-		return (
-			<div className="min-h-screen snap-start flex items-center justify-center">
-				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>
-			</div>
-		);
-	}
-
-	const maxMonth = timelineData.topMonths[0];
-
-	const maxCount = Math.max(...Object.values(timelineData.monthCounts));
-	const chartData = Object.entries(timelineData.monthCounts).map(([month, count]) => ({
-		label: getMonthName(Number.parseInt(month)),
-		value: count,
-		isPeak: count === maxCount
-	}));
+	const maxMonth = timelineData?.topMonths[0];
+	const maxCount = timelineData ? Math.max(...Object.values(timelineData.monthCounts)) : 0;
+	const chartData = timelineData 
+		? Object.entries(timelineData.monthCounts).map(([month, count]) => ({
+			label: getMonthName(Number.parseInt(month)),
+			value: count,
+			isPeak: count === maxCount
+		}))
+		: Array.from({ length: 12 }, (_, i) => ({
+			label: getMonthName(i),
+			value: 0,
+			isPeak: false
+		}));
 
 	return (
 		<InsightSection
 			title="12개월의 여정"
 			subtitle="한 해 동안 당신의 개발 스토리"
 			chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
-			topItems={timelineData.topMonths.map(([month, count]) => ({
+			topItems={timelineData?.topMonths.map(([month, count]) => ({
 				label: getMonthName(Number.parseInt(month)),
 				value: `${count}개`,
 				rank: 0
-			}))}
+			})) || []}
 			stats={[
-				{ label: '활동 개월', value: `${timelineData.activeMonths}/12` },
-				{ label: '월평균 커밋', value: timelineData.avgPerMonth },
-				{ label: '최고 기록', value: `${maxMonth[1]}개` },
+				{ label: '활동 개월', value: timelineData ? `${timelineData.activeMonths}/12` : '-' },
+				{ label: '월평균 커밋', value: timelineData?.avgPerMonth || '-' },
+				{ label: '최고 기록', value: maxMonth ? `${maxMonth[1]}개` : '-' },
 			]}
+			isLoading={isFetching}
 		/>
 	);
 }
