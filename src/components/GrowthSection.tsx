@@ -94,9 +94,6 @@ export default function GrowthSection() {
 
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
-			{/* Section Background */}
-			<div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-gray-900 to-zinc-950" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-slate-500/5 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
 			<div className="relative z-10 w-full max-w-7xl mx-auto">

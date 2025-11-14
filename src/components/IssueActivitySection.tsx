@@ -8,8 +8,6 @@ import ParticipatedDiscussionsCard from '@/components/stats/ParticipatedDiscussi
 export default function IssueActivitySection() {
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
-			<div className="absolute inset-0 bg-gradient-to-br from-green-950 via-emerald-950 to-teal-950" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-green-500/10 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
 			<div className="relative z-10 w-full max-w-6xl mx-auto">

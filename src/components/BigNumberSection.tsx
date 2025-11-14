@@ -25,9 +25,6 @@ export default function BigNumberSection({
 }: BigNumberSectionProps) {
 	return (
 		<div className="h-screen snap-start flex items-center justify-center relative overflow-hidden w-full">
-			{/* 배경 레이어 */}
-			<div className={`absolute inset-0 bg-gradient-to-br ${colors.background}`} />
-			
 			{/* 애니메이션 그라디언트 오버레이 */}
 			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-blue-500/20 via-purple-500/10 to-transparent animate-pulse" />
 			

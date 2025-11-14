@@ -12,7 +12,6 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 	const userMetadata = user?.user_metadata;
 	const avatarUrl = userMetadata?.avatar_url || "";
 	const userName = userMetadata?.user_name || "";
-	const currentYear = year;
 	const [showAvatar, setShowAvatar] = useState(false);
 
 	const handleLogout = () => {
@@ -22,7 +21,7 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 	};
 
 	return (
-		<div className="h-screen snap-start flex items-center justify-center p-4 sm:p-8 relative overflow-hidden w-full">
+		<div className="h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-hidden w-full">
 			{/* Dynamic gradient background */}
 			<div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
 				{/* Animated gradient orbs */}
@@ -47,7 +46,7 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 				{/* Main title - Gradient & Bold */}
 				<h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-[-0.02em] mb-16">
 					<span className="block text-gray-200">
-						{currentYear}
+						{year}
 					</span>
 					<span className="block text-gray-200 mt-2">
 						GitHub Wrapped

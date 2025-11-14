@@ -2,20 +2,16 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function EndingSection() {
 	const { year } = useYear();
-	const currentYear = year;
 
 	return (
 		<div className="h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
-			<div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,_var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,_var(--tw-gradient-stops))] from-pink-500/20 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
 			<div className="relative z-10 text-center w-full max-w-7xl mx-auto space-y-8 sm:space-y-10 md:space-y-12 px-4">
 				<div className="space-y-6 sm:space-y-8">
 					<div className="space-y-4 sm:space-y-6">
 						<h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 tracking-tight leading-none drop-shadow-2xl">
-							{currentYear}년
+							{year}년
 						</h3>
 						<h4 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-xl">
 							수고하셨습니다
