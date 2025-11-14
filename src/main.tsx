@@ -8,12 +8,13 @@ import './index.css'
 
 // Import the generated route tree
 import { routeTree } from '@/routeTree.gen'
+import { REACT_QUERY_CACHE_STORAGE_KEY } from '@/constants/storage'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
 
 // Create a query client
-export const queryClient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 60 * 24, // 24 hours
@@ -26,7 +27,7 @@ export const queryClient = new QueryClient({
 // Create persister
 const persister = createAsyncStoragePersister({
   storage: window.localStorage,
-  key: 'github-recap-cache',
+  key: REACT_QUERY_CACHE_STORAGE_KEY,
 })
 
 // Register the router instance for type safety

@@ -1,7 +1,7 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
 import { getDateRange } from "@/lib/github/utils";
 
-export interface SimplifiedCommit {
+interface SimplifiedCommit {
   message: string;
   committedDate: string;
   url: string;

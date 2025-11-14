@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useYear } from '@/contexts/YearContext';
+import { PAT_STORAGE_KEY } from "@/constants/storage";
 
 interface HeroSectionProps {
 	user: User | null;
@@ -16,7 +17,7 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 
 	const handleLogout = () => {
 		// Remove PAT from sessionStorage
-		sessionStorage.removeItem('github_pat_token');
+		sessionStorage.removeItem(PAT_STORAGE_KEY);
 		onLogout();
 	};
 

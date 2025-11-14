@@ -1,6 +1,5 @@
 import type { User } from "@supabase/supabase-js";
 import { useEffect, useState, useRef } from "react";
-import { queryClient } from '@/main';
 import HeroSection from '@/components/HeroSection';
 import CommitActivitySection from '@/components/CommitActivitySection';
 import CommitsByHourSection from '@/components/CommitsByHourSection';
@@ -19,6 +18,8 @@ import LoginModal from '@/components/LoginModal';
 import LoginToast from '@/components/LoginToast';
 import { YearProvider } from '@/contexts/YearContext';
 import { config } from "@/../config";
+import { useQueryClient } from "@tanstack/react-query";
+import { PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY } from "@/constants/storage";
 
 interface YearRecapProps {
 	year?: number;
@@ -29,6 +30,7 @@ export default function YearRecap({ year }: YearRecapProps) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
+	const queryClient = useQueryClient()
 
 	// Default to current year if not specified
 	const targetYear = year || new Date().getFullYear();
@@ -67,7 +69,7 @@ export default function YearRecap({ year }: YearRecapProps) {
 
 	useEffect(() => {
 		// Check for PAT in sessionStorage
-		const pat = sessionStorage.getItem('github_pat_token');
+		const pat = sessionStorage.getItem(PAT_STORAGE_KEY);
 		if (pat) {
 			// Fetch user info with PAT
 			const fetchPATUser = async () => {
@@ -93,9 +95,9 @@ export default function YearRecap({ year }: YearRecapProps) {
 				} catch (error) {
 					console.error('Failed to fetch PAT user:', error);
 					// Invalid PAT, remove it and clear cache
-					sessionStorage.removeItem('github_pat_token');
+					sessionStorage.removeItem(PAT_STORAGE_KEY);
 					queryClient.clear();
-					localStorage.removeItem('github-recap-cache');
+					localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
 					setUser(null);
 				} finally {
 					setIsLoading(false);
@@ -106,12 +108,12 @@ export default function YearRecap({ year }: YearRecapProps) {
 		}
 
 		setIsLoading(false);
-	}, []);
+	}, [queryClient]);
 
 	const handleLogin = (newUser: User) => {
 		// Clear previous user's cache
 		queryClient.clear();
-		localStorage.removeItem('github-recap-cache');
+		localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
 		setUser(newUser);
 	};
 
@@ -119,9 +121,9 @@ export default function YearRecap({ year }: YearRecapProps) {
 		// Clear all React Query cache
 		queryClient.clear();
 		// Clear localStorage cache
-		localStorage.removeItem('github-recap-cache');
+		localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
 		// Clear session token
-		sessionStorage.removeItem('github_pat_token');
+		sessionStorage.removeItem(PAT_STORAGE_KEY);
 		// Reset user state
 		setUser(null);
 	};

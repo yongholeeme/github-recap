@@ -115,7 +115,7 @@ export async function getClosedNotMergedPullRequestsCount(
   return data.total_count || 0;
 }
 
-export interface PRDetail {
+interface PRDetail {
   title: string;
   url: string;
   number: number;

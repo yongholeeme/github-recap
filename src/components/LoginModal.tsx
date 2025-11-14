@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { config } from '@/../config';
 import type { User } from '@supabase/supabase-js';
+import { PAT_STORAGE_KEY } from '@/constants/storage';
 
 interface LoginModalProps {
 	isOpen: boolean;
@@ -32,7 +33,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 			const { data: githubUser } = await octokit.rest.users.getAuthenticated();
 			
 			// Valid token, save it (sessionStorage for better security)
-			sessionStorage.setItem('github_pat_token', patToken);
+			sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
 			
 			// Use avatar_url from API response (handles redirects properly)
 			const user = {

@@ -1,3 +1,4 @@
+import { PAT_STORAGE_KEY } from '@/constants/storage';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function ClearDataButton() {
@@ -6,7 +7,7 @@ export default function ClearDataButton() {
 	const handleClearData = () => {
 		if (confirm('모든 캐시 데이터를 삭제하시겠습니까? (개발용)')) {
 			// PAT 토큰 백업
-			const patToken = sessionStorage.getItem('github_pat_token');
+			const patToken = sessionStorage.getItem(PAT_STORAGE_KEY);
 			
 			// 캐시 및 스토리지 삭제
 			queryClient.clear();
@@ -15,7 +16,7 @@ export default function ClearDataButton() {
 			
 			// PAT 토큰 복원
 			if (patToken) {
-				sessionStorage.setItem('github_pat_token', patToken);
+				sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
 			}
 			
 			window.location.reload();

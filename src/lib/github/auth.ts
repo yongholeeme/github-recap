@@ -1,28 +1,9 @@
 import { Octokit } from "octokit";
 import { config } from "@/../config";
-
-// PAT token storage key
-const PAT_STORAGE_KEY = "github_pat_token";
-
-export function savePAT(token: string): void {
-  // Use sessionStorage for better security - token is cleared when tab closes
-  sessionStorage.setItem(PAT_STORAGE_KEY, token);
-}
-
-export function getPAT(): string | null {
-  return sessionStorage.getItem(PAT_STORAGE_KEY);
-}
-
-export function removePAT(): void {
-  sessionStorage.removeItem(PAT_STORAGE_KEY);
-}
-
-export function hasPAT(): boolean {
-  return !!getPAT();
-}
+import { PAT_STORAGE_KEY } from "@/constants/storage";
 
 export async function getOctokit(): Promise<Octokit> {
-  const pat = getPAT();
+  const pat = sessionStorage.getItem(PAT_STORAGE_KEY);
 
   if (!pat) {
     throw new Error(
