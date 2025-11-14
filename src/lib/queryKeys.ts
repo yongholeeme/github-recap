@@ -27,6 +27,14 @@ export const queryKeys = {
       ["github-pr-review-comments", year] as const,
     closedNotMerged: (year: number = new Date().getFullYear()) =>
       ["github-closed-not-merged-prs", year] as const,
+    mostDiscussed: (year: number = new Date().getFullYear()) =>
+      ["github-most-discussed-pr", year] as const,
+    averageMergeTime: (year: number = new Date().getFullYear()) =>
+      ["github-average-merge-time", year] as const,
+    fastest: (year: number = new Date().getFullYear()) =>
+      ["github-fastest-merged-pr", year] as const,
+    slowest: (year: number = new Date().getFullYear()) =>
+      ["github-slowest-merged-pr", year] as const,
   },
 
   // Issues 관련
@@ -39,6 +47,8 @@ export const queryKeys = {
       ["github-issue-comments", year] as const,
     participated: (year: number = new Date().getFullYear()) =>
       ["github-participated-issues", year] as const,
+    mostDiscussed: (year: number = new Date().getFullYear()) =>
+      ["github-most-discussed-issue", year] as const,
   },
 
   // Repositories 관련
@@ -75,6 +85,8 @@ export const queryKeys = {
       ["github-discussion-comments", year] as const,
     participated: (year: number = new Date().getFullYear()) =>
       ["github-participated-discussions", year] as const,
+    mostDiscussed: (year: number = new Date().getFullYear()) =>
+      ["github-most-discussed-discussion", year] as const,
   },
 
   // Stats 관련

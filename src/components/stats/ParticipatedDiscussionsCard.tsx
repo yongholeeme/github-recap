@@ -13,8 +13,8 @@ export default function ParticipatedDiscussionsCard() {
 
 	return (
 		<StatCard
-			title="참여한 토론"
-			description="작성 + 댓글"
+			title="참여한 디스커션"
+			description="작성 + 코멘트"
 			value={data as number | undefined}
 			isLoading={isLoading}
 			isFetching={isFetching}

@@ -15,8 +15,8 @@ export default function IssueCommentsCard() {
 
 	return (
 		<StatCard
-			title="이슈 댓글"
-			description="이슈 토론 참여"
+			title="이슈 코멘트"
+			description="코멘트"
 			value={data as number | undefined}
 			isLoading={isLoading}
 			isFetching={isFetching}

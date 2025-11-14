@@ -5,6 +5,10 @@ import PullRequestReviewsCard from '@/components/stats/PullRequestReviewsCard';
 import PullRequestReviewCommentsCard from '@/components/stats/PullRequestReviewCommentsCard';
 import ApprovedPullRequestsCard from '@/components/stats/ApprovedPullRequestsCard';
 import RequestedChangesPullRequestsCard from '@/components/stats/RequestedChangesPullRequestsCard';
+import MostDiscussedPRCard from '@/components/stats/MostDiscussedPRCard';
+import AverageMergeTimeCard from '@/components/stats/AverageMergeTimeCard';
+import FastestMergedPRCard from '@/components/stats/FastestMergedPRCard';
+import SlowestMergedPRCard from '@/components/stats/SlowestMergedPRCard';
 
 export default function PullRequestActivitySection() {
 	return (
@@ -32,11 +36,19 @@ export default function PullRequestActivitySection() {
 				</div>
 
 				{/* Review Details */}
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
 					<PullRequestReviewCommentsCard />
 					<ApprovedPullRequestsCard />
 					<RequestedChangesPullRequestsCard />
 					<ClosedNotMergedPullRequestsCard />
+				</div>
+
+				{/* PR Insights */}
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+					<MostDiscussedPRCard />
+					<AverageMergeTimeCard />
+					<FastestMergedPRCard />
+					<SlowestMergedPRCard />
 				</div>
 			</div>
 		</div>

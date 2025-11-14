@@ -1,9 +1,9 @@
-import CreatedIssuesCard from '@/components/stats/CreatedIssuesCard';
 import IssueCommentsCard from '@/components/stats/IssueCommentsCard';
 import ParticipatedIssuesCard from '@/components/stats/ParticipatedIssuesCard';
-import CreatedDiscussionsCard from '@/components/stats/CreatedDiscussionsCard';
 import DiscussionCommentsCard from '@/components/stats/DiscussionCommentsCard';
 import ParticipatedDiscussionsCard from '@/components/stats/ParticipatedDiscussionsCard';
+import MostDiscussedIssueCard from '@/components/stats/MostDiscussedIssueCard';
+import MostDiscussedDiscussionCard from '@/components/stats/MostDiscussedDiscussionCard';
 
 export default function IssueActivitySection() {
 	return (
@@ -23,14 +23,18 @@ export default function IssueActivitySection() {
 					</p>
 				</div>
 
-				{/* Stats Grid - Clean 3x2 layout */}
-				<div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+				{/* Stats Grid */}
+				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
 					<ParticipatedIssuesCard />
-					<CreatedIssuesCard />
 					<IssueCommentsCard />
 					<ParticipatedDiscussionsCard />
-					<CreatedDiscussionsCard />
 					<DiscussionCommentsCard />
+				</div>
+
+				{/* Issue Insights */}
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+					<MostDiscussedIssueCard />
+					<MostDiscussedDiscussionCard />
 				</div>
 			</div>
 		</div>

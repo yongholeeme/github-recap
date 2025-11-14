@@ -307,34 +307,6 @@ interface DiscussionCommentsResponse {
   };
 }
 
-export async function getCreatedDiscussionsCount(
-  year: number = new Date().getFullYear()
-): Promise<number> {
-  const octokit = await getOctokit();
-  const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
-
-  try {
-    const query = `
-      query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 1) {
-          discussionCount
-        }
-      }
-    `;
-
-    const searchQuery = `author:${username} created:${startDate}..${endDate}`;
-    const response = await octokit.graphql<DiscussionCountResponse>(query, {
-      searchQuery,
-    });
-
-    return response.search.discussionCount || 0;
-  } catch (error) {
-    console.error("Error fetching discussions count:", error);
-    return 0;
-  }
-}
-
 export async function getDiscussionCommentsCount(
   year: number = new Date().getFullYear()
 ): Promise<number> {
@@ -418,5 +390,114 @@ export async function getParticipatedDiscussionsCount(
   } catch (error) {
     console.error("Error fetching participated discussions count:", error);
     return 0;
+  }
+}
+
+export interface IssueDetail {
+  title: string;
+  url: string;
+  number: number;
+  repo: string;
+  comments: number;
+  createdAt: string;
+  closedAt?: string | null;
+}
+
+export async function getMostDiscussedIssue(
+  year: number = new Date().getFullYear()
+): Promise<IssueDetail | null> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  // Use involves: to get issues the user participated in (author, commenter, or mentioned)
+  const query = `involves:${username} type:issue created:${startDate}..${endDate} sort:comments-desc`;
+  const { data } = await octokit.rest.search.issuesAndPullRequests({
+    q: query,
+    per_page: 1,
+    sort: "comments",
+    order: "desc",
+  });
+
+  if (data.items.length === 0) return null;
+
+  const issue = data.items[0];
+  return {
+    title: issue.title,
+    url: issue.html_url,
+    number: issue.number,
+    repo: issue.repository_url.split("/").slice(-2).join("/"),
+    comments: issue.comments,
+    createdAt: issue.created_at,
+    closedAt: issue.closed_at,
+  };
+}
+
+interface DiscussionDetail {
+  title: string;
+  url: string;
+  comments: {
+    totalCount: number;
+  };
+  createdAt: string;
+  repository: {
+    nameWithOwner: string;
+  };
+}
+
+interface DiscussionSearchResponse {
+  search: {
+    nodes: Array<DiscussionDetail | null>;
+  };
+}
+
+export async function getMostDiscussedDiscussion(
+  year: number = new Date().getFullYear()
+): Promise<IssueDetail | null> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  try {
+    const query = `
+      query($searchQuery: String!) {
+        search(query: $searchQuery, type: DISCUSSION, first: 1) {
+          nodes {
+            ... on Discussion {
+              title
+              url
+              comments {
+                totalCount
+              }
+              createdAt
+              repository {
+                nameWithOwner
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    // Use involves: to get discussions the user participated in (author or commenter)
+    const searchQuery = `involves:${username} created:${startDate}..${endDate} sort:comments-desc`;
+    const response = await octokit.graphql<DiscussionSearchResponse>(query, {
+      searchQuery,
+    });
+
+    const discussion = response.search.nodes[0];
+    if (!discussion) return null;
+
+    return {
+      title: discussion.title,
+      url: discussion.url,
+      number: 0, // Discussions don't have numbers in the same way
+      repo: discussion.repository.nameWithOwner,
+      comments: discussion.comments.totalCount,
+      createdAt: discussion.createdAt,
+    };
+  } catch (error) {
+    console.error("Error fetching most discussed discussion:", error);
+    return null;
   }
 }

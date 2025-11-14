@@ -26,8 +26,8 @@ export default function ContributedIssuesSection() {
 		<BigNumberSection
 			value={contributedCount}
 			isLoading={isLoading}
-			title="참여한 이슈와 토론"
-			subtitle="이슈와 디스커션 활동의 합계"
+			title="참여한 이슈와 디스커션"
+			subtitle="당신의 목소리가 닿은 곳"
 		/>
 	);
 }

@@ -14,7 +14,7 @@ export default function ParticipatedIssuesCard() {
 	return (
 		<StatCard
 			title="참여한 이슈"
-			description="작성 + 댓글"
+			description="작성 + 코멘트"
 			value={data as number | undefined}
 			isLoading={isLoading}
 			isFetching={isFetching}

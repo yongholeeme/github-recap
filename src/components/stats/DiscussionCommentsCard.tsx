@@ -13,8 +13,8 @@ export default function DiscussionCommentsCard() {
 
 	return (
 		<StatCard
-			title="토론 댓글"
-			description="Discussion 댓글"
+			title="디스커션 코멘트"
+			description="코멘트"
 			value={data as number | undefined}
 			isLoading={isLoading}
 			isFetching={isFetching}
