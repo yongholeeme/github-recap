@@ -5,7 +5,6 @@ import { CountUpAnimation } from "@/components/CountUpAnimation";
 import LongestCommitCard from '@/components/stats/LongestCommitCard';
 import ShortestCommitCard from '@/components/stats/ShortestCommitCard';
 import AverageCommitMessageLengthCard from '@/components/stats/AverageCommitMessageLengthCard';
-import ActiveDaysCard from '@/components/stats/ActiveDaysCard';
 
 export default function CommitActivitySection() {
 	const { data: commitsCount, isLoading } = useQuery({
@@ -55,7 +54,6 @@ export default function CommitActivitySection() {
 
 				{/* Secondary Stats Grid */}
 				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-					<ActiveDaysCard />
 					<LongestCommitCard />
 					<ShortestCommitCard />
 					<AverageCommitMessageLengthCard />
