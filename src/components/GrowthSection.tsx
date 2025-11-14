@@ -19,13 +19,18 @@ export default function GrowthSection() {
 	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all());
 	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews());
 
-	// 성장률 계산
-	const calculateGrowth = (current: number, last: number): number => {
+	// 변화량 계산
+	const calculateChange = (current: number, last: number): number => {
+		return current - last;
+	};
+
+	// 변화율 계산
+	const calculateChangeRate = (current: number, last: number): number => {
 		if (last === 0) return current > 0 ? 100 : 0;
 		return Math.round(((current - last) / last) * 100);
 	};
 
-	const growthData =
+	const comparisonData =
 		!lastYearData ||
 		currentCommits === undefined ||
 		currentPRs === undefined ||
@@ -38,71 +43,75 @@ export default function GrowthSection() {
 						icon: "💻",
 						current: currentCommits,
 						last: lastYearData.commits,
-						growth: calculateGrowth(currentCommits, lastYearData.commits),
+						change: calculateChange(currentCommits, lastYearData.commits),
+						changeRate: calculateChangeRate(currentCommits, lastYearData.commits),
 					},
 					{
 						title: "Pull Request",
 						icon: "🔀",
 						current: currentPRs,
 						last: lastYearData.prs,
-						growth: calculateGrowth(currentPRs, lastYearData.prs),
+						change: calculateChange(currentPRs, lastYearData.prs),
+						changeRate: calculateChangeRate(currentPRs, lastYearData.prs),
 					},
 					{
 						title: "이슈",
 						icon: "🎯",
 						current: currentIssues,
 						last: lastYearData.issues,
-						growth: calculateGrowth(currentIssues, lastYearData.issues),
+						change: calculateChange(currentIssues, lastYearData.issues),
+						changeRate: calculateChangeRate(currentIssues, lastYearData.issues),
 					},
 					{
 						title: "리뷰",
 						icon: "👀",
 						current: currentReviews,
 						last: lastYearData.reviews,
-						growth: calculateGrowth(currentReviews, lastYearData.reviews),
+						change: calculateChange(currentReviews, lastYearData.reviews),
+						changeRate: calculateChangeRate(currentReviews, lastYearData.reviews),
 					},
 			  ];
 
-	const getGrowthColor = (growth: number) => {
-		if (growth > 0) return "from-green-400 to-emerald-500";
-		if (growth < 0) return "from-red-400 to-rose-500";
+	const getChangeColor = (change: number) => {
+		if (change > 0) return "from-blue-400 to-cyan-500";
+		if (change < 0) return "from-orange-400 to-amber-500";
 		return "from-gray-400 to-slate-500";
 	};
 
-	const getGrowthIcon = (growth: number) => {
-		if (growth > 0) return "↗";
-		if (growth < 0) return "↘";
-		return "→";
+	const getChangeIcon = (change: number) => {
+		if (change > 0) return "+";
+		if (change < 0) return "";
+		return "±";
 	};
 
-	const getGrowthBg = (growth: number) => {
-		if (growth > 0) return "from-green-500/20 to-emerald-600/20";
-		if (growth < 0) return "from-red-500/20 to-rose-600/20";
-		return "from-gray-500/20 to-slate-600/20";
+	const getChangeBg = (change: number) => {
+		if (change > 0) return "from-blue-500/10 to-cyan-600/10";
+		if (change < 0) return "from-orange-500/10 to-amber-600/10";
+		return "from-gray-500/10 to-slate-600/10";
 	};
 
 	return (
 		<div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
 			{/* Section Background */}
-			<div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950" />
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-purple-500/10 via-transparent to-transparent" />
+			<div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-gray-900 to-zinc-950" />
+			<div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-slate-500/5 via-transparent to-transparent" />
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
 			<div className="relative z-10 w-full max-w-7xl mx-auto">
 				{/* Section Header */}
 				<div className="text-center mb-16 sm:mb-20">
 					<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-200 leading-[0.9] tracking-[-0.02em] mb-6">
-						올해는
+						작년과
 						<br />
-						더 성장했습니다
+						비교해볼까요?
 					</h2>
 					<p className="text-lg sm:text-xl text-gray-400 font-medium">
-						작년 같은 기간과 비교한 당신의 성장
+						같은 기간, 숫자로 보는 변화
 					</p>
 				</div>
 
-				{/* Growth Cards */}
-				{isLoading || !growthData ? (
+				{/* Comparison Cards */}
+				{isLoading || !comparisonData ? (
 					<div className="flex items-center justify-center py-20">
 						<div className="flex items-center gap-3">
 							<div className="w-8 h-8 border-4 border-white/60 border-t-transparent rounded-full animate-spin" />
@@ -111,12 +120,12 @@ export default function GrowthSection() {
 					</div>
 				) : (
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-						{growthData.map((item, index) => (
+						{comparisonData.map((item, index) => (
 							<div
 								key={item.title}
-								className={`group relative bg-gradient-to-br ${getGrowthBg(
-									item.growth
-								)} border-2 border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] hover:border-white/40 transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm ${
+								className={`group relative bg-gradient-to-br ${getChangeBg(
+									item.change
+								)} border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:border-white/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden backdrop-blur-sm ${
 									isFetching ? "opacity-60" : ""
 								}`}
 								style={{
@@ -124,73 +133,61 @@ export default function GrowthSection() {
 								}}
 							>
 								{isFetching && (
-									<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite] z-10" />
+									<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[shimmer_2s_infinite] z-10" />
 								)}
-
-								{/* Background Decorations */}
-								<div
-									className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${getGrowthBg(
-										item.growth
-									)} rounded-full blur-3xl opacity-50 group-hover:opacity-70 transition-all duration-500`}
-								/>
-								<div
-									className={`absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr ${getGrowthBg(
-										item.growth
-									)} rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-all duration-500`}
-								/>
 
 								<div className="relative">
 									{/* Icon & Title */}
-									<div className="flex items-center gap-3 mb-6">
-										<span className="text-4xl sm:text-5xl">{item.icon}</span>
-										<h4 className="text-2xl sm:text-3xl font-black text-white">
+									<div className="flex items-center gap-3 mb-8">
+										<span className="text-3xl sm:text-4xl">{item.icon}</span>
+										<h4 className="text-xl sm:text-2xl font-bold text-white/90">
 											{item.title}
 										</h4>
 									</div>
 
-									{/* Growth Percentage - Large Display */}
-									<div className="mb-6">
-										<div className="flex items-baseline gap-2 mb-2">
-											<span
-												className={`text-6xl sm:text-7xl md:text-8xl font-black bg-gradient-to-r ${getGrowthColor(
-													item.growth
-												)} bg-clip-text text-transparent drop-shadow-lg`}
-											>
-												{getGrowthIcon(item.growth)}{" "}
-												<CountUpAnimation value={Math.abs(item.growth)} />
-											</span>
-											<span
-												className={`text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r ${getGrowthColor(
-													item.growth
-												)} bg-clip-text text-transparent`}
-											>
-												%
-											</span>
-										</div>
-										<p className="text-sm sm:text-base text-white/60 font-medium">
-											{item.growth > 0 && "성장했어요! 🎉"}
-											{item.growth < 0 && "다음엔 더 잘할 수 있어요 💪"}
-											{item.growth === 0 && "변동 없음"}
-										</p>
-									</div>
-
-									{/* Comparison Stats */}
-									<div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/20">
-										<div className="space-y-1">
-											<p className="text-xs sm:text-sm text-white/50 font-medium">
-												올해
+									{/* Main Comparison */}
+									<div className="space-y-6 mb-8">
+										{/* 올해 */}
+										<div className="space-y-2">
+											<p className="text-sm text-white/40 font-medium">
+												2025년
 											</p>
-											<p className="text-2xl sm:text-3xl font-black text-white">
+											<p className="text-5xl sm:text-6xl font-black text-white">
 												<CountUpAnimation value={item.current} duration={1200} />
 											</p>
 										</div>
-										<div className="space-y-1">
-											<p className="text-xs sm:text-sm text-white/50 font-medium">
-												작년
+
+										{/* 작년 */}
+										<div className="space-y-2">
+											<p className="text-sm text-white/40 font-medium">
+												2024년
 											</p>
-											<p className="text-2xl sm:text-3xl font-black text-white/70">
+											<p className="text-4xl sm:text-5xl font-bold text-white/50">
 												<CountUpAnimation value={item.last} duration={1200} />
 											</p>
+										</div>
+									</div>
+
+									{/* Change Indicator */}
+									<div className="pt-6 border-t border-white/10">
+										<div className="flex items-center justify-between">
+											<span className="text-sm text-white/50 font-medium">
+												변화량
+											</span>
+											<div className="flex items-baseline gap-1">
+												<span
+													className={`text-2xl sm:text-3xl font-black bg-gradient-to-r ${getChangeColor(
+														item.change
+													)} bg-clip-text text-transparent`}
+												>
+													{getChangeIcon(item.change)}
+													<CountUpAnimation value={Math.abs(item.change)} />
+												</span>
+												<span className="text-sm text-white/40 ml-2">
+													({getChangeIcon(item.changeRate)}
+													{Math.abs(item.changeRate)}%)
+												</span>
+											</div>
 										</div>
 									</div>
 								</div>
