@@ -32,13 +32,13 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 			</div>
 
 			{/* Logout button */}
-			<button
+			{user&& <button
 				type="button"
 				onClick={handleLogout}
 				className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 px-4 py-2 text-white/50 hover:text-white/80 text-sm transition-colors"
 			>
 				로그아웃
-			</button>
+			</button>}
 
 			{/* Main content - Apple Event Style */}
 			<div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
