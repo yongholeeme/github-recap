@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function SlowestMergedPRCard() {
 	const { year } = useYear();
-	const { data, isLoading } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: queryKeys.pullRequests.slowest(year),
 		queryFn: () => getSlowestMergedPR(year),
 	});
@@ -17,7 +17,7 @@ export default function SlowestMergedPRCard() {
 				title="머지까지 가장 오래 걸린 PR"
 				value="-"
 				subtitle="머지 속도"
-				isLoading={isLoading}
+				isFetching={isFetching}
 			/>
 		);
 	}
@@ -42,7 +42,7 @@ export default function SlowestMergedPRCard() {
 			value={formatTime(hours)}
 			subtitle={data.title}
 			link={data.url}
-			isLoading={isLoading}
+			isFetching={isFetching}
 		/>
 	);
 }

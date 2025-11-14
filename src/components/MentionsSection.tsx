@@ -7,7 +7,7 @@ import TopMentionedByCard from '@/components/stats/TopMentionedByCard';
 
 export default function MentionsSection() {
 	const { year } = useYear();
-	const { data: mentionsCount, isLoading } = useQuery({
+	const { data: mentionsCount, isFetching } = useQuery({
 		queryKey: queryKeys.mentions.received(year),
 		queryFn: () => getMentionsCount(year),
 	});
@@ -16,7 +16,7 @@ export default function MentionsSection() {
 		<>
 			<BigNumberSection
 				value={mentionsCount}
-				isLoading={isLoading}
+				isFetching={isFetching}
 				title={`${year}년 멘션 받은 횟수`}
 				subtitle="당신을 향한 관심"
 				colors={{

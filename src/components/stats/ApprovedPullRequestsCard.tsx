@@ -7,7 +7,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function ApprovedPullRequestsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.approved(year),
 		queryFn: () => getApprovedPullRequestsCount(year),
 		
@@ -18,7 +18,6 @@ export default function ApprovedPullRequestsCard() {
 			title="승인한 PR"
 			description="Approve"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

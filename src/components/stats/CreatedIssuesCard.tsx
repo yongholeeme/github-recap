@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function CreatedIssuesCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.issues.all(year),
 		queryFn: () => getIssuesCount(year),
 	});
@@ -16,7 +16,6 @@ export default function CreatedIssuesCard() {
 			title="생성한 이슈"
 			description="작성한 이슈"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

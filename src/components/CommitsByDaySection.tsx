@@ -33,7 +33,7 @@ function getTopDays(dayCounts: Record<number, number>) {
 
 export default function CommitsByDaySection() {
 	const { year } = useYear();
-	const { data: commits, isLoading } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommitsData(year);
 	
 	const dayData = useMemo(() => {
 		if (!commits) return null;
@@ -44,7 +44,7 @@ export default function CommitsByDaySection() {
 		return { dayCounts, topDays, totalCommits };
 	}, [commits]);
 
-	if (isLoading || !dayData) {
+	if (isFetching || !dayData) {
 		return (
 			<div className="min-h-screen snap-start flex items-center justify-center">
 				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>

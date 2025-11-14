@@ -21,7 +21,7 @@ function calculateLongestCommitMessageLength(commits: CommitData): number {
 
 export default function LongestCommitCard() {
 	const { year } = useYear();
-	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
+	const { data: commits, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateLongestCommitMessageLength(commits) : undefined;
 
@@ -30,7 +30,6 @@ export default function LongestCommitCard() {
 			title="가장 긴 커밋"
 			description="가장 긴 커밋 메시지 길이"
 			value={data}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

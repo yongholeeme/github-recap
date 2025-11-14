@@ -70,7 +70,7 @@ function getTimeRangeRecommendation(peakHours: Array<[string, number]>) {
 
 export default function CommitsByHourSection() {
 	const { year } = useYear();
-	const { data: commits, isLoading } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommitsData(year);
 	const [showToast, setShowToast] = useState(false);
 	const hasShownToast = useRef(false);
 	
@@ -107,7 +107,7 @@ export default function CommitsByHourSection() {
 		}
 	}, [hourData?.recommendation, inView]);
 
-	if (isLoading || !hourData) {
+	if (isFetching || !hourData) {
 		return (
 			<div className="min-h-screen snap-start flex items-center justify-center">
 				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>

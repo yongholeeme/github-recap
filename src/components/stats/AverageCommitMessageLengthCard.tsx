@@ -18,7 +18,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function AverageCommitMessageLengthCard() {
 	const { year } = useYear();
-	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
+	const { data: commits, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateAverageCommitMessageLength(commits) : undefined;
 
@@ -27,7 +27,6 @@ export default function AverageCommitMessageLengthCard() {
 			title="평균 커밋 메시지 길이"
 			description="커밋 메시지 평균 글자 수"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

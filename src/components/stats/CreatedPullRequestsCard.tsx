@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function CreatedPullRequestsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.all(year),
 		queryFn: () => getPullRequestsCount(year),
 	});
@@ -16,7 +16,6 @@ export default function CreatedPullRequestsCard() {
 			title="생성한 PR"
 			description="작성한 풀 리퀘스트"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

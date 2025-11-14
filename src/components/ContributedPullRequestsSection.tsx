@@ -7,18 +7,17 @@ import BigNumberSection from '@/components/BigNumberSection';
 export default function ContributedPullRequestsSection() {
 	const { year } = useYear();
 	
-	const { data: createdCount, isLoading: isLoadingCreated } = useQuery({
+	const { data: createdCount, isFetching: isFetchingCreated } = useQuery({
 		queryKey: queryKeys.pullRequests.all(year),
 		queryFn: () => getPullRequestsCount(year),
 	});
 
-	const { data: approvedCount, isLoading: isLoadingApproved } = useQuery({
+	const { data: approvedCount, isFetching: isFetchingApproved } = useQuery({
 		queryKey: queryKeys.pullRequests.approved(year),
 		queryFn: () => getApprovedPullRequestsCount(year),
 	});
 
-	const isLoading = isLoadingCreated || isLoadingApproved;
-
+	
 	// Calculate unique contributed PRs
 	// Note: This is an approximation. In reality, there might be overlap between 
 	// created, reviewed, and approved PRs. For accurate count, we'd need to dedupe by PR ID.
@@ -28,7 +27,7 @@ export default function ContributedPullRequestsSection() {
 	return (
 		<BigNumberSection
 			value={contributedCount}
-			isLoading={isLoading}
+			isFetching={isFetchingCreated || isFetchingApproved}
 			title="기여한 Pull Request"
 			subtitle="생성하고 리뷰한 PR의 개수"
 		/>

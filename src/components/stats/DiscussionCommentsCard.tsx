@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function DiscussionCommentsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.discussions.comments(year),
 		queryFn: () => getDiscussionCommentsCount(year),
 	});
@@ -16,7 +16,6 @@ export default function DiscussionCommentsCard() {
 			title="디스커션 코멘트"
 			description="코멘트"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

@@ -2,7 +2,7 @@ import { CountUpAnimation } from '@/components/CountUpAnimation';
 
 interface BigNumberSectionProps {
 	value: number | undefined;
-	isLoading: boolean;
+	isFetching: boolean;
 	title: string;
 	subtitle: string;
 	colors?: {
@@ -14,7 +14,7 @@ interface BigNumberSectionProps {
 
 export default function BigNumberSection({
 	value,
-	isLoading,
+	isFetching,
 	title,
 	subtitle,
 	colors = {
@@ -51,7 +51,7 @@ export default function BigNumberSection({
 
 				{/* 메인 숫자 */}
 				<div className="relative mb-12 sm:mb-16">
-					{isLoading ? (
+					{isFetching ? (
 						<div className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black text-white/10 leading-none animate-pulse">
 							···
 						</div>

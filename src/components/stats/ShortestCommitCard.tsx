@@ -21,7 +21,7 @@ function calculateShortestCommitMessageLength(commits: CommitData): number {
 
 export default function ShortestCommitCard() {
 	const { year } = useYear();
-	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
+	const { data: commits, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateShortestCommitMessageLength(commits) : undefined;
 
@@ -30,7 +30,6 @@ export default function ShortestCommitCard() {
 			title="가장 짧은 커밋"
 			description="가장 짧은 커밋 메시지 길이"
 			value={data}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

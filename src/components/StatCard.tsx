@@ -4,7 +4,6 @@ interface StatCardProps {
 	title: string;
 	description: string;
 	value: number | undefined;
-	isLoading: boolean;
 	isFetching: boolean;
 	error: Error | null;
 	isClickable?: boolean;

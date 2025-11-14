@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function ParticipatedDiscussionsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.discussions.participated(year),
 		queryFn: () => getParticipatedDiscussionsCount(year),
 	});
@@ -16,7 +16,6 @@ export default function ParticipatedDiscussionsCard() {
 			title="참여한 디스커션"
 			description="작성 + 코멘트"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

@@ -10,7 +10,7 @@ export default function GrowthSection() {
 	const queryClient = useQueryClient();
 
 	// 작년 데이터만 가져오기 (4개 요청)
-	const { data: lastYearData, isLoading, isFetching } = useQuery({
+	const { data: lastYearData, isFetching } = useQuery({
 		queryKey: queryKeys.stats.lastYear(year),
 		queryFn: () => getLastYearStats(year),
 	});
@@ -110,7 +110,7 @@ export default function GrowthSection() {
 				</div>
 
 				{/* Comparison Cards */}
-				{isLoading || !comparisonData ? (
+				{isFetching || !comparisonData ? (
 					<div className="flex items-center justify-center py-20">
 						<div className="flex items-center gap-3">
 							<div className="w-8 h-8 border-4 border-white/60 border-t-transparent rounded-full animate-spin" />

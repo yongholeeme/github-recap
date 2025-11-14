@@ -1,32 +1,26 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 
 export default function RefreshButton() {
 	const queryClient = useQueryClient();
-	const [isRefreshing, setIsRefreshing] = useState(false);
+	const isFetching = queryClient.isFetching() > 0;
 
 	const handleRefresh = async () => {
-		setIsRefreshing(true);
-		
 		// 모든 쿼리 캐시 무효화
 		await queryClient.invalidateQueries();
-		
-		// 1초 후 애니메이션 종료
-		setTimeout(() => {
-			setIsRefreshing(false);
-		}, 1000);
 	};
+
+
 
 	return (
 		<button
 			type="button"
 			onClick={handleRefresh}
-			disabled={isRefreshing}
+			disabled={isFetching}
 			className="fixed top-6 left-6 sm:top-8 sm:left-8 z-50 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 hover:border-white/40 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-2xl group"
 			title="전체 데이터 새로고침"
 		>
 			<svg
-				className={`w-5 h-5 text-white ${isRefreshing ? "animate-spin" : "group-hover:rotate-180 transition-transform duration-500"}`}
+				className={`w-5 h-5 text-white ${isFetching ? "animate-spin" : "group-hover:rotate-180 transition-transform duration-500"}`}
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"

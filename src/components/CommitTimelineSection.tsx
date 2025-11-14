@@ -32,7 +32,7 @@ function getTopMonths(monthCounts: Record<number, number>) {
 
 export default function CommitTimelineSection() {
 	const { year } = useYear();
-	const { data: commits, isLoading } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommitsData(year);
 	
 	const timelineData = useMemo(() => {
 		if (!commits) return null;
@@ -45,7 +45,7 @@ export default function CommitTimelineSection() {
 		return { monthCounts, topMonths, totalCommits, activeMonths, avgPerMonth };
 	}, [commits]);
 
-	if (isLoading || !timelineData) {
+	if (isFetching || !timelineData) {
 		return (
 			<div className="min-h-screen snap-start flex items-center justify-center">
 				<div className="text-white/40 text-xl animate-pulse">분석 중...</div>

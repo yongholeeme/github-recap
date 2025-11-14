@@ -36,7 +36,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function LongestStreakCard() {
 	const { year } = useYear();
-	const { data: commits, isLoading, isFetching, error } = useCommitsData(year);
+	const { data: commits, isFetching, error } = useCommitsData(year);
 	
 	const data = commits ? calculateLongestStreak(commits) : undefined;
 
@@ -45,7 +45,6 @@ export default function LongestStreakCard() {
 			title="최장 연속 기여"
 			description="연속으로 기여한 최대 일수"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 			suffix="일"

@@ -7,7 +7,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function MergedPullRequestsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.merged(year),
 		queryFn: () => getMergedPullRequestsCount(year),
 		
@@ -18,7 +18,6 @@ export default function MergedPullRequestsCard() {
 			title="머지된 PR"
 			description="병합 완료"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

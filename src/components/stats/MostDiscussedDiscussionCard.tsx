@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function MostDiscussedDiscussionCard() {
 	const { year } = useYear();
-	const { data, isLoading } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: queryKeys.discussions.mostDiscussed(year),
 		queryFn: () => getMostDiscussedDiscussion(year),
 	});
@@ -17,7 +17,7 @@ export default function MostDiscussedDiscussionCard() {
 				title="가장 치열했던 디스커션"
 				value="-"
 				subtitle="코멘트 수 기준"
-				isLoading={isLoading}
+				isFetching={isFetching}
 			/>
 		);
 	}
@@ -28,7 +28,7 @@ export default function MostDiscussedDiscussionCard() {
 			value={`${data.comments}개`}
 			subtitle={data.title}
 			link={data.url}
-			isLoading={isLoading}
+			isFetching={isFetching}
 		/>
 	);
 }

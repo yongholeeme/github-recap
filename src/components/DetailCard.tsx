@@ -4,7 +4,7 @@ interface DetailCardProps {
 	subtitle?: string;
 	description?: string;
 	link?: string;
-	isLoading: boolean;
+	isFetching: boolean;
 }
 
 export default function DetailCard({
@@ -13,15 +13,15 @@ export default function DetailCard({
 	subtitle,
 	description,
 	link,
-	isLoading,
+	isFetching,
 }: DetailCardProps) {
 	const content = (
 		<div
 			className={`group relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300 ${
 				link ? "cursor-pointer" : ""
-			} ${isLoading ? "pointer-events-none opacity-60" : ""}`}
+			} ${isFetching ? "pointer-events-none opacity-60" : ""}`}
 		>
-			{isLoading && (
+			{isFetching && (
 				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-[shimmer_2s_infinite] z-10" />
 			)}
 			

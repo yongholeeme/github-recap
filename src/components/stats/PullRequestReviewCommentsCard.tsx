@@ -7,7 +7,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function PullRequestReviewCommentsCard() {
 	const { year } = useYear();
-	const { data, isLoading, isFetching, error } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.reviewComments(year),
 		queryFn: () => getPullRequestReviewCommentsCount(year),
 		
@@ -18,7 +18,6 @@ export default function PullRequestReviewCommentsCard() {
 			title="리뷰 댓글"
 			description="코드 리뷰 댓글"
 			value={data as number | undefined}
-			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
 		/>

@@ -6,7 +6,7 @@ import { useYear } from '@/contexts/YearContext';
 
 export default function AverageMergeTimeCard() {
 	const { year } = useYear();
-	const { data, isLoading } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: queryKeys.pullRequests.averageMergeTime(year),
 		queryFn: () => getAverageMergeTime(year),
 	});
@@ -17,7 +17,7 @@ export default function AverageMergeTimeCard() {
 				title="PR 평균 머지 속도"
 				value="-"
 				subtitle="생성부터 머지까지"
-				isLoading={isLoading}
+				isFetching={isFetching}
 			/>
 		);
 	}
@@ -39,7 +39,7 @@ export default function AverageMergeTimeCard() {
 			title="PR 평균 머지 속도"
 			value={formatTime(data)}
 			subtitle="생성부터 머지까지"
-			isLoading={isLoading}
+			isFetching={isFetching}
 		/>
 	);
 }

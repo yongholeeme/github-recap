@@ -6,7 +6,7 @@ import BigNumberSection from '@/components/BigNumberSection';
 
 export default function CommitActivitySection() {
 	const { year } = useYear();
-	const { data: commitsCount, isLoading } = useQuery({
+	const { data: commitsCount, isFetching } = useQuery({
 		queryKey: queryKeys.commits.all(year),
 		queryFn: () => getCommitsCount(year),
 	});
@@ -14,7 +14,7 @@ export default function CommitActivitySection() {
 	return (
 		<BigNumberSection
 			value={commitsCount}
-			isLoading={isLoading}
+			isFetching={isFetching}
 			title={`${year}년 작성한 커밋`}
 			subtitle="한 줄 한 줄 쌓아올린 당신의 기록"
 		/>
