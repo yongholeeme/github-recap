@@ -21,6 +21,8 @@ export default function BarChart({ data, maxValue, height = 384, barHeight = 320
 					<div key={index} className="flex flex-col items-center gap-2 group" style={{ flex: '1 1 0%', minWidth: 0 }}>
 						{/* Bar Container */}
 						<div className="relative w-full" style={{ height: `${barHeight}px`, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+							
+							
 							{item.value > 0 ? (
 								<div
 									className={`w-full rounded-t-lg transition-all duration-500 relative ${
@@ -34,16 +36,15 @@ export default function BarChart({ data, maxValue, height = 384, barHeight = 320
 									{item.isPeak && (
 										<div className="absolute inset-0 rounded-t-lg bg-gradient-to-t from-blue-400 to-cyan-300 blur-md opacity-50" style={{ zIndex: -1 }} />
 									)}
+									{/* Value Label on hover - positioned above bar */}
+							{item.value > 0 && (
+								<div className="absolute left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold text-white bg-black/80 px-2 py-1 rounded whitespace-nowrap pointer-events-none" style={{ bottom: '100%', marginBottom: '4px' }}>
+									{item.value}개
+								</div>
+							)}
 								</div>
 							) : (
 								<div className="w-full bg-white/10 rounded" style={{ height: '2px' }} />
-							)}
-							
-							{/* Count on hover */}
-							{item.value > 0 && (
-								<div className="absolute left-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-black text-xs font-bold px-2 py-1 rounded whitespace-nowrap" style={{ bottom: '100%', marginBottom: '4px', transform: 'translateX(-50%)', zIndex: 10 }}>
-									{item.value}개
-								</div>
 							)}
 						</div>
 						
