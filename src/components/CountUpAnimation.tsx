@@ -73,7 +73,7 @@ export function CountUpAnimation({
   }, [value, duration, inView]);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={`pr-4 ${className}`}>
       {displayValue.toLocaleString()}
     </span>
   );

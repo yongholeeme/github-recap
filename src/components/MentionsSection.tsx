@@ -9,21 +9,21 @@ export default function MentionsSection() {
 			<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
 			<div className="relative z-10 w-full max-w-6xl mx-auto">
-				{/* Header */}
-				<div className="text-center mb-16 sm:mb-20">
-					<h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-200 leading-[0.9] tracking-[-0.02em] mb-6">
-						커뮤니티와
-						<br />
-						연결됩니다
-					</h2>
-					<p className="text-lg sm:text-xl text-gray-400 font-medium">
-						함께 나눈 대화의 기록
+				{/* Hero-style Main Stat */}
+				<div className="text-center mb-16 sm:mb-20 px-2 sm:px-4">
+					<p className="text-lg sm:text-xl text-white/60 font-medium mb-6 sm:mb-8 tracking-wide">
+						올해 멘션 받은 횟수
+					</p>
+					<div>
+						<MentionedByCountCard />
+					</div>
+					<p className="text-base sm:text-lg text-white/50 max-w-2xl mx-auto">
+						당신을 향한 관심
 					</p>
 				</div>
 
-				{/* Content */}
-				<div className="space-y-6 sm:space-y-8">
-					<MentionedByCountCard />
+				{/* Top Mentioners */}
+				<div>
 					<TopMentionedByCard />
 				</div>
 			</div>
