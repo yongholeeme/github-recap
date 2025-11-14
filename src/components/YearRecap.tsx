@@ -149,14 +149,14 @@ export default function YearRecap({ year }: YearRecapProps) {
 							<CommitTimelineSection />
 						</div>
 
-						{/* 이슈 섹션 - 그린 계열 배경 */}
-						<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
-							<IssueActivitySection />
-						</div>
-
 						{/* PR 섹션 - 오렌지 계열 배경 */}
 						<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
 							<PullRequestActivitySection />
+						</div>
+
+						{/* 이슈 섹션 - 그린 계열 배경 */}
+						<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
+							<IssueActivitySection />
 						</div>
 
 						{/* 멘션 섹션들 - 퍼플 계열 배경 */}
