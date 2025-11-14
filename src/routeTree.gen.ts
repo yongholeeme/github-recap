@@ -9,15 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as OauthRouteImport } from './routes/oauth'
 import { Route as YearRouteImport } from './routes/$year'
 import { Route as IndexRouteImport } from './routes/index'
 
-const OauthRoute = OauthRouteImport.update({
-  id: '/oauth',
-  path: '/oauth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const YearRoute = YearRouteImport.update({
   id: '/$year',
   path: '/$year',
@@ -32,42 +26,31 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$year': typeof YearRoute
-  '/oauth': typeof OauthRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$year': typeof YearRoute
-  '/oauth': typeof OauthRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$year': typeof YearRoute
-  '/oauth': typeof OauthRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$year' | '/oauth'
+  fullPaths: '/' | '/$year'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$year' | '/oauth'
-  id: '__root__' | '/' | '/$year' | '/oauth'
+  to: '/' | '/$year'
+  id: '__root__' | '/' | '/$year'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   YearRoute: typeof YearRoute
-  OauthRoute: typeof OauthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/oauth': {
-      id: '/oauth'
-      path: '/oauth'
-      fullPath: '/oauth'
-      preLoaderRoute: typeof OauthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/$year': {
       id: '/$year'
       path: '/$year'
@@ -88,7 +71,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   YearRoute: YearRoute,
-  OauthRoute: OauthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

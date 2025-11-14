@@ -1,4 +1,3 @@
-import type { User } from "@supabase/supabase-js";
 import { useEffect, useState, useRef } from "react";
 import HeroSection from '@/components/HeroSection';
 import CommitActivitySection from '@/components/CommitActivitySection';
@@ -20,6 +19,7 @@ import { YearProvider } from '@/contexts/YearContext';
 import { config } from "@/../config";
 import { useQueryClient } from "@tanstack/react-query";
 import { PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY } from "@/constants/storage";
+import type { User } from "@/types/user";
 
 interface YearRecapProps {
 	year?: number;
@@ -81,17 +81,9 @@ export default function YearRecap({ year }: YearRecapProps) {
 					// Create a pseudo User object with GitHub data
 					// Use avatar_url from API response (handles redirects properly)
 					setUser({
-						id: 'pat-user',
-						app_metadata: {},
-						aud: 'authenticated',
-						created_at: new Date().toISOString(),
-						user_metadata: {
-							avatar_url: githubUser.avatar_url,
-							full_name: githubUser.name,
-							user_name: githubUser.login,
-							bio: githubUser.bio,
-						},
-					} as User);
+						avatar_url: githubUser.avatar_url,
+						user_name: githubUser.login,
+					} );
 				} catch (error) {
 					console.error('Failed to fetch PAT user:', error);
 					// Invalid PAT, remove it and clear cache

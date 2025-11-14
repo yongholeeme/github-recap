@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { config } from '@/../config';
-import type { User } from '@supabase/supabase-js';
 import { PAT_STORAGE_KEY } from '@/constants/storage';
+import type { User } from '@/types/user';
 
 interface LoginModalProps {
 	isOpen: boolean;
@@ -36,20 +36,11 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 			sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
 			
 			// Use avatar_url from API response (handles redirects properly)
-			const user = {
-				id: 'pat-user',
-				app_metadata: {},
-				aud: 'authenticated',
-				created_at: new Date().toISOString(),
-				user_metadata: {
-					avatar_url: githubUser.avatar_url,
-					full_name: githubUser.name,
-					user_name: githubUser.login,
-					bio: githubUser.bio,
-				},
-			} as User;
 
-			onLogin(user);
+			onLogin({
+				avatar_url: githubUser.avatar_url,
+				user_name: githubUser.login,
+			});
 			onClose();
 		} catch (error) {
 			setPATError('유효하지 않은 토큰입니다');
