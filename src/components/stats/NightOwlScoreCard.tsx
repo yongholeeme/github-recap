@@ -21,7 +21,7 @@ function calculateNightOwlScore(commits: CommitData): number {
 
 
 export default function NightOwlScoreCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateNightOwlScore(commits) : undefined;
 
@@ -33,7 +33,6 @@ export default function NightOwlScoreCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 			suffix="%"
 		/>
 	);

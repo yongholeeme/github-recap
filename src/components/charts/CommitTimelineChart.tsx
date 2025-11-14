@@ -39,7 +39,7 @@ function calculateCommitTimeline(
 }
 
 export default function CommitTimelineChart() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateCommitTimeline(commits) : undefined;
 
@@ -51,7 +51,6 @@ export default function CommitTimelineChart() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 			dataKey="month"
 		/>
 	);

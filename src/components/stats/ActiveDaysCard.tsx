@@ -15,7 +15,7 @@ function calculateActiveDaysCount(commits: CommitData): number {
 
 
 export default function ActiveDaysCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateActiveDaysCount(commits) : undefined;
 
@@ -27,7 +27,6 @@ export default function ActiveDaysCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

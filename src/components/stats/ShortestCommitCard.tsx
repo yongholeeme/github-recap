@@ -19,7 +19,7 @@ function calculateShortestCommitMessageLength(commits: CommitData): number {
 
 
 export default function ShortestCommitCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateShortestCommitMessageLength(commits) : undefined;
 
@@ -31,7 +31,6 @@ export default function ShortestCommitCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

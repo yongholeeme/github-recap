@@ -5,7 +5,7 @@ import { getPullRequestReviewCommentsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function PullRequestReviewCommentsCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.reviewComments(),
 		queryFn: () => getPullRequestReviewCommentsCount(),
 		
@@ -19,7 +19,6 @@ export default function PullRequestReviewCommentsCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

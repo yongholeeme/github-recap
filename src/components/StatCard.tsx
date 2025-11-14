@@ -7,7 +7,6 @@ interface StatCardProps {
 	isLoading: boolean;
 	isFetching: boolean;
 	error: Error | null;
-	onRefetch: () => void;
 	isClickable?: boolean;
 	onClick?: () => void;
 	suffix?: string; // e.g., "%", "일", "개" etc.
@@ -17,69 +16,36 @@ export default function StatCard({
 	title,
 	description,
 	value,
-	isLoading,
 	isFetching,
 	error,
-	onRefetch,
 	isClickable,
 	onClick,
 	suffix,
 }: StatCardProps) {
-	const handleRefresh = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		onRefetch();
-	};
 
 	return (
 		<div
-			className={`group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent border-2 border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-2xl hover:shadow-[0_0_50px_rgba(255,255,255,0.2)] hover:border-white/40 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] overflow-hidden backdrop-blur-sm ${
+			className={`group relative bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300 ${
 				isClickable ? "cursor-pointer" : ""
-			} ${isFetching ? "pointer-events-none" : ""}`}
+			} ${isFetching ? "pointer-events-none opacity-60" : ""}`}
+			onClick={
+				isClickable && value !== undefined && !isFetching ? onClick : undefined
+			}
 		>
 			{isFetching && (
-				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite] z-10" />
+				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-[shimmer_2s_infinite] z-10" />
 			)}
-			<div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl group-hover:from-blue-400/30 group-hover:to-purple-400/30 transition-all duration-500" />
-			<div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-400/20 to-orange-400/20 rounded-full blur-2xl group-hover:from-pink-400/30 group-hover:to-orange-400/30 transition-all duration-500" />
-			<div
-				className={`relative flex flex-col min-h-[100px] sm:min-h-[120px] justify-between ${
-					isFetching ? "opacity-40" : ""
-				}`}
-				onClick={
-					isClickable && value !== undefined && !isFetching ? onClick : undefined
-				}
-			>
-				<div className="flex items-start justify-between gap-2">
-					<div className="flex-1">
-						<h3 className="text-xs sm:text-sm font-bold text-white mb-1">
-							{title}
-						</h3>
-						<p className="text-[10px] sm:text-xs text-white/60 mb-2">
-							{description}
-						</p>
-					</div>
-					<button
-						type="button"
-						onClick={handleRefresh}
-						disabled={isFetching}
-						className="flex-shrink-0 p-1.5 text-white/60 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-						title="새로고침"
-					>
-						<svg
-							className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-							/>
-						</svg>
-					</button>
+			
+			<div className="relative flex flex-col justify-between min-h-[120px]">
+				<div className="mb-4">
+					<h3 className="text-sm font-bold text-white mb-1">
+						{title}
+					</h3>
+					<p className="text-xs text-white/60">
+						{description}
+					</p>
 				</div>
+
 				<div className="mt-auto">
 					{error && value === undefined && (
 						<p className="text-sm text-red-400 font-semibold">오류 발생</p>
@@ -102,33 +68,28 @@ export default function StatCard({
 								</svg>
 								<p className="text-xs text-red-400">새로고침 실패</p>
 							</div>
-							<div className="flex items-center gap-2">
-								<p className="text-3xl font-bold text-white drop-shadow-lg">
+							<div className="flex items-baseline gap-1 flex-wrap">
+								<span className="text-3xl sm:text-4xl font-black text-white tabular-nums">
 									{value.toLocaleString()}
-									{suffix && <span className="text-2xl">{suffix}</span>}
-								</p>
+								</span>
+								{suffix && <span className="text-2xl sm:text-3xl font-bold text-white/80">{suffix}</span>}
 								{isClickable && (
-									<span className="text-xs text-white/60">클릭하여 보기</span>
+									<span className="text-xs text-white/50 ml-auto">클릭하여 보기</span>
 								)}
 							</div>
 						</>
 					)}
 					{!error && value !== undefined && (
-						<div className="flex items-center gap-2">
-							<p className="text-3xl sm:text-4xl font-black text-white drop-shadow-lg">
-								<CountUpAnimation value={value} suffix={suffix} />
-							</p>
-							{isClickable && (
-								<span className="text-[10px] sm:text-xs text-white/60">
-									클릭하여 보기
-								</span>
+						<div className="flex items-baseline gap-1 flex-wrap">
+							<span className="text-3xl sm:text-4xl font-black text-white tabular-nums">
+								<CountUpAnimation value={value} />
+							</span>
+							{suffix && (
+								<span className="text-2xl sm:text-3xl font-bold text-white/80">{suffix}</span>
 							)}
-						</div>
-					)}
-					{!error && isLoading && value === undefined && (
-						<div className="flex items-center gap-2">
-							<div className="w-4 h-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin" />
-							<p className="text-xs text-white/60">로딩 중...</p>
+							{isClickable && (
+								<span className="text-xs text-white/50 ml-auto">클릭하여 보기</span>
+							)}
 						</div>
 					)}
 				</div>

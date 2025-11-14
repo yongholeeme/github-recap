@@ -19,7 +19,7 @@ function calculateLongestCommitMessageLength(commits: CommitData): number {
 
 
 export default function LongestCommitCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateLongestCommitMessageLength(commits) : undefined;
 
@@ -31,7 +31,6 @@ export default function LongestCommitCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

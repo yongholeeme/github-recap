@@ -3,15 +3,10 @@ import { getTopMentionedBy, type MentionDetail } from '@/lib/github/issues';
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function TopMentionedByCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isFetching, error } = useQuery({
 		queryKey: queryKeys.mentions.receivedBy(),
 		queryFn: () => getTopMentionedBy(new Date().getFullYear(), 10),
 	});
-
-	const handleRefresh = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		refetch();
-	};
 
 	return (
 		<div
@@ -33,39 +28,13 @@ export default function TopMentionedByCard() {
 							TOP 10 멘션러
 						</p>
 					</div>
-					<button
-						type="button"
-						onClick={handleRefresh}
-						disabled={isFetching}
-						className="flex-shrink-0 p-1.5 text-white/60 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-						title="새로고침"
-					>
-						<svg
-							className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-							/>
-						</svg>
-					</button>
 				</div>
 
 				{error && (
 					<p className="text-sm text-red-400 font-semibold">오류 발생</p>
 				)}
 
-				{isLoading && !data && (
-					<div className="flex items-center gap-2">
-						<div className="w-4 h-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin" />
-						<p className="text-xs text-white/60">로딩 중...</p>
-					</div>
-				)}
+
 
 				{data && data.length > 0 && (
 					<div className="space-y-2">

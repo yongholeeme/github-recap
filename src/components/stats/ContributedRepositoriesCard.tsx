@@ -5,7 +5,7 @@ import { getContributedReposCount } from '@/lib/github/repositories';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function ContributedRepositoriesCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.repositories.contributed(),
 		queryFn: () => getContributedReposCount(),
 		
@@ -19,7 +19,6 @@ export default function ContributedRepositoriesCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

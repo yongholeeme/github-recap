@@ -11,6 +11,8 @@ import PullRequestActivitySection from '@/components/PullRequestActivitySection'
 import MentionsSection from '@/components/MentionsSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
+import RefreshButton from '@/components/RefreshButton';
+import ClearDataButton from '@/components/ClearDataButton';
 import { config } from "@/../config";
 
 export const Route = createFileRoute("/")({
@@ -126,16 +128,20 @@ function Index() {
 	if (user) {
 		console.log(user)
 		return (
-			<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-				<HeroSection user={user} onLogout={handleLogout} />
-				<CommitActivitySection />
-				<CommitPatternsSection />
-				<IssueActivitySection />
-				<PullRequestActivitySection />
-				<MentionsSection />
-				<GrowthSection />
-				<EndingSection />
-			</div>
+			<>
+				<RefreshButton />
+				<ClearDataButton />
+				<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+					<HeroSection user={user} onLogout={handleLogout} />
+					<CommitActivitySection />
+					<CommitPatternsSection />
+					<IssueActivitySection />
+					<PullRequestActivitySection />
+					<MentionsSection />
+					<GrowthSection />
+					<EndingSection />
+				</div>
+			</>
 		);
 	}
 

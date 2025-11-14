@@ -16,7 +16,7 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 }
 
 export default function AverageCommitMessageLengthCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateAverageCommitMessageLength(commits) : undefined;
 
@@ -28,7 +28,6 @@ export default function AverageCommitMessageLengthCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

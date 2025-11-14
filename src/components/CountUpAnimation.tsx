@@ -5,7 +5,6 @@ interface CountUpAnimationProps {
   value: number;
   duration?: number; // milliseconds
   className?: string;
-  suffix?: string;
 }
 
 /**
@@ -17,7 +16,6 @@ export function CountUpAnimation({
   value,
   duration = 1000,
   className = "",
-  suffix = "",
 }: CountUpAnimationProps) {
   const [displayValue, setDisplayValue] = useState(0);
   const startTimeRef = useRef<number | null>(null);
@@ -75,9 +73,8 @@ export function CountUpAnimation({
   }, [value, duration, inView]);
 
   return (
-    <span ref={ref} className={`px-8${className}`}>
+    <span ref={ref} className={className}>
       {displayValue.toLocaleString()}
-      {suffix}
     </span>
   );
 }

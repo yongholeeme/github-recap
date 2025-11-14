@@ -5,7 +5,7 @@ import { getMergedPullRequestsCount } from '@/lib/github/pullRequests';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function MergedPullRequestsCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.pullRequests.merged(),
 		queryFn: () => getMergedPullRequestsCount(),
 		
@@ -19,7 +19,6 @@ export default function MergedPullRequestsCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

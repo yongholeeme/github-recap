@@ -5,7 +5,7 @@ import { getIssueCommentsCount } from '@/lib/github/issues';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function IssueCommentsCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.issues.comments(),
 		queryFn: () => getIssueCommentsCount(),
 		
@@ -19,7 +19,6 @@ export default function IssueCommentsCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

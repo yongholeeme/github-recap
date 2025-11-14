@@ -25,7 +25,7 @@ function calculateMostActiveHour(commits: CommitData): number {
 
 
 export default function MostActiveHourCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateMostActiveHour(commits) : undefined;
 
@@ -37,7 +37,6 @@ export default function MostActiveHourCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

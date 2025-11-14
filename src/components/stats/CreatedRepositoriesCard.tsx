@@ -5,7 +5,7 @@ import { getCreatedReposCount } from '@/lib/github/repositories';;
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function CreatedRepositoriesCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.repositories.created(),
 		queryFn: () => getCreatedReposCount(),
 		
@@ -19,7 +19,6 @@ export default function CreatedRepositoriesCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

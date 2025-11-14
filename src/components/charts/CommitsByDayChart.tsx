@@ -28,7 +28,7 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 
 
 export default function CommitsByDayChart() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateCommitsByDayOfWeek(commits) : undefined;
 
@@ -40,7 +40,6 @@ export default function CommitsByDayChart() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 			dataKey="day"
 		/>
 	);

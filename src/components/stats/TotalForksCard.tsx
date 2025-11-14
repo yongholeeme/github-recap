@@ -2,7 +2,7 @@ import StatCard from '@/components/StatCard';
 import { useRepositoriesData } from '@/lib/hooks/useRepositoriesData';
 
 export default function TotalForksCard() {
-	const { data: repos, isLoading, isFetching, error, refetch } = useRepositoriesData();
+	const { data: repos, isLoading, isFetching, error } = useRepositoriesData();
 	
 	const data = repos
 		? repos.reduce((total, repo) => total + (repo.forks_count || 0), 0)
@@ -16,7 +16,6 @@ export default function TotalForksCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

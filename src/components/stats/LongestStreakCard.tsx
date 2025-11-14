@@ -34,7 +34,7 @@ import { useCommitsData } from '@/lib/hooks/useCommitsData';
 }
 
 export default function LongestStreakCard() {
-	const { data: commits, isLoading, isFetching, error, refetch } = useCommitsData();
+	const { data: commits, isLoading, isFetching, error } = useCommitsData();
 	
 	const data = commits ? calculateLongestStreak(commits) : undefined;
 
@@ -46,7 +46,6 @@ export default function LongestStreakCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 			suffix="일"
 		/>
 	);

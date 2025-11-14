@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/queryKeys';
 
 export default function CreatedIssuesCard() {
-	const { data, isLoading, isFetching, error, refetch } = useQuery({
+	const { data, isLoading, isFetching, error } = useQuery({
 		queryKey: queryKeys.issues.all(),
 		queryFn: () => getIssuesCount(),
 	});
@@ -17,7 +17,6 @@ export default function CreatedIssuesCard() {
 			isLoading={isLoading}
 			isFetching={isFetching}
 			error={error}
-			onRefetch={refetch}
 		/>
 	);
 }

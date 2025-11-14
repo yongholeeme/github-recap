@@ -6,7 +6,7 @@ export default function YearOverYearGrowthCard() {
 	const queryClient = useQueryClient();
 
 	// 작년 데이터만 가져오기 (4개 요청)
-	const { data: lastYearData, isLoading, isFetching, error, refetch } = useQuery({
+	const { data: lastYearData, isFetching, error } = useQuery({
 		queryKey: queryKeys.stats.lastYear(),
 		queryFn: () => getLastYearStats(),
 		
@@ -30,17 +30,18 @@ export default function YearOverYearGrowthCard() {
 		currentPRs === undefined ||
 		currentIssues === undefined ||
 		currentReviews === undefined
-			? undefined
+			? {
+					commits: 0,
+					prs: 0,
+					issues: 0,
+					reviews: 0,
+			  }
 			: {
 					commits: calculateGrowth(currentCommits, lastYearData.commits),
 					prs: calculateGrowth(currentPRs, lastYearData.prs),
 					issues: calculateGrowth(currentIssues, lastYearData.issues),
 					reviews: calculateGrowth(currentReviews, lastYearData.reviews),
 			  };
-
-	const handleRefresh = () => {
-		refetch();
-	};
 
 	const getGrowthColor = (growth: number) => {
 		if (growth > 0) return "text-green-400";
@@ -79,39 +80,12 @@ export default function YearOverYearGrowthCard() {
 							작년 같은 기간 대비 활동 증감률
 						</p>
 					</div>
-					<button
-						type="button"
-						onClick={handleRefresh}
-						disabled={isFetching}
-						className="flex-shrink-0 p-1.5 text-white/60 hover:text-white hover:bg-white/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
-						title="새로고침"
-					>
-						<svg
-							className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-							/>
-						</svg>
-					</button>
 				</div>
 				<div className="mt-auto">
 					{error && (
 						<p className="text-sm text-red-400 font-semibold">오류 발생</p>
 					)}
-					{!error && isLoading && (
-						<div className="flex items-center gap-2">
-							<div className="w-4 h-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin" />
-							<p className="text-xs text-white/60">로딩 중...</p>
-						</div>
-					)}
-					{!error && data && (
+					{!error && (
 						<div className="grid grid-cols-2 gap-3">
 							<div className="bg-white/5 backdrop-blur-sm rounded-lg p-3">
 								<p className="text-[10px] text-white/60 mb-1">커밋</p>
