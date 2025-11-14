@@ -1,7 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import { useEffect, useState, useRef } from "react";
 import { queryClient } from '@/main';
-import '@/lib/github/rateLimit'; // Auto-logs rate limit
 import HeroSection from '@/components/HeroSection';
 import CommitActivitySection from '@/components/CommitActivitySection';
 import CommitsByHourSection from '@/components/CommitsByHourSection';

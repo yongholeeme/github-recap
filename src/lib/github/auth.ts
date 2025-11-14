@@ -36,28 +36,6 @@ export async function getOctokit(): Promise<Octokit> {
   });
 }
 
-export async function getRateLimit(): Promise<{
-  limit: number;
-  remaining: number;
-  used: number;
-  reset: Date;
-  percentage: number;
-}> {
-  const octokit = await getOctokit();
-  const { data } = await octokit.rest.rateLimit.get();
-
-  const core = data.resources.core;
-  const percentage = (core.remaining / core.limit) * 100;
-
-  return {
-    limit: core.limit,
-    remaining: core.remaining,
-    used: core.used,
-    reset: new Date(core.reset * 1000),
-    percentage,
-  };
-}
-
 let cachedUsername: string | null = null;
 let usernamePromise: Promise<string> | null = null;
 
