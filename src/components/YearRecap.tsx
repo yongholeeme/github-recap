@@ -15,6 +15,7 @@ import RefreshButton from '@/components/RefreshButton';
 import ClearDataButton from '@/components/ClearDataButton';
 import LoginModal from '@/components/LoginModal';
 import LoginToast from '@/components/LoginToast';
+import KeyboardHint from '@/components/KeyboardHint';
 import { YearProvider } from '@/contexts/YearContext';
 import { config } from "@/../config";
 
@@ -33,19 +34,29 @@ export default function YearRecap({ year }: YearRecapProps) {
 	
 	// TODO: Use targetYear to filter data in the future
 
-	// Spacebar navigation
+	// Keyboard navigation
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.code === 'Space' && !isLoginModalOpen) {
+			if (isLoginModalOpen) return;
+
+			const container = containerRef.current;
+			if (!container) return;
+
+			// Next section: ArrowDown, ArrowRight, Space
+			if (e.code === 'ArrowDown' || e.code === 'ArrowRight' || e.code === 'Space') {
 				e.preventDefault();
-				const container = containerRef.current;
-				if (container) {
-					// Scroll down by one viewport height
-					container.scrollBy({
-						top: window.innerHeight,
-						behavior: 'smooth'
-					});
-				}
+				container.scrollBy({
+					top: window.innerHeight,
+					behavior: 'smooth'
+				});
+			}
+			// Previous section: ArrowUp, ArrowLeft
+			else if (e.code === 'ArrowUp' || e.code === 'ArrowLeft') {
+				e.preventDefault();
+				container.scrollBy({
+					top: -window.innerHeight,
+					behavior: 'smooth'
+				});
 			}
 		};
 
@@ -120,6 +131,7 @@ export default function YearRecap({ year }: YearRecapProps) {
 				<>
 					<RefreshButton />
 					<ClearDataButton />
+					<KeyboardHint />
 				</>
 			)}
 			

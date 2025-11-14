@@ -1,9 +1,11 @@
 import { useCommitsData } from '@/lib/hooks/useCommitsData';
 import { useYear } from '@/contexts/YearContext';
 import { type CommitData } from '@/lib/github/commits';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 import InsightSection from '@/components/InsightSection';
 import BarChart from '@/components/charts/BarChart';
+import Toast from '@/components/Toast';
 
 function calculateCommitsByHour(commits: CommitData) {
 	const hourCounts: Record<number, number> = {};
@@ -69,6 +71,13 @@ function getTimeRangeRecommendation(peakHours: Array<[string, number]>) {
 export default function CommitsByHourSection() {
 	const { year } = useYear();
 	const { data: commits, isLoading } = useCommitsData(year);
+	const [showToast, setShowToast] = useState(false);
+	const hasShownToast = useRef(false);
+	
+	const { ref, inView } = useInView({
+		threshold: 0.5,
+		triggerOnce: false,
+	});
 	
 	const hourData = useMemo(() => {
 		if (!commits) return null;
@@ -79,10 +88,24 @@ export default function CommitsByHourSection() {
 		const totalCommits = Object.values(hourCounts).reduce((a, b) => a + b, 0);
 		const activeHours = Object.values(hourCounts).filter(c => c > 0).length;
 		const avgPerHour = Math.round(totalCommits / activeHours);
-		const peakConcentration = ((peakHours.reduce((sum, [, count]) => sum + count, 0) / totalCommits) * 100).toFixed(0);
 		
-		return { hourCounts, peakHours, recommendation, maxCount, activeHours, avgPerHour, peakConcentration };
+		return { hourCounts, peakHours, recommendation, maxCount, avgPerHour };
 	}, [commits]);
+
+	useEffect(() => {
+		if (hourData?.recommendation && inView) {
+			setShowToast(true);
+			hasShownToast.current = true;
+			
+			const dismissTimer = setTimeout(() => setShowToast(false), 5000);
+			
+			return () => {
+				clearTimeout(dismissTimer);
+			};
+		} else if (!inView && hasShownToast.current) {
+			setShowToast(false);
+		}
+	}, [hourData?.recommendation, inView]);
 
 	if (isLoading || !hourData) {
 		return (
@@ -100,28 +123,45 @@ export default function CommitsByHourSection() {
 	}));
 
 	return (
-		<InsightSection
-			title="24시간의 흔적"
-			subtitle="하루 중 언제 가장 몰입하시나요?"
-			recommendation={hourData.recommendation ? {
-				emoji: hourData.recommendation.emoji,
-				title: hourData.recommendation.time,
-				subtitle: hourData.recommendation.message,
-				badge: `${hourData.recommendation.period} 타입`
-			} : undefined}
-			chart={<BarChart data={chartData} maxValue={hourData.maxCount} />}
-			topItems={hourData.peakHours.map(([hour, count]) => ({
-				label: `${hour}시`,
-				value: `${count}개`,
-				subvalue: '커밋',
-				rank: 0
-			}))}
-			stats={[
-				{ label: '활동 시간대', value: hourData.activeHours },
-				{ label: '최다 커밋', value: hourData.maxCount },
-				{ label: '평균 커밋', value: hourData.avgPerHour },
-				{ label: '피크 집중도', value: `${hourData.peakConcentration}%` }
-			]}
-		/>
+		<div ref={ref} className="relative">
+			{/* Toast for recommendation */}
+			{hourData.recommendation && (
+				<Toast isVisible={showToast} onClose={() => setShowToast(false)}>
+					<div className="text-3xl flex-shrink-0">{hourData.recommendation.emoji}</div>
+					<div className="flex-1 min-w-0">
+						<div className="flex items-center gap-2 mb-1">
+							<div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+							<span className="text-[10px] text-cyan-300 font-bold uppercase tracking-wider">
+								인사이트
+							</span>
+							<span className="ml-auto px-2 py-0.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-[10px] text-white/90 font-bold">
+								{hourData.recommendation.period} 타입
+							</span>
+						</div>
+						<h4 className="text-base font-black text-white mb-1">
+							{hourData.recommendation.time}
+						</h4>
+						<p className="text-xs text-white/70 font-medium line-clamp-2">
+							{hourData.recommendation.message}
+						</p>
+					</div>
+				</Toast>
+			)}
+
+			<InsightSection
+				title="24시간의 흔적"
+				subtitle="하루 중 언제 가장 몰입하시나요?"
+				chart={<BarChart data={chartData} maxValue={hourData.maxCount} />}
+				topItems={hourData.peakHours.map(([hour, count]) => ({
+					label: `${hour}시`,
+					value: `${count}개`,
+					rank: 0
+				}))}
+				stats={[
+					{ label: '최다 커밋', value: hourData.maxCount },
+					{ label: '평균 커밋', value: hourData.avgPerHour },
+				]}
+			/>
+		</div>
 	);
 }

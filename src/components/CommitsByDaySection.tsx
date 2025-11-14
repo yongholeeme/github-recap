@@ -31,26 +31,6 @@ function getTopDays(dayCounts: Record<number, number>) {
 		.slice(0, 3);
 }
 
-function getDayTypeRecommendation(topDay: number) {
-	if (topDay === 0 || topDay === 6) {
-		return {
-			emoji: '🏖️',
-			title: '주말 코더',
-			subtitle: '주말에 가장 활발하게 활동하시네요! 여유로운 시간을 잘 활용하고 계십니다',
-			badge: '주말 타입'
-		};
-	}
-	if (topDay >= 1 && topDay <= 5) {
-		return {
-			emoji: '💼',
-			title: '평일 워커',
-			subtitle: '평일에 꾸준히 작업하시는군요! 규칙적인 개발 습관이 돋보입니다',
-			badge: '평일 타입'
-		};
-	}
-	return null;
-}
-
 export default function CommitsByDaySection() {
 	const { year } = useYear();
 	const { data: commits, isLoading } = useCommitsData(year);
@@ -59,11 +39,9 @@ export default function CommitsByDaySection() {
 		if (!commits) return null;
 		const dayCounts = calculateCommitsByDay(commits);
 		const topDays = getTopDays(dayCounts);
-		const topDayNum = Number.parseInt(topDays[0][0]);
-		const recommendation = getDayTypeRecommendation(topDayNum);
 		const totalCommits = Object.values(dayCounts).reduce((a, b) => a + b, 0);
 		
-		return { dayCounts, topDays, recommendation, totalCommits };
+		return { dayCounts, topDays, totalCommits };
 	}, [commits]);
 
 	if (isLoading || !dayData) {
@@ -88,12 +66,10 @@ export default function CommitsByDaySection() {
 		<InsightSection
 			title="7일의 패턴"
 			subtitle="일주일 동안 어떤 리듬으로 작업하셨나요?"
-			recommendation={dayData.recommendation || undefined}
 			chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
 			topItems={dayData.topDays.map(([day, count]) => ({
 				label: `${getDayName(Number.parseInt(day))}요일`,
 				value: `${count}개`,
-				subvalue: '커밋',
 				rank: 0
 			}))}
 			stats={[
