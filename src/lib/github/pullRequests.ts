@@ -1,7 +1,7 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
 import { getDateRange } from "@/lib/github/utils";
 
-export async function getPullRequestsCount(
+export async function fetchCountOfMyCreatedPrs(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -17,7 +17,7 @@ export async function getPullRequestsCount(
   return data.total_count || 0;
 }
 
-export async function getMergedPullRequestsCount(
+export async function fetchCountOfMyMergedPrs(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -33,7 +33,7 @@ export async function getMergedPullRequestsCount(
   return data.total_count || 0;
 }
 
-export async function getPullRequestReviewsCount(
+export async function fetchCountOfPrsReviewedByMe(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -49,7 +49,24 @@ export async function getPullRequestReviewsCount(
   return data.total_count || 0;
 }
 
-export async function getApprovedPullRequestsCount(
+export async function fetchCountOfParticipatedPrs(
+  year: number = new Date().getFullYear()
+): Promise<number> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  // Search for issues where user is involved (author, commenter, or mentioned)
+  const query = `involves:${username} type:pr created:${startDate}..${endDate}`;
+  const { data } = await octokit.rest.search.issuesAndPullRequests({
+    q: query,
+    per_page: 1, // Only need total_count
+  });
+
+  return data.total_count || 0;
+}
+
+export async function fetchCountOfPrsApprovedByMe(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -66,7 +83,7 @@ export async function getApprovedPullRequestsCount(
   return data.total_count || 0;
 }
 
-export async function getRequestedChangesPullRequestsCount(
+export async function fetchCountOfPrsRequestedChangeByMe(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -83,7 +100,7 @@ export async function getRequestedChangesPullRequestsCount(
   return data.total_count || 0;
 }
 
-export async function getPullRequestReviewCommentsCount(
+export async function fetchCountOfCommentsByMeToPr(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -99,7 +116,7 @@ export async function getPullRequestReviewCommentsCount(
   return data.total_count || 0;
 }
 
-export async function getClosedNotMergedPullRequestsCount(
+export async function fetchCountOfMyClosedPrsNotMerged(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -151,7 +168,7 @@ interface PRGraphQLResponse {
   };
 }
 
-export async function getMostDiscussedPR(
+export async function fetchMostDiscussedPR(
   year: number = new Date().getFullYear()
 ): Promise<PRDetail | null> {
   const octokit = await getOctokit();
@@ -228,7 +245,7 @@ export async function getMostDiscussedPR(
   }
 }
 
-export async function getAverageMergeTime(
+export async function fetchMyAverageMergeTime(
   year: number = new Date().getFullYear()
 ): Promise<number | null> {
   const octokit = await getOctokit();
@@ -271,7 +288,7 @@ export async function getAverageMergeTime(
   return validCount > 0 ? totalHours / validCount : null;
 }
 
-export async function getFastestMergedPR(
+export async function fetchMyFastestMergedPR(
   year: number = new Date().getFullYear()
 ): Promise<PRDetail | null> {
   const octokit = await getOctokit();
@@ -326,7 +343,7 @@ export async function getFastestMergedPR(
   return fastest;
 }
 
-export async function getSlowestMergedPR(
+export async function fetchMySlowestMergedPR(
   year: number = new Date().getFullYear()
 ): Promise<PRDetail | null> {
   const octokit = await getOctokit();

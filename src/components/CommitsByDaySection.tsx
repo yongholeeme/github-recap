@@ -1,9 +1,9 @@
-import { useCommitsData } from '@/lib/hooks/useCommitsData';
 import { useYear } from '@/contexts/YearContext';
 import { type CommitData } from '@/lib/github/commits';
 import { useMemo } from 'react';
 import BarChart from '@/components/charts/BarChart';
 import InsightSection from '@/components/InsightSection';
+import { useCommits } from '@/lib/hooks/useCommits';
 
 function calculateCommitsByDay(commits: CommitData) {
 	const dayCounts: Record<number, number> = {};
@@ -33,7 +33,7 @@ function getTopDays(dayCounts: Record<number, number>) {
 
 export default function CommitsByDaySection() {
 	const { year } = useYear();
-	const { data: commits, isFetching } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommits(year);
 	
 	const dayData = useMemo(() => {
 		if (!commits) return null;

@@ -1,26 +1,28 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { getLastYearStats } from '@/lib/github/stats';;
-import { useQuery } from '@tanstack/react-query';
 import { CountUpAnimation } from '@/components/CountUpAnimation';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfMyCreatedPrs } from "@/lib/hooks/useCountOfMyCreatedPrs";
+import { useCountOfPrsReviewedByMe } from "@/lib/hooks/useCountOfPrsReviewedByMe";
+import { useCountOfCommits } from "@/lib/hooks/useCountOfCommits";
+import { useCountOfParticipatedIssues } from '@/lib/hooks/useCountOfParticipatedIssues';
 
 export default function GrowthSection() {
 	const { year } = useYear();
-	const queryClient = useQueryClient();
 
-	// 작년 데이터만 가져오기 (4개 요청)
-	const { data: lastYearData, isFetching } = useQuery({
-		queryKey: queryKeys.stats.lastYear(year),
-		queryFn: () => getLastYearStats(year),
-	});
 
-	// 올해 데이터는 캐시에서 가져오기 (0개 요청)
-	const currentCommits = queryClient.getQueryData<number>(queryKeys.commits.all(year));
-	const currentPRs = queryClient.getQueryData<number>(queryKeys.pullRequests.all(year));
-	const currentIssues = queryClient.getQueryData<number>(queryKeys.issues.all(year));
-	const currentReviews = queryClient.getQueryData<number>(queryKeys.pullRequests.reviews(year));
+	const { data: currentCommits, isFetching: isFetchingCurrentCommits } = useCountOfCommits(year);
+	const {	data: lastCommits, isFetching: isFetchingLastCommits } = useCountOfCommits(year- 1);
+	const {data: currentMyCreatedPrs, isFetching: isFetchingCurrentMyCreatedPrs} = useCountOfMyCreatedPrs(year);
+	const {data: lastMyCreatedPrs, isFetching: isFetchingLastMyCreatedPrs} = useCountOfMyCreatedPrs(year - 1);
+	const {data: currentPrsReviewedByMe, isFetching: isFetchingCurrentPrsReviewedByMe} = useCountOfPrsReviewedByMe(year);
+	const {data: lastPrsReviewedByMe, isFetching: isFetchingLastPrsReviewedByMe} = useCountOfPrsReviewedByMe(year - 1);
+	const { data: currentParticipatedIssues, isFetching: isFetchingCurrentParticipatedIssues } = useCountOfParticipatedIssues(year);
+	const { data: lastParticipatedIssues, isFetching: isFetchingLastParticipatedIssues } = useCountOfParticipatedIssues(year - 1);
 
+	const isFetching = isFetchingCurrentCommits || isFetchingLastCommits ||
+		isFetchingCurrentMyCreatedPrs || isFetchingLastMyCreatedPrs ||
+		isFetchingCurrentPrsReviewedByMe || isFetchingLastPrsReviewedByMe ||
+		isFetchingCurrentParticipatedIssues || isFetchingLastParticipatedIssues;
+		
 	// 변화량 계산
 	const calculateChange = (current: number, last: number): number => {
 		return current - last;
@@ -33,44 +35,43 @@ export default function GrowthSection() {
 	};
 
 	const comparisonData =
-		!lastYearData ||
-		currentCommits === undefined ||
-		currentPRs === undefined ||
-		currentIssues === undefined ||
-		currentReviews === undefined
+		currentCommits === undefined || lastCommits === undefined ||
+		currentMyCreatedPrs === undefined || lastMyCreatedPrs === undefined || 
+		currentParticipatedIssues === undefined ||lastParticipatedIssues === undefined ||
+		currentPrsReviewedByMe === undefined || lastPrsReviewedByMe === undefined
 			? undefined
 			: [
 					{
 						title: "커밋",
 						icon: "💻",
 						current: currentCommits,
-						last: lastYearData.commits,
-						change: calculateChange(currentCommits, lastYearData.commits),
-						changeRate: calculateChangeRate(currentCommits, lastYearData.commits),
+						last: lastCommits,
+						change: calculateChange(currentCommits, lastCommits),
+						changeRate: calculateChangeRate(currentCommits, lastCommits),
 					},
 					{
-						title: "Pull Request",
+						title: "생성한 Pull Request",
 						icon: "🔀",
-						current: currentPRs,
-						last: lastYearData.prs,
-						change: calculateChange(currentPRs, lastYearData.prs),
-						changeRate: calculateChangeRate(currentPRs, lastYearData.prs),
+						current: currentMyCreatedPrs,
+						last: lastMyCreatedPrs,
+						change: calculateChange(currentMyCreatedPrs, lastMyCreatedPrs),
+						changeRate: calculateChangeRate(currentMyCreatedPrs, lastMyCreatedPrs),
 					},
 					{
-						title: "이슈",
-						icon: "🎯",
-						current: currentIssues,
-						last: lastYearData.issues,
-						change: calculateChange(currentIssues, lastYearData.issues),
-						changeRate: calculateChangeRate(currentIssues, lastYearData.issues),
-					},
-					{
-						title: "리뷰",
+						title: "리뷰한 Pull Request",
 						icon: "👀",
-						current: currentReviews,
-						last: lastYearData.reviews,
-						change: calculateChange(currentReviews, lastYearData.reviews),
-						changeRate: calculateChangeRate(currentReviews, lastYearData.reviews),
+						current: currentPrsReviewedByMe,
+						last: lastPrsReviewedByMe,
+						change: calculateChange(currentPrsReviewedByMe, lastPrsReviewedByMe),
+						changeRate: calculateChangeRate(currentPrsReviewedByMe, lastPrsReviewedByMe),
+					},
+					{
+						title: "이슈 & 디스커션",
+						icon: "🎯",
+						current: currentParticipatedIssues,
+						last: lastParticipatedIssues,
+						change: calculateChange(currentParticipatedIssues, lastParticipatedIssues),
+						changeRate: calculateChangeRate(currentParticipatedIssues, lastParticipatedIssues),
 					},
 			  ];
 

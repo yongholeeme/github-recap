@@ -1,15 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getAverageMergeTime } from '@/lib/github/pullRequests';
-import { queryKeys } from '@/lib/queryKeys';
 import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
+import { useMyAverageMergeTime } from '@/lib/hooks/useMyAverageMergeTime';
 
 export default function AverageMergeTimeCard() {
 	const { year } = useYear();
-	const { data, isFetching } = useQuery({
-		queryKey: queryKeys.pullRequests.averageMergeTime(year),
-		queryFn: () => getAverageMergeTime(year),
-	});
+	const { data, isFetching } = useMyAverageMergeTime(year);
 
 	if (data === null || data === undefined) {
 		return (

@@ -1,16 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/queryKeys';
-import { getMentionsCount } from '@/lib/github/issues';
 import { useYear } from '@/contexts/YearContext';
 import BigNumberSection from '@/components/BigNumberSection';
 import TopMentionedByCard from '@/components/stats/TopMentionedByCard';
+import { useCountOfMentionsMe } from '@/lib/hooks/useCountOfMentionsMe';
 
 export default function MentionsSection() {
 	const { year } = useYear();
-	const { data: mentionsCount, isFetching } = useQuery({
-		queryKey: queryKeys.mentions.received(year),
-		queryFn: () => getMentionsCount(year),
-	});
+	const { data: mentionsCount, isFetching } = useCountOfMentionsMe(year)
 
 	return (
 		<>

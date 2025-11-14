@@ -1,15 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMostDiscussedPR } from '@/lib/github/pullRequests';
-import { queryKeys } from '@/lib/queryKeys';
 import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
+import { useMostDiscussedPR } from '@/lib/hooks/useMostDiscussedPR';
 
 export default function MostDiscussedPRCard() {
 	const { year } = useYear();
-	const { data, isFetching } = useQuery({
-		queryKey: queryKeys.pullRequests.mostDiscussed(year),
-		queryFn: () => getMostDiscussedPR(year),
-	});
+	const { data, isFetching } = useMostDiscussedPR(year);
 
 	if (!data) {
 		return (

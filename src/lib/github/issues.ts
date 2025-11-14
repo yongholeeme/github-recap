@@ -1,23 +1,7 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
 import { getDateRange } from "@/lib/github/utils";
 
-export async function getIssuesCount(
-  year: number = new Date().getFullYear()
-): Promise<number> {
-  const octokit = await getOctokit();
-  const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
-
-  const query = `author:${username} type:issue created:${startDate}..${endDate}`;
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
-    per_page: 1, // Only need total_count
-  });
-
-  return data.total_count || 0;
-}
-
-export async function getIssueCommentsCount(
+export async function fetchCountOfIssueComments(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -33,7 +17,7 @@ export async function getIssueCommentsCount(
   return data.total_count || 0;
 }
 
-export async function getParticipatedIssuesCount(
+export async function fetchCountOfParticipatedIssues(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -50,7 +34,7 @@ export async function getParticipatedIssuesCount(
   return data.total_count || 0;
 }
 
-export async function getMentionsCount(
+export async function fetchCountOfMentionsMe(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -71,7 +55,7 @@ export interface MentionDetail {
   count: number;
 }
 
-export async function getTopMentionedBy(
+export async function fetchPeopleToMetionMe(
   year: number = new Date().getFullYear(),
   limit: number = 5
 ): Promise<MentionDetail[]> {
@@ -103,30 +87,18 @@ export async function getTopMentionedBy(
   // Count mentions by the issue/PR author
   const mentionCounts = new Map<string, number>();
 
-  console.log(
-    `[getTopMentionedBy] Found ${allItems.length} items where @${username} was mentioned`
-  );
-
   for (const item of allItems) {
     const author = item.user?.login;
     if (author && author !== username) {
       mentionCounts.set(author, (mentionCounts.get(author) || 0) + 1);
-      console.log(
-        `[getTopMentionedBy] ${author} mentioned you in: ${item.title}`,
-        item.html_url
-      );
     }
   }
-
-  console.log(mentionCounts);
 
   // Sort and return top mentions
   const results = Array.from(mentionCounts.entries())
     .map(([username, count]) => ({ username, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
-
-  console.log("[getTopMentionedBy] Top mentions:", results);
 
   return results;
 }
@@ -153,7 +125,7 @@ interface DiscussionCommentsResponse {
   };
 }
 
-export async function getDiscussionCommentsCount(
+export async function fetchCountOfDiscussionComments(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -210,7 +182,7 @@ export async function getDiscussionCommentsCount(
   }
 }
 
-export async function getParticipatedDiscussionsCount(
+export async function fetchCountOfParticipatedDiscussions(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
@@ -249,7 +221,7 @@ interface IssueDetail {
   closedAt?: string | null;
 }
 
-export async function getMostDiscussedIssue(
+export async function fetchMostDiscussedIssue(
   year: number = new Date().getFullYear()
 ): Promise<IssueDetail | null> {
   const octokit = await getOctokit();
@@ -297,7 +269,7 @@ interface DiscussionSearchResponse {
   };
 }
 
-export async function getMostDiscussedDiscussion(
+export async function fetchMostDiscussedDiscussion(
   year: number = new Date().getFullYear()
 ): Promise<IssueDetail | null> {
   const octokit = await getOctokit();

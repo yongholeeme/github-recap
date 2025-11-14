@@ -1,15 +1,10 @@
 import StatCard from '@/components/StatCard';
-import { getPullRequestReviewsCount } from '@/lib/github/pullRequests';;
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfPrsReviewedByMe } from '@/lib/hooks/useCountOfPrsReviewedByMe';
 
 export default function PullRequestReviewsCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.reviews(year),
-		queryFn: () => getPullRequestReviewsCount(year),
-	});
+	const { data, isFetching, error } = useCountOfPrsReviewedByMe(year);
 
 	return (
 		<StatCard

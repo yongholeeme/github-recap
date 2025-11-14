@@ -1,15 +1,10 @@
 import StatCard from '@/components/StatCard';
-import { getParticipatedIssuesCount } from '@/lib/github/issues';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfParticipatedIssues } from '@/lib/hooks/useCountOfParticipatedIssues';
 
 export default function ParticipatedIssuesCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.issues.participated(year),
-		queryFn: () => getParticipatedIssuesCount(year),
-	});
+	const { data, isFetching, error } = useCountOfParticipatedIssues(year);
 
 	return (
 		<StatCard

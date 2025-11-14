@@ -1,15 +1,10 @@
 import StatCard from '@/components/StatCard';
-import { getParticipatedDiscussionsCount } from '@/lib/github/issues';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfParticipatedDiscussions } from '@/lib/hooks/useCountOfParticipatedDiscussions';
 
 export default function ParticipatedDiscussionsCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.discussions.participated(year),
-		queryFn: () => getParticipatedDiscussionsCount(year),
-	});
+	const { data, isFetching, error } = useCountOfParticipatedDiscussions(year);
 
 	return (
 		<StatCard

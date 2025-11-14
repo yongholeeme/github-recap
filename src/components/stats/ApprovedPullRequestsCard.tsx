@@ -1,17 +1,11 @@
 
 import StatCard from '@/components/StatCard';
-import { useQuery } from '@tanstack/react-query';
-import { getApprovedPullRequestsCount } from '@/lib/github/pullRequests';;
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfPrsApprovedByMe } from '@/lib/hooks/useCountOfPrsApprovedByMe';
 
 export default function ApprovedPullRequestsCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.approved(year),
-		queryFn: () => getApprovedPullRequestsCount(year),
-		
-	});
+	const { data, isFetching, error } = useCountOfPrsApprovedByMe(year);
 
 	return (
 		<StatCard

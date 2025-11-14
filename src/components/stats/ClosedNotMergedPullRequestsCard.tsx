@@ -1,17 +1,11 @@
 
 import StatCard from '@/components/StatCard';
-import { useQuery } from '@tanstack/react-query';
-import { getClosedNotMergedPullRequestsCount } from '@/lib/github/pullRequests';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfMyClosedPrsNotMerged } from '@/lib/hooks/useCountOfMyClosedPrsNotMerged';
 
 export default function ClosedNotMergedPullRequestsCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.pullRequests.closedNotMerged(year),
-		queryFn: () => getClosedNotMergedPullRequestsCount(year),
-		
-	});
+	const { data, isFetching, error } = useCountOfMyClosedPrsNotMerged(year);
 
 	return (
 		<StatCard

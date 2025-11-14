@@ -1,9 +1,9 @@
-import { useCommitsData } from '@/lib/hooks/useCommitsData';
 import { useYear } from '@/contexts/YearContext';
 import { type CommitData } from '@/lib/github/commits';
 import { useMemo } from 'react';
 import BarChart from '@/components/charts/BarChart';
 import InsightSection from '@/components/InsightSection';
+import { useCommits } from '@/lib/hooks/useCommits';
 
 function calculateCommitsByMonth(commits: CommitData) {
 	const monthCounts: Record<number, number> = {};
@@ -32,7 +32,7 @@ function getTopMonths(monthCounts: Record<number, number>) {
 
 export default function CommitTimelineSection() {
 	const { year } = useYear();
-	const { data: commits, isFetching } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommits(year);
 	
 	const timelineData = useMemo(() => {
 		if (!commits) return null;

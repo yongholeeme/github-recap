@@ -1,15 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getSlowestMergedPR } from '@/lib/github/pullRequests';
-import { queryKeys } from '@/lib/queryKeys';
 import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
+import { useMySlowestMergedPR } from '@/lib/hooks/useMySlowestMergedPR';
 
 export default function SlowestMergedPRCard() {
 	const { year } = useYear();
-	const { data, isFetching } = useQuery({
-		queryKey: queryKeys.pullRequests.slowest(year),
-		queryFn: () => getSlowestMergedPR(year),
-	});
+	const { data, isFetching } = useMySlowestMergedPR(year);
 
 	if (!data || !data.mergedAt) {
 		return (

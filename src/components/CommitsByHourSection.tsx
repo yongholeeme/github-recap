@@ -1,4 +1,3 @@
-import { useCommitsData } from '@/lib/hooks/useCommitsData';
 import { useYear } from '@/contexts/YearContext';
 import { type CommitData } from '@/lib/github/commits';
 import { useMemo, useState, useEffect, useRef } from 'react';
@@ -6,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import InsightSection from '@/components/InsightSection';
 import BarChart from '@/components/charts/BarChart';
 import Toast from '@/components/Toast';
+import { useCommits } from '@/lib/hooks/useCommits';
 
 function calculateCommitsByHour(commits: CommitData) {
 	const hourCounts: Record<number, number> = {};
@@ -70,7 +70,7 @@ function getTimeRangeRecommendation(peakHours: Array<[string, number]>) {
 
 export default function CommitsByHourSection() {
 	const { year } = useYear();
-	const { data: commits, isFetching } = useCommitsData(year);
+	const { data: commits, isFetching } = useCommits(year);
 	const [showToast, setShowToast] = useState(false);
 	const hasShownToast = useRef(false);
 	

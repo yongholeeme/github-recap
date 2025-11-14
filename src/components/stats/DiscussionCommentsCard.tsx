@@ -1,15 +1,10 @@
 import StatCard from '@/components/StatCard';
-import { getDiscussionCommentsCount } from '@/lib/github/issues';
-import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/lib/queryKeys';
 import { useYear } from '@/contexts/YearContext';
+import { useCountOfDiscussionComments } from '@/lib/hooks/useCountOfDiscussionComments';
 
 export default function DiscussionCommentsCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = useQuery({
-		queryKey: queryKeys.discussions.comments(year),
-		queryFn: () => getDiscussionCommentsCount(year),
-	});
+	const { data, isFetching, error } = useCountOfDiscussionComments(year);
 
 	return (
 		<StatCard

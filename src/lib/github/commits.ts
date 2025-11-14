@@ -63,6 +63,7 @@ async function fetchCommitsForDateRange(
         committedDate: item.commit.author?.date || "",
         url: item.html_url,
         repository: item.repository.full_name,
+        private: item.repository.private
       }));
 
       commits.push(...pageCommits);
@@ -72,7 +73,7 @@ async function fetchCommitsForDateRange(
   return commits;
 }
 
-export async function getAllCommitsData(
+export async function fetchCommits(
   year: number = new Date().getFullYear()
 ): Promise<CommitData> {
   const octokit = await getOctokit();
@@ -96,35 +97,20 @@ export async function getAllCommitsData(
   return allCommits;
 }
 
-export async function getCommitsCount(
+export async function fetchCountOfCommits(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // Use GraphQL to get only the commit count
-  const query = `
-    query($username: String!, $from: DateTime!, $to: DateTime!) {
-      user(login: $username) {
-        contributionsCollection(from: $from, to: $to) {
-          totalCommitContributions
-        }
-      }
-    }
-  `;
+  const searchQuery = `author:${username} committer-date:${startDate}..${endDate}`;
 
-  const result = await octokit.graphql<{
-    user: {
-      contributionsCollection: {
-        totalCommitContributions: number;
-      };
-    };
-  }>(query, {
-    username,
-    from: startDate,
-    to: endDate,
+  const restResult = await octokit.rest.search.commits({
+    q: searchQuery,
+    per_page: 1,
+    page: 1,
   });
 
-  return result.user.contributionsCollection.totalCommitContributions || 0;
+  return restResult.data.total_count || 0;
 }
