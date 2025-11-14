@@ -2,12 +2,12 @@ import type { User } from "@supabase/supabase-js";
 import { useState } from "react";
 
 interface HeroSectionProps {
-	user: User;
+	user: User | null;
 	onLogout: () => void;
 }
 
 export default function HeroSection({ user, onLogout }: HeroSectionProps) {
-	const userMetadata = user.user_metadata;
+	const userMetadata = user?.user_metadata;
 	const avatarUrl = userMetadata?.avatar_url || "";
 	const userName = userMetadata?.user_name || "";
 	const currentYear = new Date().getFullYear();

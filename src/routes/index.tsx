@@ -5,7 +5,9 @@ import { queryClient } from '@/main';
 import '@/lib/github/rateLimit'; // Auto-logs rate limit
 import HeroSection from '@/components/HeroSection';
 import CommitActivitySection from '@/components/CommitActivitySection';
-import CommitPatternsSection from '@/components/CommitPatternsSection';
+import CommitsByHourSection from '@/components/CommitsByHourSection';
+import CommitsByDaySection from '@/components/CommitsByDaySection';
+import CommitTimelineSection from '@/components/CommitTimelineSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
 import MentionsSection from '@/components/MentionsSection';
@@ -108,14 +110,6 @@ function Index() {
 		}
 	};
 
-	if (isLoading) {
-		return (
-			<div className="p-8">
-				<p>로딩 중...</p>
-			</div>
-		);
-	}
-
 	const handleLogout = () => {
 		// Clear all React Query cache
 		queryClient.clear();
@@ -125,8 +119,15 @@ function Index() {
 		setUser(null);
 	};
 
+	if (isLoading) {
+		return (
+				<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+					<HeroSection user={null} onLogout={handleLogout} />
+				</div>
+		);
+	}
+
 	if (user) {
-		console.log(user)
 		return (
 			<>
 				<RefreshButton />
@@ -134,7 +135,9 @@ function Index() {
 				<div className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
 					<HeroSection user={user} onLogout={handleLogout} />
 					<CommitActivitySection />
-					<CommitPatternsSection />
+					<CommitsByHourSection />
+					<CommitsByDaySection />
+					<CommitTimelineSection />
 					<IssueActivitySection />
 					<PullRequestActivitySection />
 					<MentionsSection />
