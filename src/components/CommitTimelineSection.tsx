@@ -54,7 +54,6 @@ export default function CommitTimelineSection() {
 	}
 
 	const maxMonth = timelineData.topMonths[0];
-	const peakRate = ((Number(maxMonth[1]) / timelineData.totalCommits) * 100).toFixed(0);
 
 	const maxCount = Math.max(...Object.values(timelineData.monthCounts));
 	const chartData = Object.entries(timelineData.monthCounts).map(([month, count]) => ({
@@ -77,7 +76,6 @@ export default function CommitTimelineSection() {
 				{ label: '활동 개월', value: `${timelineData.activeMonths}/12` },
 				{ label: '월평균 커밋', value: timelineData.avgPerMonth },
 				{ label: '최고 기록', value: `${maxMonth[1]}개` },
-				{ label: '피크 집중도', value: `${peakRate}%` }
 			]}
 		/>
 	);
