@@ -49,6 +49,23 @@ export async function getIssueCommentsCount(
   return data.total_count || 0;
 }
 
+export async function getParticipatedIssuesCount(
+  year: number = new Date().getFullYear()
+): Promise<number> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  // Search for issues where user is involved (author, commenter, or mentioned)
+  const query = `involves:${username} type:issue created:${startDate}..${endDate}`;
+  const { data } = await octokit.rest.search.issuesAndPullRequests({
+    q: query,
+    per_page: 1, // Only need total_count
+  });
+
+  return data.total_count || 0;
+}
+
 export async function getMentionsCount(
   year: number = new Date().getFullYear()
 ): Promise<number> {
@@ -261,44 +278,145 @@ export async function getTopMentionedUsers(
   return results;
 }
 
-export async function getMentionedByCount(
+export async function getMentionedUsersCount(
+  year: number = new Date().getFullYear()
+): Promise<number> {
+  const details = await getTopMentionedUsers(year, 100);
+  return details.reduce((sum, detail) => sum + detail.count, 0);
+}
+
+// GitHub Discussions APIs (using GraphQL)
+interface DiscussionCountResponse {
+  search: {
+    discussionCount: number;
+  };
+}
+
+interface DiscussionCommentsResponse {
+  search: {
+    nodes: Array<{
+      comments?: {
+        nodes: Array<{
+          author: {
+            login: string;
+          } | null;
+          createdAt: string;
+        }>;
+      };
+    }>;
+  };
+}
+
+export async function getCreatedDiscussionsCount(
   year: number = new Date().getFullYear()
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `mentions:${username} created:${startDate}..${endDate}`;
+  try {
+    const query = `
+      query($searchQuery: String!) {
+        search(query: $searchQuery, type: DISCUSSION, first: 1) {
+          discussionCount
+        }
+      }
+    `;
 
-  // Fetch with pagination to count all items
-  let totalCount = 0;
-  let page = 1;
-  let hasMore = true;
-
-  while (hasMore && page <= 10) {
-    // Max 1000 items
-    const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: query,
-      per_page: 100,
-      page,
+    const searchQuery = `author:${username} created:${startDate}..${endDate}`;
+    const response = await octokit.graphql<DiscussionCountResponse>(query, {
+      searchQuery,
     });
 
-    // Count items where author is not the current user
-    const validItems = data.items.filter(
-      (item) => item.user?.login && item.user.login !== username
-    );
-    totalCount += validItems.length;
-
-    hasMore = data.items.length === 100;
-    page++;
+    return response.search.discussionCount || 0;
+  } catch (error) {
+    console.error("Error fetching discussions count:", error);
+    return 0;
   }
-
-  return totalCount;
 }
 
-export async function getMentionedUsersCount(
+export async function getDiscussionCommentsCount(
   year: number = new Date().getFullYear()
 ): Promise<number> {
-  const details = await getTopMentionedUsers(year, 100);
-  return details.reduce((sum, detail) => sum + detail.count, 0);
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  try {
+    // Get all discussions the user commented on
+    const query = `
+      query($searchQuery: String!) {
+        search(query: $searchQuery, type: DISCUSSION, first: 100) {
+          nodes {
+            ... on Discussion {
+              comments(first: 100) {
+                nodes {
+                  author {
+                    login
+                  }
+                  createdAt
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const searchQuery = `commenter:${username} created:${startDate}..${endDate}`;
+    const response = await octokit.graphql<DiscussionCommentsResponse>(query, {
+      searchQuery,
+    });
+
+    let totalComments = 0;
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    for (const discussion of response.search.nodes || []) {
+      if (discussion?.comments?.nodes) {
+        for (const comment of discussion.comments.nodes) {
+          if (comment.author?.login === username) {
+            const commentDate = new Date(comment.createdAt);
+            if (commentDate >= start && commentDate <= end) {
+              totalComments++;
+            }
+          }
+        }
+      }
+    }
+
+    return totalComments;
+  } catch (error) {
+    console.error("Error fetching discussion comments count:", error);
+    return 0;
+  }
+}
+
+export async function getParticipatedDiscussionsCount(
+  year: number = new Date().getFullYear()
+): Promise<number> {
+  const octokit = await getOctokit();
+  const username = await getUsername();
+  const { startDate, endDate } = getDateRange(year);
+
+  try {
+    // Get discussions where user is involved (author or commenter)
+    const query = `
+      query($searchQuery: String!) {
+        search(query: $searchQuery, type: DISCUSSION, first: 1) {
+          discussionCount
+        }
+      }
+    `;
+
+    const searchQuery = `involves:${username} created:${startDate}..${endDate}`;
+    const response = await octokit.graphql<DiscussionCountResponse>(query, {
+      searchQuery,
+    });
+
+    return response.search.discussionCount || 0;
+  } catch (error) {
+    console.error("Error fetching participated discussions count:", error);
+    return 0;
+  }
 }

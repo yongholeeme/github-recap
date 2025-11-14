@@ -26,6 +26,7 @@ export const queryKeys = {
     all: () => ["github-issues"] as const,
     closed: () => ["github-closed-issues"] as const,
     comments: () => ["github-issue-comments"] as const,
+    participated: () => ["github-participated-issues"] as const,
   },
 
   // Repositories 관련
@@ -42,6 +43,14 @@ export const queryKeys = {
     receivedBy: () => ["github-mentions-received-by"] as const,
     sent: () => ["github-mentions-sent"] as const,
     sentTo: () => ["github-mentions-sent-to"] as const,
+  },
+
+  // Discussions 관련
+  discussions: {
+    all: () => ["github-discussions"] as const,
+    created: () => ["github-created-discussions"] as const,
+    comments: () => ["github-discussion-comments"] as const,
+    participated: () => ["github-participated-discussions"] as const,
   },
 
   // Stats 관련

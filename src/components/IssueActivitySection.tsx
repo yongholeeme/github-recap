@@ -1,7 +1,9 @@
 import CreatedIssuesCard from '@/components/stats/CreatedIssuesCard';
-import ClosedIssuesCard from '@/components/stats/ClosedIssuesCard';
 import IssueCommentsCard from '@/components/stats/IssueCommentsCard';
-import MentionsCard from '@/components/stats/MentionsCard';
+import ParticipatedIssuesCard from '@/components/stats/ParticipatedIssuesCard';
+import CreatedDiscussionsCard from '@/components/stats/CreatedDiscussionsCard';
+import DiscussionCommentsCard from '@/components/stats/DiscussionCommentsCard';
+import ParticipatedDiscussionsCard from '@/components/stats/ParticipatedDiscussionsCard';
 
 export default function IssueActivitySection() {
 	return (
@@ -19,16 +21,18 @@ export default function IssueActivitySection() {
 						해결합니다
 					</h2>
 					<p className="text-lg sm:text-xl text-gray-400 font-medium">
-						이슈로 시작해 해결로 끝나는 여정
+						이슈와 토론으로 함께 성장하는 커뮤니티
 					</p>
 				</div>
 
-				{/* Stats Grid */}
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+				{/* Stats Grid - Clean 3x2 layout */}
+				<div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+					<ParticipatedIssuesCard />
 					<CreatedIssuesCard />
-					<ClosedIssuesCard />
 					<IssueCommentsCard />
-					<MentionsCard />
+					<ParticipatedDiscussionsCard />
+					<CreatedDiscussionsCard />
+					<DiscussionCommentsCard />
 				</div>
 			</div>
 		</div>
