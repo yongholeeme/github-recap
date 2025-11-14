@@ -32,44 +32,71 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 				<div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 			</div>
 
-			{/* Logout button */}
-			{user&& <button
-				type="button"
-				onClick={handleLogout}
-				className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 px-4 py-2 text-white/50 hover:text-white/80 text-sm transition-colors"
-			>
-				로그아웃
-			</button>}
+			{/* Top bar - Profile badge and logout */}
+			{user && (
+				<div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 flex items-center gap-3">
+					{/* Profile badge */}
+					{userName && (
+						<div className="inline-flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-full shadow-xl hover:shadow-2xl hover:border-white/30 transition-all duration-300 group">
+							{avatarUrl && (
+								<div className="relative">
+									<img
+										src={avatarUrl}
+										alt={userName}
+										onLoad={() => setShowAvatar(true)}
+										onError={() => setShowAvatar(false)}
+										className={`w-8 h-8 rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-300 ${showAvatar ? 'opacity-100 scale-100' : 'opacity-0 scale-50 absolute'}`}
+									/>
+									<div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-sm group-hover:blur-md transition-all duration-300" />
+								</div>
+							)}
+							<span className="text-sm sm:text-base font-bold text-white/95 tracking-tight pr-1 group-hover:text-white transition-colors duration-300">
+								@{userName}
+							</span>
+						</div>
+					)}
+					
+					{/* Logout button */}
+					<button
+						type="button"
+						onClick={handleLogout}
+						className="px-4 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium text-white/60 hover:text-white/90 hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+					>
+						로그아웃
+					</button>
+				</div>
+			)}
 
 			{/* Main content - Apple Event Style */}
 			<div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
-				{/* Main title - Gradient & Bold */}
-				<h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-[-0.02em] mb-16">
-					<span className="block text-gray-200">
+				{/* Main title - Gradient & Bold with Glow */}
+				<h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-[-0.02em] mb-16 relative">
+					{/* Glow layers */}
+					<span className="absolute inset-0 blur-3xl opacity-30 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500" aria-hidden="true">
+						<span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500">
+							{year}
+						</span>
+						<span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 mt-2">
+							GitHub Wrapped
+						</span>
+					</span>
+					<span className="absolute inset-0 blur-2xl opacity-20 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400" aria-hidden="true">
+						<span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400">
+							{year}
+						</span>
+						<span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 mt-2">
+							GitHub Wrapped
+						</span>
+					</span>
+					
+					{/* Main text */}
+					<span className="relative block text-gray-200">
 						{year}
 					</span>
-					<span className="block text-gray-200 mt-2">
+					<span className="relative block text-gray-200 mt-2">
 						GitHub Wrapped
 					</span>
 				</h1>
-
-				{/* Profile badge - Minimal */}
-				{userName && (
-					<div className="inline-flex items-center gap-2.5 px-5 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-lg mb-20">
-						{avatarUrl && (
-							<img
-								src={avatarUrl}
-								alt={userName}
-								onLoad={() => setShowAvatar(true)}
-								onError={() => setShowAvatar(false)}
-								className={`w-7 h-7 rounded-full transition-all duration-300 ${showAvatar ? 'opacity-100 scale-100' : 'opacity-0 scale-50 absolute'}`}
-							/>
-						)}
-						<span className="text-base sm:text-lg font-semibold text-white/90 tracking-tight">
-							@{userName}
-						</span>
-					</div>
-				)}
 
 				{/* Scroll CTA - Blue accent */}
 				<div className="inline-flex flex-col items-center gap-3 text-blue-400 hover:text-blue-300 transition-colors cursor-default">
