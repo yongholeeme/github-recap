@@ -12,7 +12,6 @@ import MentionsSection from '@/components/MentionsSection';
 import GrowthSection from '@/components/GrowthSection';
 import EndingSection from '@/components/EndingSection';
 import RefreshButton from '@/components/RefreshButton';
-import ClearDataButton from '@/components/ClearDataButton';
 import LoginModal from '@/components/LoginModal';
 import LoginToast from '@/components/LoginToast';
 import { YearProvider } from '@/contexts/YearContext';
@@ -125,7 +124,6 @@ export default function YearRecap({ year }: YearRecapProps) {
 			{user && (
 				<>
 					<RefreshButton />
-					<ClearDataButton />
 				</>
 			)}
 			

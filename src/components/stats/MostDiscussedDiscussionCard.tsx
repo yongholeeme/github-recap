@@ -20,7 +20,7 @@ export default function MostDiscussedDiscussionCard() {
 	return (
 		<StatCard
 			title="가장 치열했던 디스커션"
-			value={`${data.comments}개`}
+			value={`${data.comments}개의 댓글`}
 			description={data.title}
 			link={data.url}
 			isFetching={isFetching}

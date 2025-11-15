@@ -209,8 +209,8 @@ export async function fetchMostDiscussedIssue(
   const { startDate, endDate } = getDateRange(year);
 
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: `involves:${username} type:issue created:${startDate}..${endDate} sort:comments-desc`,
-    per_page: 1,
+    q: `involves:${username} type:issue created:${startDate}..${endDate}`,
+    per_page: 100,
     sort: "comments",
     order: "desc",
   });
@@ -229,24 +229,6 @@ export async function fetchMostDiscussedIssue(
   };
 }
 
-interface DiscussionDetail {
-  title: string;
-  url: string;
-  comments: {
-    totalCount: number;
-  };
-  createdAt: string;
-  repository: {
-    nameWithOwner: string;
-  };
-}
-
-interface DiscussionSearchResponse {
-  search: {
-    nodes: Array<DiscussionDetail | null>;
-  };
-}
-
 export async function fetchMostDiscussedDiscussion(
   year: number
 ): Promise<IssueDetail | null> {
@@ -257,17 +239,22 @@ export async function fetchMostDiscussedDiscussion(
   try {
     const query = `
       query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 1) {
+        search(query: $searchQuery, type: DISCUSSION, first: 100) {
           nodes {
             ... on Discussion {
               title
               url
-              comments {
-                totalCount
-              }
               createdAt
               repository {
                 nameWithOwner
+              }
+              comments(first: 100) {
+                totalCount
+                nodes {
+                  replies(first: 100) {
+                    totalCount
+                  }
+                }
               }
             }
           }
@@ -276,22 +263,59 @@ export async function fetchMostDiscussedDiscussion(
     `;
 
     // Use involves: to get discussions the user participated in (author or commenter)
-    const searchQuery = `involves:${username} created:${startDate}..${endDate} sort:comments-desc`;
-    const response = await octokit.graphql<DiscussionSearchResponse>(query, {
+    // Note: GraphQL search doesn't support sort parameter, need to fetch multiple and sort manually
+    const searchQuery = `involves:${username} created:${startDate}..${endDate}`;
+    const response = await octokit.graphql<{
+      search: {
+        nodes: Array<{
+          title: string;
+          url: string;
+          createdAt: string;
+          repository: { nameWithOwner: string };
+          comments: {
+            totalCount: number;
+            nodes: Array<{
+              replies: {
+                totalCount: number;
+              };
+            }>;
+          };
+        } | null>;
+      };
+    }>(query, {
       searchQuery,
     });
 
-    const discussion = response.search.nodes[0];
-    if (!discussion) return null;
+    if (!response.search.nodes || response.search.nodes.length === 0) return null;
 
-    return {
-      title: discussion.title,
-      url: discussion.url,
-      number: 0, // Discussions don't have numbers in the same way
-      repo: discussion.repository.nameWithOwner,
-      comments: discussion.comments.totalCount,
-      createdAt: discussion.createdAt,
-    };
+    // Calculate total comments (comments + all replies) for each discussion and find the most discussed one
+    let mostDiscussed: IssueDetail | null = null;
+    let maxComments = -1;
+
+    for (const discussion of response.search.nodes) {
+      if (!discussion) continue;
+
+      // Total = direct comments + all replies
+      const totalReplies = discussion.comments.nodes.reduce(
+        (sum, comment) => sum + comment.replies.totalCount,
+        0
+      );
+      const totalComments = discussion.comments.totalCount + totalReplies;
+
+      if (totalComments > maxComments) {
+        maxComments = totalComments;
+        mostDiscussed = {
+          title: discussion.title,
+          url: discussion.url,
+          number: 0, // Discussions don't have numbers in the same way
+          repo: discussion.repository.nameWithOwner,
+          comments: totalComments,
+          createdAt: discussion.createdAt,
+        };
+      }
+    }
+
+    return mostDiscussed;
   } catch (error) {
     console.error("Error fetching most discussed discussion:", error);
     return null;
