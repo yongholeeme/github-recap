@@ -2,7 +2,7 @@ import { fetchCommitsByMonth } from '@/lib/github/commits';
 import { queryKeys } from "@/lib/queryKeys";
 import { useQueries } from "@tanstack/react-query";
 
-export function useCommits(year: number = new Date().getFullYear()) {
+export function useCommits(year: number) {
   const queries = useQueries({
     queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
       queryKey: queryKeys.commits.byMonth(year, month),

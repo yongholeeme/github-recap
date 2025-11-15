@@ -44,7 +44,7 @@ export async function fetchCommitsByMonth(
 }
 
 export async function fetchCountOfCommits(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();

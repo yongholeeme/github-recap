@@ -1,6 +1,6 @@
 import { startOfMonth, endOfMonth, startOfYear, endOfYear, format } from 'date-fns';
 
-export function getDateRange(year: number = new Date().getFullYear()) {
+export function getDateRange(year: number) {
   const yearStart = startOfYear(new Date(year, 0, 1));
   const yearEnd = endOfYear(new Date(year, 11, 31));
   

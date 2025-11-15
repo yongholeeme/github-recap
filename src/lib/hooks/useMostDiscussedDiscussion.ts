@@ -3,7 +3,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 
 export function useMostDiscussedDiscussion(
-  year: number = new Date().getFullYear()
+  year: number
 ) {
   return useQuery({
     queryKey: queryKeys.discussions.mostDiscussed(year),

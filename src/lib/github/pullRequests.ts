@@ -2,7 +2,7 @@ import { getOctokit, getUsername } from "@/lib/github/auth";
 import { getDateRange, getMonthDateRange } from "@/lib/github/utils";
 
 export async function fetchCountOfMyCreatedPrs(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -17,7 +17,7 @@ export async function fetchCountOfMyCreatedPrs(
 }
 
 export async function fetchCountOfMyMergedPrs(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -32,7 +32,7 @@ export async function fetchCountOfMyMergedPrs(
 }
 
 export async function fetchCountOfPrsReviewedByMe(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -47,7 +47,7 @@ export async function fetchCountOfPrsReviewedByMe(
 }
 
 export async function fetchCountOfParticipatedPrs(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -62,7 +62,7 @@ export async function fetchCountOfParticipatedPrs(
 }
 
 export async function fetchCountOfPrsApprovedByMe(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -77,7 +77,7 @@ export async function fetchCountOfPrsApprovedByMe(
 }
 
 export async function fetchCountOfPrsRequestedChangeByMe(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -92,7 +92,7 @@ export async function fetchCountOfPrsRequestedChangeByMe(
 }
 
 export async function fetchCountOfCommentsByMeToPr(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -107,7 +107,7 @@ export async function fetchCountOfCommentsByMeToPr(
 }
 
 export async function fetchCountOfMyClosedPrsNotMerged(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -158,7 +158,7 @@ interface PRGraphQLResponse {
 }
 
 export async function fetchMostDiscussedPR(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<PRDetail | null> {
   const octokit = await getOctokit();
   const username = await getUsername();

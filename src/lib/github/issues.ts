@@ -2,7 +2,7 @@ import { getOctokit, getUsername } from "@/lib/github/auth";
 import { getDateRange } from "@/lib/github/utils";
 
 export async function fetchCountOfIssueComments(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -17,7 +17,7 @@ export async function fetchCountOfIssueComments(
 }
 
 export async function fetchCountOfParticipatedIssues(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -32,7 +32,7 @@ export async function fetchCountOfParticipatedIssues(
 }
 
 export async function fetchCountOfMentionsMe(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -52,7 +52,7 @@ export interface MentionDetail {
 }
 
 export async function fetchPeopleToMetionMe(
-  year: number = new Date().getFullYear(),
+  year: number,
   limit: number = 5
 ): Promise<MentionDetail[]> {
   const octokit = await getOctokit();
@@ -119,7 +119,7 @@ interface DiscussionCommentsResponse {
 }
 
 export async function fetchCountOfDiscussionComments(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -176,7 +176,7 @@ export async function fetchCountOfDiscussionComments(
 }
 
 export async function fetchCountOfParticipatedDiscussions(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<number> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -215,7 +215,7 @@ interface IssueDetail {
 }
 
 export async function fetchMostDiscussedIssue(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<IssueDetail | null> {
   const octokit = await getOctokit();
   const username = await getUsername();
@@ -261,7 +261,7 @@ interface DiscussionSearchResponse {
 }
 
 export async function fetchMostDiscussedDiscussion(
-  year: number = new Date().getFullYear()
+  year: number
 ): Promise<IssueDetail | null> {
   const octokit = await getOctokit();
   const username = await getUsername();

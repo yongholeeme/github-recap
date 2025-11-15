@@ -3,7 +3,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 
 export function useCountOfPrsRequestedChangeByMe(
-  year: number = new Date().getFullYear()
+  year: number
 ) {
   return useQuery({
     queryKey: queryKeys.pullRequests.requestedChanges(year),

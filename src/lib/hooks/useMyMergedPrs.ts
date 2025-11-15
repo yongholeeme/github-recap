@@ -2,7 +2,7 @@ import { fetchMyMergedPRs } from '@/lib/github/pullRequests';
 import { queryKeys } from "@/lib/queryKeys";
 import { useQueries } from "@tanstack/react-query";
 
-function useMyMergedPrs(year: number = new Date().getFullYear()) {
+function useMyMergedPrs(year: number) {
   const queries = useQueries({
     queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
       queryKey: queryKeys.pullRequests.myMerged(year, month),
@@ -16,7 +16,7 @@ function useMyMergedPrs(year: number = new Date().getFullYear()) {
   }
 }
 
-export function useMyAverageMergeTime(year: number = new Date().getFullYear()) {
+export function useMyAverageMergeTime(year: number) {
   const {data, isFetching} = useMyMergedPrs(year)
 
   const averageMergeTime = (() => {
@@ -41,7 +41,7 @@ export function useMyAverageMergeTime(year: number = new Date().getFullYear()) {
   }
 }
 
-export function useMyFastestMergedPr(year: number = new Date().getFullYear()) {
+export function useMyFastestMergedPr(year: number) {
   const {data, isFetching} = useMyMergedPrs(year)
 
   const fastestPr = (() => {
@@ -80,7 +80,7 @@ export function useMyFastestMergedPr(year: number = new Date().getFullYear()) {
   }
 }
 
-export function useMySlowestMergedPr(year: number = new Date().getFullYear()) {
+export function useMySlowestMergedPr(year: number) {
   const {data, isFetching} = useMyMergedPrs(year)
 
   const slowestPr = (() => {

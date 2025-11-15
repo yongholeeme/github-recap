@@ -5,7 +5,7 @@
 export const queryKeys = {
   // Commits 관련
   commits: {
-    count: (year: number = new Date().getFullYear()) =>
+    count: (year: number) =>
       ["github-commit-count", year] as const,
     byMonth: (year: number, month: number) =>
       ["commits", year, month] as const,
@@ -13,52 +13,52 @@ export const queryKeys = {
 
   // Pull Requests 관련
   pullRequests: {
-    merged: (year: number = new Date().getFullYear()) =>
+    merged: (year: number) =>
       ["github-merged-prs", year] as const,
-    approved: (year: number = new Date().getFullYear()) =>
+    approved: (year: number) =>
       ["github-approved-prs", year] as const,
-    requestedChanges: (year: number = new Date().getFullYear()) =>
+    requestedChanges: (year: number) =>
       ["github-requested-changes", year] as const,
-    reviewComments: (year: number = new Date().getFullYear()) =>
+    reviewComments: (year: number) =>
       ["github-pr-review-comments", year] as const,
-    closedNotMerged: (year: number = new Date().getFullYear()) =>
+    closedNotMerged: (year: number) =>
       ["github-closed-not-merged-prs", year] as const,
-    mostDiscussed: (year: number = new Date().getFullYear()) =>
+    mostDiscussed: (year: number) =>
       ["github-most-discussed-pr", year] as const,
-    participated: (year: number = new Date().getFullYear()) =>
+    participated: (year: number) =>
       ["github-participated-prs", year] as const,
-    myCreated: (year: number = new Date().getFullYear()) =>
+    myCreated: (year: number) =>
       ["github-my-created-prs", year] as const,
-    reviewedByMe: (year: number = new Date().getFullYear()) =>
+    reviewedByMe: (year: number) =>
       ["github-prs-reviewed-by-me", year] as const,
     myMerged: (year: number, month: number) => ['prs', year, month] as const,
   },
 
   // Issues 관련
   issues: {
-    comments: (year: number = new Date().getFullYear()) =>
+    comments: (year: number) =>
       ["github-issue-comments", year] as const,
-    participated: (year: number = new Date().getFullYear()) =>
+    participated: (year: number) =>
       ["github-participated-issues", year] as const,
-    mostDiscussed: (year: number = new Date().getFullYear()) =>
+    mostDiscussed: (year: number) =>
       ["github-most-discussed-issue", year] as const,
   },
 
   // Mentions
   mentions: {
-    received: (year: number = new Date().getFullYear()) =>
+    received: (year: number) =>
       ["github-mentions-received", year] as const,
-    receivedBy: (year: number = new Date().getFullYear()) =>
+    receivedBy: (year: number) =>
       ["github-mentions-received-by", year] as const,
   },
 
   // Discussions 관련
   discussions: {
-    comments: (year: number = new Date().getFullYear()) =>
+    comments: (year: number) =>
       ["github-discussion-comments", year] as const,
-    participated: (year: number = new Date().getFullYear()) =>
+    participated: (year: number) =>
       ["github-participated-discussions", year] as const,
-    mostDiscussed: (year: number = new Date().getFullYear()) =>
+    mostDiscussed: (year: number) =>
       ["github-most-discussed-discussion", year] as const,
   },
 } as const;
