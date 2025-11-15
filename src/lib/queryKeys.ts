@@ -48,8 +48,8 @@ export const queryKeys = {
   mentions: {
     received: (year: number) =>
       ["github-mentions-received", year] as const,
-    receivedBy: (year: number) =>
-      ["github-mentions-received-by", year] as const,
+    receivedByMonth: (year: number, month: number) =>
+      ["mentions", year, month] as const,
   },
 
   // Discussions 관련

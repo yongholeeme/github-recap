@@ -1,5 +1,5 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
-import { getDateRange } from "@/lib/github/utils";
+import { getDateRange, getMonthDateRange } from "@/lib/github/utils";
 
 export async function fetchCountOfIssueComments(
   year: number
@@ -51,49 +51,36 @@ export interface MentionDetail {
   count: number;
 }
 
-export async function fetchPeopleToMetionMe(
+interface MentionItem {
+  user?: { login: string } | null;
+}
+
+export async function fetchMentionsByMonth(
   year: number,
-  limit: number = 5
-): Promise<MentionDetail[]> {
+  month: number,
+  page = 1
+): Promise<MentionItem[]> {
   const octokit = await getOctokit();
   const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
+  const { startDate, endDate } = getMonthDateRange(year, month);
 
-  // Fetch with pagination
-  const allItems = [];
-  let page = 1;
-  let hasMore = true;
+  const { data } = await octokit.rest.search.issuesAndPullRequests({
+    q: `mentions:${username} created:${startDate}..${endDate}`,
+    per_page: 100,
+    page,
+  });
 
-  while (hasMore && page <= 10) {
-    // Max 1000 items
-    const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: `mentions:${username} created:${startDate}..${endDate}`,
-      per_page: 100,
-      page,
-    });
+  const items = data.items;
+  const totalCount = data.total_count;
+  const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 items (10 pages)
 
-    allItems.push(...data.items);
-    hasMore = data.items.length === 100;
-    page++;
+  // Recursively fetch next page if available
+  if (page < maxPages) {
+    const nextPageItems = await fetchMentionsByMonth(year, month, page + 1);
+    return [...items, ...nextPageItems];
   }
 
-  // Count mentions by the issue/PR author
-  const mentionCounts = new Map<string, number>();
-
-  for (const item of allItems) {
-    const author = item.user?.login;
-    if (author && author !== username) {
-      mentionCounts.set(author, (mentionCounts.get(author) || 0) + 1);
-    }
-  }
-
-  // Sort and return top mentions
-  const results = Array.from(mentionCounts.entries())
-    .map(([username, count]) => ({ username, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, limit);
-
-  return results;
+  return items;
 }
 
 // GitHub Discussions APIs (using GraphQL)
