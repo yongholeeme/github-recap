@@ -6,7 +6,7 @@ export function useCountOfPrsApprovedByMe(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.approved(year),
+    queryKey: queryKeys.useCountOfPrsApprovedByMe(year),
     queryFn: () => fetchCountOfPrsApprovedByMe(year),
   });
 }

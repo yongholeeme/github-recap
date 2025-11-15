@@ -6,7 +6,7 @@ export function useCountOfCommentsByMeToPr(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.reviewComments(year),
+    queryKey: queryKeys.useCountOfCommentsByMeToPr(year),
     queryFn: () => fetchCountOfCommentsByMeToPr(year),
   });
 }

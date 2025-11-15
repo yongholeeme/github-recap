@@ -6,7 +6,7 @@ export function useCountOfMyClosedPrsNotMerged(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.closedNotMerged(year),
+    queryKey: queryKeys.useCountOfMyClosedPrsNotMerged(year),
     queryFn: () => fetchCountOfMyClosedPrsNotMerged(year),
   });
 }

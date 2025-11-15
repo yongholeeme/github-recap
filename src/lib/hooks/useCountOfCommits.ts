@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useCountOfCommits(year: number) {
   return useQuery({
-    queryKey: queryKeys.commits.count(year),
+    queryKey: queryKeys.useCountOfCommits(year),
     queryFn: () => fetchCountOfCommits(year),
   });
 }

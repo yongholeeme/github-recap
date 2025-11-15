@@ -6,7 +6,7 @@ export function useCountOfDiscussionComments(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.discussions.comments(year),
+    queryKey: queryKeys.useCountOfDiscussionComments(year),
     queryFn: () => fetchCountOfDiscussionComments(year),
   });
 }

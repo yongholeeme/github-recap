@@ -1,64 +1,60 @@
-/**
- * React Query의 모든 Query Key를 중앙에서 관리
- * 타입 안정성과 일관성을 위해 팩토리 함수 패턴 사용
- */
 export const queryKeys = {
-  // Commits 관련
-  commits: {
-    count: (year: number) =>
-      ["github-commit-count", year] as const,
-    byMonth: (year: number, month: number) =>
-      ["commits", year, month] as const,
-  },
+  useCountOfCommits: (year: number) => 
+    ['useCountOfCommits', year] as const,
+  useCommits: (year: number, month: number) => 
+    ['useCommits', year, month] as const,
 
-  // Pull Requests 관련
-  pullRequests: {
-    merged: (year: number) =>
-      ["github-merged-prs", year] as const,
-    approved: (year: number) =>
-      ["github-approved-prs", year] as const,
-    requestedChanges: (year: number) =>
-      ["github-requested-changes", year] as const,
-    reviewComments: (year: number) =>
-      ["github-pr-review-comments", year] as const,
-    closedNotMerged: (year: number) =>
-      ["github-closed-not-merged-prs", year] as const,
-    mostDiscussed: (year: number) =>
-      ["github-most-discussed-pr", year] as const,
-    participated: (year: number) =>
-      ["github-participated-prs", year] as const,
-    myCreated: (year: number) =>
-      ["github-my-created-prs", year] as const,
-    reviewedByMe: (year: number) =>
-      ["github-prs-reviewed-by-me", year] as const,
-    myMerged: (year: number, month: number) => ['prs', year, month] as const,
-  },
+  useCountOfMyMergedPrs: (year: number) =>
+    ['useCountOfMyMergedPrs', year] as const,
 
-  // Issues 관련
-  issues: {
-    comments: (year: number) =>
-      ["github-issue-comments", year] as const,
-    participated: (year: number) =>
-      ["github-participated-issues", year] as const,
-    mostDiscussed: (year: number) =>
-      ["github-most-discussed-issue", year] as const,
-  },
+  useMyMergedPrs: (year: number, month: number) => 
+    ['useMyMergedPrs', year, month] as const,
 
-  // Mentions
-  mentions: {
-    received: (year: number) =>
-      ["github-mentions-received", year] as const,
-    receivedByMonth: (year: number, month: number) =>
-      ["mentions", year, month] as const,
-  },
+  useCountOfPrsApprovedByMe: (year: number) =>
+    ['useCountOfPrsApprovedByMe', year] as const,
 
-  // Discussions 관련
-  discussions: {
-    comments: (year: number) =>
-      ["github-discussion-comments", year] as const,
-    participated: (year: number) =>
-      ["github-participated-discussions", year] as const,
-    mostDiscussed: (year: number) =>
-      ["github-most-discussed-discussion", year] as const,
-  },
+  useCountOfPrsRequestedChangeByMe: (year: number) =>
+    ['useCountOfPrsRequestedChangeByMe', year] as const,
+
+  useCountOfCommentsByMeToPr: (year: number) =>
+    ['useCountOfCommentsByMeToPr', year] as const,
+
+  useCountOfMyClosedPrsNotMerged: (year: number) =>
+    ['useCountOfMyClosedPrsNotMerged', year] as const,
+
+  useMostDiscussedPR: (year: number) =>
+    ['useMostDiscussedPR', year] as const,
+
+  useCountOfParticipatedPrs: (year: number) =>
+    ['useCountOfParticipatedPrs', year] as const,
+
+  useCountOfMyCreatedPrs: (year: number) =>
+    ['useCountOfMyCreatedPrs', year] as const,
+
+  useCountOfPrsReviewedByMe: (year: number) =>
+    ['useCountOfPrsReviewedByMe', year] as const,
+
+  useCountOfIssueComments: (year: number) =>
+    ['useCountOfIssueComments', year] as const,
+
+  useCountOfParticipatedIssues: (year: number) =>
+    ['useCountOfParticipatedIssues', year] as const,
+
+  useMostDiscussedIssue: (year: number) =>
+    ['useMostDiscussedIssue', year] as const,
+
+  useCountOfMentionsMe: (year: number) =>
+    ['useCountOfMentionsMe', year] as const,
+
+  usePeopleToMentionMe: (year: number, month: number) =>
+    ['usePeopleToMentionMe', year, month] as const,
+
+  useCountOfDiscussionComments: (year: number) =>
+    ['useCountOfDiscussionComments', year] as const,
+
+  useCountOfParticipatedDiscussions: (year: number) =>
+    ['useCountOfParticipatedDiscussions', year] as const,
+
+  useMostDiscussedDiscussion: (year: number) =>
+    ['useMostDiscussedDiscussion', year] as const,
 } as const;

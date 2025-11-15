@@ -6,7 +6,7 @@ export function useCountOfMyMergedPrs(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.merged(year),
+    queryKey: queryKeys.useCountOfMyMergedPrs(year),
     queryFn: () => fetchCountOfMyMergedPrs(year),
   });
 }

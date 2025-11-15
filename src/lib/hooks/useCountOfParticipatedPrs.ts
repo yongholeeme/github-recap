@@ -6,7 +6,7 @@ export function useCountOfParticipatedPrs(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.participated(year),
+    queryKey: queryKeys.useCountOfParticipatedPrs(year),
     queryFn: () => fetchCountOfParticipatedPrs(year),
   });
 }

@@ -6,7 +6,7 @@ export function useCountOfPrsReviewedByMe(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.reviewedByMe(year),
+    queryKey: queryKeys.useCountOfPrsReviewedByMe(year),
     queryFn: () => fetchCountOfPrsReviewedByMe(year),
   });
 }

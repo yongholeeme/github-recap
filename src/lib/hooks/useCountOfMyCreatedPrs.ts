@@ -6,7 +6,7 @@ export function useCountOfMyCreatedPrs(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.myCreated(year),
+    queryKey: queryKeys.useCountOfMyCreatedPrs(year),
     queryFn: () => fetchCountOfMyCreatedPrs(year),
   });
 }

@@ -5,7 +5,7 @@ import { useQueries } from "@tanstack/react-query";
 function useMyMergedPrs(year: number) {
   const queries = useQueries({
     queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
-      queryKey: queryKeys.pullRequests.myMerged(year, month),
+      queryKey: queryKeys.useMyMergedPrs(year, month),
       queryFn: () => fetchMyMergedPRs(year, month),
     })),
   });

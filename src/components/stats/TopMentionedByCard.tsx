@@ -4,7 +4,7 @@ import { usePeopleToMentionMe } from '@/lib/hooks/usePeopleToMentionMe';
 
 export default function TopMentionedByCard() {
 	const { year } = useYear();
-	const { data, isFetching, error } = usePeopleToMentionMe(year, 10);
+	const { data, isFetching } = usePeopleToMentionMe(year, 10);
 
 	return (
 		<div
@@ -27,10 +27,6 @@ export default function TopMentionedByCard() {
 						</p>
 					</div>
 				</div>
-
-				{error && (
-					<p className="text-sm text-red-400 font-semibold">오류 발생</p>
-				)}
 
 				<div className="space-y-2">
 					{(data && data.length > 0 ? data as MentionDetail[] : Array.from({ length: 10 }, (_, i) => ({ username: '', count: 0, index: i }))).slice(0, 10).map((item, index) => (

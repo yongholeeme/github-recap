@@ -6,7 +6,7 @@ export function useMostDiscussedPR(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.mostDiscussed(year),
+    queryKey: queryKeys.useMostDiscussedPR(year),
     queryFn: () => fetchMostDiscussedPR(year),
   });
 }

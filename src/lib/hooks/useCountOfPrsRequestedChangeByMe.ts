@@ -6,7 +6,7 @@ export function useCountOfPrsRequestedChangeByMe(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.pullRequests.requestedChanges(year),
+    queryKey: queryKeys.useCountOfPrsRequestedChangeByMe(year),
     queryFn: () => fetchCountOfPrsRequestedChangeByMe(year),
   });
 }

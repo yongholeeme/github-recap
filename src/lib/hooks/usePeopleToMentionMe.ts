@@ -5,7 +5,7 @@ import { useQueries } from "@tanstack/react-query";
 export function usePeopleToMentionMe(year: number, limit = 10) {
   const queries = useQueries({
     queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
-      queryKey: queryKeys.mentions.receivedByMonth(year, month),
+      queryKey: queryKeys.usePeopleToMentionMe(year, month),
       queryFn: () => fetchMentionsByMonth(year, month),
     })),
   });

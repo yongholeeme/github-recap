@@ -6,7 +6,7 @@ export function useCountOfParticipatedIssues(
   year: number
 ) {
   return useQuery({
-    queryKey: queryKeys.issues.participated(year),
+    queryKey: queryKeys.useCountOfParticipatedIssues(year),
     queryFn: () => fetchCountOfParticipatedIssues(year),
   });
 }
