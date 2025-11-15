@@ -1,10 +1,10 @@
 import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
-import { useMyFastestMergedPR } from '@/lib/hooks/useMyFastestMergedPR';
+import { useMyFastestMergedPr } from '@/lib/hooks/useMyMergedPrs';
 
 export default function FastestMergedPRCard() {
 	const { year } = useYear();
-	const { data, isFetching } = useMyFastestMergedPR(year);
+	const { data, isFetching } = useMyFastestMergedPr(year);
 
 	if (!data || !data.mergedAt) {
 		return (

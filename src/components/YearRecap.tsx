@@ -76,13 +76,13 @@ export default function YearRecap({ year }: YearRecapProps) {
 				try {
 					const { Octokit } = await import('octokit');
 					const octokit = new Octokit({ auth: pat, baseUrl: config.github.baseUrl });
-					const { data: githubUser } = await octokit.rest.users.getAuthenticated();
+					const { data } = await octokit.rest.users.getAuthenticated();
 					
 					// Create a pseudo User object with GitHub data
 					// Use avatar_url from API response (handles redirects properly)
 					setUser({
-						avatar_url: githubUser.avatar_url,
-						user_name: githubUser.login,
+						avatar_url: data.avatar_url,
+						user_name: data.login,
 					} );
 				} catch (error) {
 					console.error('Failed to fetch PAT user:', error);

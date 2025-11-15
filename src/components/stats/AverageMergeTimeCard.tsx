@@ -1,6 +1,6 @@
 import StatCard from '@/components/StatCard';
 import { useYear } from '@/contexts/YearContext';
-import { useMyAverageMergeTime } from '@/lib/hooks/useMyAverageMergeTime';
+import { useMyAverageMergeTime } from '@/lib/hooks/useMyMergedPrs';
 
 export default function AverageMergeTimeCard() {
 	const { year } = useYear();

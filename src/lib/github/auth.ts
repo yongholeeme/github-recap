@@ -32,8 +32,8 @@ export async function getUsername(): Promise<string> {
   usernamePromise = (async () => {
     try {
       const octokit = await getOctokit();
-      const { data: user } = await octokit.rest.users.getAuthenticated();
-      cachedUsername = user.login;
+      const { data } = await octokit.rest.users.getAuthenticated();
+      cachedUsername = data.login;
       return cachedUsername;
     } finally {
       usernamePromise = null;

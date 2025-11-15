@@ -6,7 +6,6 @@ export default function CommitActivitySection() {
 	const { year } = useYear();
 	const { data, isFetching } = useCountOfCommits(year);
 	
-	console.log({data})
 	return (
 		<BigNumberSection
 			value={data}

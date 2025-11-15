@@ -18,13 +18,13 @@ export async function fetchCommitsByMonth(
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(Number(year), Number(month));
 
-  const result = await octokit.rest.search.commits({
+  const {data} = await octokit.rest.search.commits({
     q: `author:${username} committer-date:${startDate}..${endDate}`,
     per_page: 100,
     page,
   });
 
-  const commits: SimplifiedCommit[] = result.data.items.map((item) => ({
+  const commits: SimplifiedCommit[] = data.items.map((item) => ({
     message: item.commit.message,
     committedDate: item.commit.author?.date || "",
     url: item.html_url,
@@ -32,7 +32,7 @@ export async function fetchCommitsByMonth(
     private: item.repository.private,
   }));
 
-  const totalCount = result.data.total_count;
+  const totalCount = data.total_count;
   const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 commits (10 pages)
 
   if (page < maxPages) {
@@ -50,11 +50,11 @@ export async function fetchCountOfCommits(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const restResult = await octokit.rest.search.commits({
+  const {data} = await octokit.rest.search.commits({
     q: `author:${username} committer-date:${startDate}..${endDate}`,
     per_page: 1,
     page: 1,
   });
 
-  return restResult.data.total_count || 0;
+  return data.total_count || 0;
 }

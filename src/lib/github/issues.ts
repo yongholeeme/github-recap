@@ -8,9 +8,8 @@ export async function fetchCountOfIssueComments(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `commenter:${username} type:issue updated:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `commenter:${username} type:issue updated:${startDate}..${endDate}`,
     per_page: 1, // Only need total_count
   });
 
@@ -24,10 +23,8 @@ export async function fetchCountOfParticipatedIssues(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // Search for issues where user is involved (author, commenter, or mentioned)
-  const query = `involves:${username} type:issue created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `involves:${username} type:issue created:${startDate}..${endDate}`,
     per_page: 1, // Only need total_count
   });
 
@@ -41,9 +38,8 @@ export async function fetchCountOfMentionsMe(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `mentions:${username} created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `mentions:${username} created:${startDate}..${endDate}`,
     per_page: 1, // Only need total_count
   });
 
@@ -63,9 +59,6 @@ export async function fetchPeopleToMetionMe(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // GitHub Search API searches both body and comments!
-  const query = `mentions:${username} created:${startDate}..${endDate}`;
-
   // Fetch with pagination
   const allItems = [];
   let page = 1;
@@ -74,7 +67,7 @@ export async function fetchPeopleToMetionMe(
   while (hasMore && page <= 10) {
     // Max 1000 items
     const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: query,
+      q: `mentions:${username} created:${startDate}..${endDate}`,
       per_page: 100,
       page,
     });
@@ -228,10 +221,8 @@ export async function fetchMostDiscussedIssue(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // Use involves: to get issues the user participated in (author, commenter, or mentioned)
-  const query = `involves:${username} type:issue created:${startDate}..${endDate} sort:comments-desc`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `involves:${username} type:issue created:${startDate}..${endDate} sort:comments-desc`,
     per_page: 1,
     sort: "comments",
     order: "desc",

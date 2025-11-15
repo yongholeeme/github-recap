@@ -1,5 +1,5 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
-import { getDateRange } from "@/lib/github/utils";
+import { getDateRange, getMonthDateRange } from "@/lib/github/utils";
 
 export async function fetchCountOfMyCreatedPrs(
   year: number = new Date().getFullYear()
@@ -8,9 +8,8 @@ export async function fetchCountOfMyCreatedPrs(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `author:${username} type:pr created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `author:${username} type:pr created:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -24,9 +23,8 @@ export async function fetchCountOfMyMergedPrs(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `author:${username} type:pr is:merged merged:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -40,9 +38,8 @@ export async function fetchCountOfPrsReviewedByMe(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `reviewed-by:${username} type:pr created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `reviewed-by:${username} type:pr created:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -56,11 +53,9 @@ export async function fetchCountOfParticipatedPrs(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // Search for issues where user is involved (author, commenter, or mentioned)
-  const query = `involves:${username} type:pr created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
-    per_page: 1, // Only need total_count
+    q: `involves:${username} type:pr created:${startDate}..${endDate}`,
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -73,10 +68,8 @@ export async function fetchCountOfPrsApprovedByMe(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // This is an approximation - exact count requires individual PR review checks
-  const query = `reviewed-by:${username} type:pr review:approved created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `reviewed-by:${username} type:pr review:approved created:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -90,10 +83,8 @@ export async function fetchCountOfPrsRequestedChangeByMe(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  // This is an approximation
-  const query = `reviewed-by:${username} type:pr review:changes_requested created:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `reviewed-by:${username} type:pr review:changes_requested created:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -107,9 +98,8 @@ export async function fetchCountOfCommentsByMeToPr(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `commenter:${username} type:pr updated:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `commenter:${username} type:pr updated:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -123,9 +113,8 @@ export async function fetchCountOfMyClosedPrsNotMerged(
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const query = `author:${username} type:pr is:closed is:unmerged closed:${startDate}..${endDate}`;
   const { data } = await octokit.rest.search.issuesAndPullRequests({
-    q: query,
+    q: `author:${username} type:pr is:closed is:unmerged closed:${startDate}..${endDate}`,
     per_page: 1,
   });
 
@@ -245,155 +234,40 @@ export async function fetchMostDiscussedPR(
   }
 }
 
-export async function fetchMyAverageMergeTime(
-  year: number = new Date().getFullYear()
-): Promise<number | null> {
-  const octokit = await getOctokit();
-  const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
-
-  const query = `author:${username} type:pr is:merged merged:${startDate}..${endDate}`;
-
-  const allPRs = [];
-  let page = 1;
-  let hasMore = true;
-
-  while (hasMore && page <= 10) {
-    const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: query,
-      per_page: 100,
-      page,
-    });
-
-    allPRs.push(...data.items);
-    hasMore = data.items.length === 100;
-    page++;
-  }
-
-  if (allPRs.length === 0) return null;
-
-  let totalHours = 0;
-  let validCount = 0;
-
-  for (const pr of allPRs) {
-    if (pr.pull_request?.merged_at && pr.created_at) {
-      const created = new Date(pr.created_at);
-      const merged = new Date(pr.pull_request.merged_at);
-      const hours = (merged.getTime() - created.getTime()) / (1000 * 60 * 60);
-      totalHours += hours;
-      validCount++;
-    }
-  }
-
-  return validCount > 0 ? totalHours / validCount : null;
+interface Pr {
+  title: string
+  url: string
+  createdAt: string
+  mergedAt?: string | null
+  closedAt: string | null
 }
 
-export async function fetchMyFastestMergedPR(
-  year: number = new Date().getFullYear()
-): Promise<PRDetail | null> {
+export async function fetchMyMergedPRs(year: number, month: number, page = 1): Promise<Pr[]> {
   const octokit = await getOctokit();
   const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
+  const { startDate, endDate } = getMonthDateRange(year, month);
 
-  const query = `author:${username} type:pr is:merged merged:${startDate}..${endDate}`;
+  const {data} = await octokit.rest.search.issuesAndPullRequests({
+    q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
+    per_page: 100,
+    page,
+  });
 
-  const allPRs = [];
-  let page = 1;
-  let hasMore = true;
+  const prs = data.items.map((item) => ({
+    title: item.title,
+    url: item.html_url,
+    createdAt: item.created_at,
+    mergedAt: item.pull_request?.merged_at,
+    closedAt: item.closed_at,
+  }))
 
-  while (hasMore && page <= 10) {
-    const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: query,
-      per_page: 100,
-      page,
-    });
+  const totalCount = data.total_count;
+  const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 commits (10 pages)
 
-    allPRs.push(...data.items);
-    hasMore = data.items.length === 100;
-    page++;
+  if (page < maxPages) {
+    const nextPagePrs = await fetchMyMergedPRs(year, month, page + 1);
+    return [...prs, ...nextPagePrs];
   }
 
-  if (allPRs.length === 0) return null;
-
-  let fastest = null;
-  let minHours = Infinity;
-
-  for (const pr of allPRs) {
-    if (pr.pull_request?.merged_at && pr.created_at) {
-      const created = new Date(pr.created_at);
-      const merged = new Date(pr.pull_request.merged_at);
-      const hours = (merged.getTime() - created.getTime()) / (1000 * 60 * 60);
-
-      if (hours < minHours) {
-        minHours = hours;
-        fastest = {
-          title: pr.title,
-          url: pr.html_url,
-          number: pr.number,
-          repo: pr.repository_url.split("/").slice(-2).join("/"),
-          comments: pr.comments,
-          createdAt: pr.created_at,
-          mergedAt: pr.pull_request.merged_at,
-          closedAt: pr.closed_at,
-        };
-      }
-    }
-  }
-
-  return fastest;
-}
-
-export async function fetchMySlowestMergedPR(
-  year: number = new Date().getFullYear()
-): Promise<PRDetail | null> {
-  const octokit = await getOctokit();
-  const username = await getUsername();
-  const { startDate, endDate } = getDateRange(year);
-
-  const query = `author:${username} type:pr is:merged merged:${startDate}..${endDate}`;
-
-  const allPRs = [];
-  let page = 1;
-  let hasMore = true;
-
-  while (hasMore && page <= 10) {
-    const { data } = await octokit.rest.search.issuesAndPullRequests({
-      q: query,
-      per_page: 100,
-      page,
-    });
-
-    allPRs.push(...data.items);
-    hasMore = data.items.length === 100;
-    page++;
-  }
-
-  if (allPRs.length === 0) return null;
-
-  let slowest = null;
-  let maxHours = -1;
-
-  for (const pr of allPRs) {
-    if (pr.pull_request?.merged_at && pr.created_at) {
-      const created = new Date(pr.created_at);
-      const merged = new Date(pr.pull_request.merged_at);
-      const hours = (merged.getTime() - created.getTime()) / (1000 * 60 * 60);
-
-      if (hours > maxHours) {
-        maxHours = hours;
-        slowest = {
-          title: pr.title,
-          url: pr.html_url,
-          number: pr.number,
-          repo: pr.repository_url.split("/").slice(-2).join("/"),
-          comments: pr.comments,
-          createdAt: pr.created_at,
-          mergedAt: pr.pull_request.merged_at,
-          closedAt: pr.closed_at,
-        };
-      }
-    }
-  }
-
-  return slowest;
+  return prs;
 }

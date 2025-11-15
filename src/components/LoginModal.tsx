@@ -30,7 +30,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 		try {
 			const { Octokit } = await import('octokit');
 			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.baseUrl });
-			const { data: githubUser } = await octokit.rest.users.getAuthenticated();
+			const { data } = await octokit.rest.users.getAuthenticated();
 			
 			// Valid token, save it (sessionStorage for better security)
 			sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
@@ -38,8 +38,8 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 			// Use avatar_url from API response (handles redirects properly)
 
 			onLogin({
-				avatar_url: githubUser.avatar_url,
-				user_name: githubUser.login,
+				avatar_url: data.avatar_url,
+				user_name: data.login,
 			});
 			onClose();
 		} catch (error) {
