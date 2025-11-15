@@ -1,5 +1,5 @@
 import { useYear } from '@/contexts/YearContext';
-import { type CommitData } from '@/lib/github/commits';
+import { type SimplifiedCommit } from '@/lib/github/commits';
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import InsightSection from '@/components/InsightSection';
@@ -7,7 +7,7 @@ import BarChart from '@/components/charts/BarChart';
 import Toast from '@/components/Toast';
 import { useCommits } from '@/lib/hooks/useCommits';
 
-function calculateCommitsByHour(commits: CommitData) {
+function calculateCommitsByHour(commits: SimplifiedCommit[]) {
 	const hourCounts: Record<number, number> = {};
 	for (let i = 0; i < 24; i++) {
 		hourCounts[i] = 0;

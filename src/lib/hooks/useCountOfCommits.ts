@@ -6,6 +6,5 @@ export function useCountOfCommits(year: number = new Date().getFullYear()) {
   return useQuery({
     queryKey: queryKeys.commits.count(year),
     queryFn: () => fetchCountOfCommits(year),
-    staleTime: 0,
   });
 }

@@ -1,11 +1,11 @@
 import { useYear } from '@/contexts/YearContext';
-import { type CommitData } from '@/lib/github/commits';
+import { type SimplifiedCommit } from '@/lib/github/commits';
 import { useMemo } from 'react';
 import BarChart from '@/components/charts/BarChart';
 import InsightSection from '@/components/InsightSection';
 import { useCommits } from '@/lib/hooks/useCommits';
 
-function calculateCommitsByMonth(commits: CommitData) {
+function calculateCommitsByMonth(commits: SimplifiedCommit[]) {
 	const monthCounts: Record<number, number> = {};
 	for (let i = 0; i < 12; i++) {
 		monthCounts[i] = 0;

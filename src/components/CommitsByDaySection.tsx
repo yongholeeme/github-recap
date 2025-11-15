@@ -1,11 +1,11 @@
 import { useYear } from '@/contexts/YearContext';
-import { type CommitData } from '@/lib/github/commits';
+import { type SimplifiedCommit } from '@/lib/github/commits';
 import { useMemo } from 'react';
 import BarChart from '@/components/charts/BarChart';
 import InsightSection from '@/components/InsightSection';
 import { useCommits } from '@/lib/hooks/useCommits';
 
-function calculateCommitsByDay(commits: CommitData) {
+function calculateCommitsByDay(commits: SimplifiedCommit[]) {
 	const dayCounts: Record<number, number> = {};
 	for (let i = 0; i < 7; i++) {
 		dayCounts[i] = 0;

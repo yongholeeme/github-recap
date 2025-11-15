@@ -1,14 +1,18 @@
-import { fetchCommits } from '@/lib/github/commits';
+import { fetchCommitsByMonth } from '@/lib/github/commits';
 import { queryKeys } from "@/lib/queryKeys";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 
-/**
- * 모든 커밋 관련 컴포넌트가 공유하는 커밋 데이터
- * React Query 캐싱으로 중복 요청 방지
- */
+
 export function useCommits(year: number = new Date().getFullYear()) {
-  return useQuery({
-    queryKey: queryKeys.commits.data(year),
-    queryFn: () => fetchCommits(year),
+  const queries = useQueries({
+    queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
+      queryKey: queryKeys.commits.byMonth(year, month),
+      queryFn: () => fetchCommitsByMonth(year, month),
+    })),
   });
+
+  return {
+    data: queries.flatMap((query) => query.data ?? []),
+    isFetching: queries.some((query) => query.isFetching),
+  }
 }

@@ -11,6 +11,8 @@ export const queryKeys = {
       ["github-commit-data", year] as const,
     count: (year: number = new Date().getFullYear()) =>
       ["github-commit-count", year] as const,
+    byMonth: (year: number, month: number) =>
+      ["commits", year, month] as const,
   },
 
   // Pull Requests 관련
