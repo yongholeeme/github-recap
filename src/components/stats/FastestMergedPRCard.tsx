@@ -20,8 +20,13 @@ export default function FastestMergedPRCard() {
 	const hours = (new Date(data.mergedAt).getTime() - new Date(data.createdAt).getTime()) / (1000 * 60 * 60);
 	
 	const formatTime = (hours: number) => {
-		if (hours < 1) {
-			return `${Math.round(hours * 60)}분`;
+		const minutes = hours * 60;
+		const seconds = minutes * 60;
+		
+		if (seconds < 60) {
+			return `${Math.round(seconds)}초`;
+		} else if (minutes < 60) {
+			return `${Math.round(minutes)}분`;
 		} else if (hours < 24) {
 			return `${Math.round(hours)}시간`;
 		} else {
