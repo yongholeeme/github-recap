@@ -1,10 +1,12 @@
 import { type MentionDetail } from '@/lib/github/issues';
 import { useYear } from '@/contexts/YearContext';
 import { usePeopleToMentionMe } from '@/lib/hooks/usePeopleToMentionMe';
+import { useState } from 'react';
 
 export default function TopMentionedByCard() {
 	const { year } = useYear();
-	const { data, isFetching } = usePeopleToMentionMe(year, 10);
+	const [displayCount, setDisplayCount] = useState(10);
+	const { data, isFetching } = usePeopleToMentionMe(year, 100); // Fetch more data upfront
 
 	return (
 		<div
@@ -29,7 +31,7 @@ export default function TopMentionedByCard() {
 				</div>
 
 				<div className="space-y-2">
-					{(data && data.length > 0 ? data as MentionDetail[] : Array.from({ length: 10 }, (_, i) => ({ username: '', count: 0, index: i }))).slice(0, 10).map((item, index) => (
+					{(data && data.length > 0 ? data as MentionDetail[] : Array.from({ length: 10 }, (_, i) => ({ username: '', count: 0, index: i }))).slice(0, displayCount).map((item, index) => (
 						<div
 							key={item.username || `placeholder-${index}`}
 							className="flex items-center justify-between p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
@@ -48,6 +50,16 @@ export default function TopMentionedByCard() {
 						</div>
 					))}
 				</div>
+
+				{/* 더보기 버튼 */}
+				{data && data.length > displayCount && (
+					<button
+						onClick={() => setDisplayCount(prev => prev + 10)}
+						className="w-full mt-4 py-2 px-4 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-semibold text-white transition-colors"
+					>
+						더보기
+					</button>
+				)}
 			</div>
 		</div>
 	);

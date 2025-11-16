@@ -1,12 +1,10 @@
-import { getOctokit, getUsername } from "@/lib/github/auth";
-import { getDateRange, getMonthDateRange } from "@/lib/github/utils";
+import { getUsername } from "@/lib/github/auth";
+import { fetcher, getDateRange, getMonthDateRange } from "@/lib/github/utils";
 
 export interface SimplifiedCommit {
-  message: string;
-  committedDate: string;
+  message: string; // !
+  committedDate: string; // !
   url: string;
-  repository: string;
-  private: boolean;
 }
 
 export async function fetchCommitsByMonth(
@@ -14,11 +12,17 @@ export async function fetchCommitsByMonth(
   month: number,
   page = 1
 ): Promise<SimplifiedCommit[]> {
-  const octokit = await getOctokit();
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(Number(year), Number(month));
 
-  const {data} = await octokit.rest.search.commits({
+  const data = await fetcher<{
+    items: Array<{
+      commit: { message: string; author?: { date: string } };
+      html_url: string;
+    }>;
+    total_count: number;
+  }>({
+    pathname: "/search/commits",
     q: `author:${username} committer-date:${startDate}..${endDate}`,
     per_page: 100,
     page,
@@ -28,8 +32,6 @@ export async function fetchCommitsByMonth(
     message: item.commit.message,
     committedDate: item.commit.author?.date || "",
     url: item.html_url,
-    repository: item.repository.full_name,
-    private: item.repository.private,
   }));
 
   const totalCount = data.total_count;
@@ -43,14 +45,12 @@ export async function fetchCommitsByMonth(
   return commits;
 }
 
-export async function fetchCountOfCommits(
-  year: number
-): Promise<number> {
-  const octokit = await getOctokit();
+export async function fetchCountOfCommits(year: number): Promise<number> {
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const {data} = await octokit.rest.search.commits({
+  const data = await fetcher<{ total_count: number }>({
+    pathname: "/search/commits",
     q: `author:${username} committer-date:${startDate}..${endDate}`,
     per_page: 1,
     page: 1,

@@ -20,6 +20,9 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 60 * 24, // 24 hours
       gcTime: 1000 * 60 * 60 * 24, // 24 hours (formerly cacheTime)
       refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+      retry: true
     },
   },
 })
@@ -28,6 +31,8 @@ const queryClient = new QueryClient({
 const persister = createAsyncStoragePersister({
   storage: window.localStorage,
   key: REACT_QUERY_CACHE_STORAGE_KEY,
+  serialize: JSON.stringify,
+  deserialize: JSON.parse,
 })
 
 // Register the router instance for type safety
@@ -45,7 +50,11 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <PersistQueryClientProvider 
         client={queryClient}
-        persistOptions={{ persister }}
+        persistOptions={{ 
+          persister,
+          maxAge: 1000 * 60 * 60 * 24, // 24 hours
+          buster: '',
+        }}
       >
         <RouterProvider router={router} />
       </PersistQueryClientProvider>

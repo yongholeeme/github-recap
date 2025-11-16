@@ -13,22 +13,14 @@ export default function RefreshButton() {
 	useEffect(() => {
 		const unsubscribe = queryClient.getQueryCache().subscribe(() => {
 			const fetching = queryClient.isFetching();
-			const allQueries = queryClient.getQueryCache().getAll();
-			const total = allQueries.length;
-			const fetchingQueries = allQueries.filter(q => q.state.fetchStatus === 'fetching');
+			const queries = queryClient.getQueryCache().getAll();
+			const total = queries.length;
 			
 			setFetchingCount(fetching);
 			
 			const completed = total - fetching;
 			const newPercent = total > 0 ? Math.round((completed / total) * 100) : 100;
 			setPercent(newPercent);
-
-			if (fetchingQueries.length > 0) {
-				console.log('🔄 Fetching Queries:', fetchingQueries.map(q => ({
-					key: q.queryKey,
-					fetchStatus: q.state.fetchStatus,
-				})));
-			}
 		});
 
 		return () => unsubscribe();

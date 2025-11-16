@@ -5,6 +5,7 @@ import { useMostDiscussedPR } from '@/lib/hooks/useMostDiscussedPR';
 export default function MostDiscussedPRCard() {
 	const { year } = useYear();
 	const { data, isFetching } = useMostDiscussedPR(year);
+	console.log(data)
 
 	if (!data) {
 		return (

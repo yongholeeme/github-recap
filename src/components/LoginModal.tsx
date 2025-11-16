@@ -33,6 +33,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 			const { data } = await octokit.rest.users.getAuthenticated();
 			
 			// Valid token, save it (sessionStorage for better security)
+			localStorage.clear()
 			sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
 			
 			// Use avatar_url from API response (handles redirects properly)

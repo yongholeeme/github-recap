@@ -19,6 +19,7 @@ import { config } from "@/../config";
 import { useQueryClient } from "@tanstack/react-query";
 import { PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY } from "@/constants/storage";
 import type { User } from "@/types/user";
+import { UserProvider } from "@/contexts/UserContext";
 
 interface YearRecapProps {
 	year?: number;
@@ -120,64 +121,66 @@ export default function YearRecap({ year }: YearRecapProps) {
 	};
 
 	return (
-		<YearProvider year={targetYear}>
-			{user && (
-				<>
-					<RefreshButton />
-				</>
-			)}
-			
-			{!user && !isLoading && (
-				<LoginToast onLoginClick={() => setIsLoginModalOpen(true)} />
-			)}
+		<UserProvider user={user}>
+			<YearProvider year={targetYear}>
+				{user && (
+					<>
+						<RefreshButton />
+					</>
+				)}
+				
+				{!user && !isLoading && (
+					<LoginToast onLoginClick={() => setIsLoginModalOpen(true)} />
+				)}
 
-			<LoginModal 
-				isOpen={isLoginModalOpen} 
-				onClose={() => setIsLoginModalOpen(false)}
-				onLogin={handleLogin}
-			/>
+				<LoginModal 
+					isOpen={isLoginModalOpen} 
+					onClose={() => setIsLoginModalOpen(false)}
+					onLogin={handleLogin}
+				/>
 
-			<div ref={containerRef} className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-				{/* 시작 그룹 */}
-				<div className="snap-start">
-					<HeroSection user={user} onLogout={handleLogout} />
+				<div ref={containerRef} className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+					{/* 시작 그룹 */}
+					<div className="snap-start">
+						<HeroSection user={user} onLogout={handleLogout} />
+					</div>
+
+							{/* 커밋 섹션들 - 블루 계열 배경 */}
+							<div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
+								<CommitActivitySection />
+								<CommitsByHourSection />
+								<CommitsByDaySection />
+								<CommitTimelineSection />
+							</div>
+
+							{/* PR 섹션 - 오렌지 계열 배경 */}
+							<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
+								<ContributedPullRequestsSection />
+								<PullRequestActivitySection />
+							</div>
+
+							{/* 이슈 섹션 - 그린 계열 배경 */}
+							<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
+								<ContributedIssuesSection />
+								<IssueActivitySection />
+							</div>
+
+							{/* 멘션 섹션들 - 퍼플 계열 배경 */}
+							<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-fuchsia-950">
+								<MentionsSection />
+							</div>
+
+							{/* 성장 섹션 - 그레이 계열 배경 */}
+							<div className="bg-gradient-to-br from-slate-950 via-gray-900 to-zinc-950">
+								<GrowthSection />
+							</div>
+
+							{/* 엔딩 섹션 - 핑크 계열 배경 */}
+							<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950">
+								<EndingSection />
+							</div>
 				</div>
-
-						{/* 커밋 섹션들 - 블루 계열 배경 */}
-						<div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
-							<CommitActivitySection />
-							<CommitsByHourSection />
-							<CommitsByDaySection />
-							<CommitTimelineSection />
-						</div>
-
-						{/* PR 섹션 - 오렌지 계열 배경 */}
-						<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
-							<ContributedPullRequestsSection />
-							<PullRequestActivitySection />
-						</div>
-
-						{/* 이슈 섹션 - 그린 계열 배경 */}
-						<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
-							<ContributedIssuesSection />
-							<IssueActivitySection />
-						</div>
-
-						{/* 멘션 섹션들 - 퍼플 계열 배경 */}
-						<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-fuchsia-950">
-							<MentionsSection />
-						</div>
-
-						{/* 성장 섹션 - 그레이 계열 배경 */}
-						<div className="bg-gradient-to-br from-slate-950 via-gray-900 to-zinc-950">
-							<GrowthSection />
-						</div>
-
-						{/* 엔딩 섹션 - 핑크 계열 배경 */}
-						<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-pink-950">
-							<EndingSection />
-						</div>
-			</div>
-		</YearProvider>
+			</YearProvider>
+		</UserProvider>
 	);
 }

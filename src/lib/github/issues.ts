@@ -1,16 +1,14 @@
 import { getOctokit, getUsername } from "@/lib/github/auth";
-import { getDateRange, getMonthDateRange } from "@/lib/github/utils";
+import { fetcher, getDateRange, getMonthDateRange } from "@/lib/github/utils";
 
-export async function fetchCountOfIssueComments(
-  year: number
-): Promise<number> {
-  const octokit = await getOctokit();
+export async function fetchCountOfIssueComments(year: number): Promise<number> {
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const data = await fetcher<{ total_count: number }>({
+    pathname: "/search/issues",
     q: `commenter:${username} type:issue updated:${startDate}..${endDate}`,
-    per_page: 1, // Only need total_count
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -19,28 +17,26 @@ export async function fetchCountOfIssueComments(
 export async function fetchCountOfParticipatedIssues(
   year: number
 ): Promise<number> {
-  const octokit = await getOctokit();
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const data = await fetcher<{ total_count: number }>({
+    pathname: "/search/issues",
     q: `involves:${username} type:issue created:${startDate}..${endDate}`,
-    per_page: 1, // Only need total_count
+    per_page: 1,
   });
 
   return data.total_count || 0;
 }
 
-export async function fetchCountOfMentionsMe(
-  year: number
-): Promise<number> {
-  const octokit = await getOctokit();
+export async function fetchCountOfMentionsMe(year: number): Promise<number> {
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const data = await fetcher<{ total_count: number }>({
+    pathname: "/search/issues",
     q: `mentions:${username} created:${startDate}..${endDate}`,
-    per_page: 1, // Only need total_count
+    per_page: 1,
   });
 
   return data.total_count || 0;
@@ -51,26 +47,25 @@ export interface MentionDetail {
   count: number;
 }
 
-interface MentionItem {
-  user?: { login: string } | null;
-}
-
 export async function fetchMentionsByMonth(
   year: number,
   month: number,
   page = 1
-): Promise<MentionItem[]> {
-  const octokit = await getOctokit();
+): Promise<(string | null)[]> {
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(year, month);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const data = await fetcher<{
+    items: Array<{ user?: { login: string } | null }>;
+    total_count: number;
+  }>({
+    pathname: "/search/issues",
     q: `mentions:${username} created:${startDate}..${endDate}`,
     per_page: 100,
     page,
   });
 
-  const items = data.items;
+  const items = data.items.map((item) => item.user?.login ?? null);
   const totalCount = data.total_count;
   const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 items (10 pages)
 
@@ -204,11 +199,21 @@ interface IssueDetail {
 export async function fetchMostDiscussedIssue(
   year: number
 ): Promise<IssueDetail | null> {
-  const octokit = await getOctokit();
   const username = await getUsername();
   const { startDate, endDate } = getDateRange(year);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  const data = await fetcher<{
+    items: Array<{
+      title: string;
+      html_url: string;
+      number: number;
+      repository_url: string;
+      comments: number;
+      created_at: string;
+      closed_at?: string | null;
+    }>;
+  }>({
+    pathname: "/search/issues",
     q: `involves:${username} type:issue created:${startDate}..${endDate}`,
     per_page: 100,
     sort: "comments",
@@ -237,9 +242,10 @@ export async function fetchMostDiscussedDiscussion(
   const { startDate, endDate } = getDateRange(year);
 
   try {
+    // Limit: 50 discussions × 50 comments × 100 replies = 250,000 nodes (within 500k limit)
     const query = `
       query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 100) {
+        search(query: $searchQuery, type: DISCUSSION, first: 50) {
           nodes {
             ... on Discussion {
               title
@@ -248,7 +254,7 @@ export async function fetchMostDiscussedDiscussion(
               repository {
                 nameWithOwner
               }
-              comments(first: 100) {
+              comments(first: 50) {
                 totalCount
                 nodes {
                   replies(first: 100) {
@@ -286,7 +292,8 @@ export async function fetchMostDiscussedDiscussion(
       searchQuery,
     });
 
-    if (!response.search.nodes || response.search.nodes.length === 0) return null;
+    if (!response.search.nodes || response.search.nodes.length === 0)
+      return null;
 
     // Calculate total comments (comments + all replies) for each discussion and find the most discussed one
     let mostDiscussed: IssueDetail | null = null;
