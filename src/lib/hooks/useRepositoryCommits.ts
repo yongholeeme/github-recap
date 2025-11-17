@@ -1,53 +1,72 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
+import { useMemo } from "react";
 import {
   fetchCommitsByMonth,
   type RepositoryCommitStats,
 } from "@/lib/github/commits";
-import { getUsername } from "@/lib/github/auth";
+import { useUser } from "@/contexts/UserContext";
 import { queryKeys } from "@/lib/queryKeys";
 
 export function useRepositoryCommits(year: number) {
-  return useQuery({
-    queryKey: queryKeys.useRepositoryCommits(year),
-    queryFn: async () => {
-      const username = await getUsername();
+  const user = useUser();
 
-      // Count commits per repository
-      const repoMap = new Map<
-        string,
-        RepositoryCommitStats & { username: string }
-      >();
+  const monthQueries = useQueries({
+    queries: Array.from({ length: 12 }, (_, i) => ({
+      queryKey: [...queryKeys.useRepositoryCommits(year), i + 1],
+      queryFn: () => fetchCommitsByMonth(year, i + 1),
+      staleTime: 1000 * 60 * 5,
+    })),
+  });
 
-      // Fetch commits for all 12 months
-      for (let month = 1; month <= 12; month++) {
-        const commits = await fetchCommitsByMonth(year, month);
+  const isFetching = monthQueries.some((r) => r.isFetching);
+  const isError = monthQueries.some((r) => r.isError);
+  const error = monthQueries.find((r) => r.error)?.error;
 
-        for (const commit of commits) {
-          // Extract repository info from commit URL
-          // URL format: https://github.com/{owner}/{repo}/commit/{sha}
-          const urlParts = commit.url.split("/");
-          const owner = urlParts[3];
-          const repo = urlParts[4];
-          const repoFullName = `${owner}/${repo}`;
+  const data = useMemo(() => {
+    if (isFetching || !user) {
+      return undefined;
+    }
 
-          if (repoMap.has(repoFullName)) {
-            repoMap.get(repoFullName)!.commitCount++;
-          } else {
-            repoMap.set(repoFullName, {
-              repo: repoFullName,
-              owner,
-              username,
-              commitCount: 1,
-            });
-          }
+    // Process all commits from all months
+    const repoMap = new Map<
+      string,
+      RepositoryCommitStats & { username: string }
+    >();
+
+    for (const result of monthQueries) {
+      const commits = result.data ?? [];
+
+      for (const commit of commits) {
+        // Extract repository info from commit URL
+        // URL format: https://github.com/{owner}/{repo}/commit/{sha}
+        const urlParts = commit.url.split("/");
+        const owner = urlParts[3];
+        const repo = urlParts[4];
+        const repoFullName = `${owner}/${repo}`;
+
+        if (repoMap.has(repoFullName)) {
+          repoMap.get(repoFullName)!.commitCount++;
+        } else {
+          repoMap.set(repoFullName, {
+            repo: repoFullName,
+            owner,
+            username: user.user_name,
+            commitCount: 1,
+          });
         }
       }
+    }
 
-      // Sort by commit count descending
-      return Array.from(repoMap.values()).sort(
-        (a, b) => b.commitCount - a.commitCount
-      );
-    },
-    staleTime: 1000 * 60 * 5,
-  });
+    // Sort by commit count descending
+    return Array.from(repoMap.values()).sort(
+      (a, b) => b.commitCount - a.commitCount
+    );
+  }, [isFetching, user, monthQueries]);
+
+  return {
+    data,
+    isFetching,
+    isError,
+    error,
+  };
 }

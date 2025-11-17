@@ -42,6 +42,26 @@ export async function fetchCountOfMentionsMe(year: number): Promise<number> {
   return data.total_count || 0;
 }
 
+export async function fetchInvolvedIssues(
+  username: string,
+  year: number
+): Promise<Array<{ repository_url: string }>> {
+  const { startDate, endDate } = getDateRange(year);
+
+  const data = await fetcher<{
+    items: Array<{
+      repository_url: string;
+    }>;
+  }>({
+    pathname: "/search/issues",
+    q: `involves:${username} type:issue created:${startDate}..${endDate}`,
+    per_page: 100,
+    fetchAll: true,
+  });
+
+  return data.items;
+}
+
 export interface MentionDetail {
   username: string;
   count: number;

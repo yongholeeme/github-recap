@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/queryKeys";
-import { getUsername } from "@/lib/github/auth";
-import { fetcher, getDateRange } from "@/lib/github/utils";
+import { useUser } from "@/contexts/UserContext";
+import { fetchInvolvedIssues } from "@/lib/github/issues";
 
 interface RepositoryIssueDiscussionStats {
   repo: string;
@@ -11,23 +11,17 @@ interface RepositoryIssueDiscussionStats {
 }
 
 export function useRepositoryIssuesDiscussions(year: number) {
+  const user = useUser();
+
   return useQuery({
     queryKey: queryKeys.useRepositoryIssuesDiscussions(year),
     queryFn: async () => {
-      const username = await getUsername();
-      const { startDate, endDate } = getDateRange(year);
+      if (!user) {
+        return [];
+      }
 
       // Fetch all issues the user participated in
-      const issuesData = await fetcher<{
-        items: Array<{
-          repository_url: string;
-        }>;
-      }>({
-        pathname: "/search/issues",
-        q: `involves:${username} type:issue created:${startDate}..${endDate}`,
-        per_page: 100,
-        fetchAll: true,
-      });
+      const issues = await fetchInvolvedIssues(user.user_name, year);
 
       // Count issues per repository
       const repoMap = new Map<
@@ -35,7 +29,7 @@ export function useRepositoryIssuesDiscussions(year: number) {
         RepositoryIssueDiscussionStats & { username: string }
       >();
 
-      for (const issue of issuesData.items) {
+      for (const issue of issues) {
         const [owner, repo] = issue.repository_url.split("/").slice(-2);
         const repoFullName = `${owner}/${repo}`;
 
@@ -45,7 +39,7 @@ export function useRepositoryIssuesDiscussions(year: number) {
         } else {
           repoMap.set(repoFullName, {
             repo: repoFullName,
-            username,
+            username: user.user_name,
             issueCount: 1,
             discussionCount: 0,
             totalCount: 1,
