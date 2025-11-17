@@ -9,8 +9,7 @@ export interface SimplifiedCommit {
 
 export async function fetchCommitsByMonth(
   year: number,
-  month: number,
-  page = 1
+  month: number
 ): Promise<SimplifiedCommit[]> {
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(Number(year), Number(month));
@@ -25,7 +24,7 @@ export async function fetchCommitsByMonth(
     pathname: "/search/commits",
     q: `author:${username} committer-date:${startDate}..${endDate}`,
     per_page: 100,
-    page,
+    fetchAll: true,
   });
 
   const commits: SimplifiedCommit[] = data.items.map((item) => ({
@@ -33,14 +32,6 @@ export async function fetchCommitsByMonth(
     committedDate: item.commit.author?.date || "",
     url: item.html_url,
   }));
-
-  const totalCount = data.total_count;
-  const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 commits (10 pages)
-
-  if (page < maxPages) {
-    const nextPageCommits = await fetchCommitsByMonth(year, month, page + 1);
-    return [...commits, ...nextPageCommits];
-  }
 
   return commits;
 }

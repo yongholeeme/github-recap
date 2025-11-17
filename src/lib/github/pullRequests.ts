@@ -166,6 +166,7 @@ export async function fetchMostDiscussedPR(
     pathname: `/repos/${owner}/${repo}/pulls/${pr.number}/reviews`,
     q: "",
     per_page: 100,
+    fetchAll: true,
   });
 
   // Review Comments: 코드 라인별 리뷰 댓글
@@ -173,6 +174,7 @@ export async function fetchMostDiscussedPR(
     pathname: `/repos/${owner}/${repo}/pulls/${pr.number}/comments`,
     q: "",
     per_page: 100,
+    fetchAll: true,
   });
 
   // Total conversations = issue comments + reviews with body + review comments
@@ -203,8 +205,7 @@ interface Pr {
 
 export async function fetchMyMergedPRs(
   year: number,
-  month: number,
-  page = 1
+  month: number
 ): Promise<Pr[]> {
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(year, month);
@@ -222,7 +223,7 @@ export async function fetchMyMergedPRs(
     pathname: "/search/issues",
     q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
     per_page: 100,
-    page,
+    fetchAll: true,
   });
 
   const prs = data.items.map((item) => ({
@@ -232,14 +233,6 @@ export async function fetchMyMergedPRs(
     mergedAt: item.pull_request?.merged_at,
     closedAt: item.closed_at,
   }));
-
-  const totalCount = data.total_count;
-  const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 commits (10 pages)
-
-  if (page < maxPages) {
-    const nextPagePrs = await fetchMyMergedPRs(year, month, page + 1);
-    return [...prs, ...nextPagePrs];
-  }
 
   return prs;
 }

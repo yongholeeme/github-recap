@@ -35,6 +35,7 @@ export async function fetcher<T = unknown>({
   page = 1,
   sort,
   order,
+  fetchAll = false,
 }: {
   pathname: string;
   q: string;
@@ -42,9 +43,17 @@ export async function fetcher<T = unknown>({
   page?: number;
   sort?: string;
   order?: string;
+  fetchAll?: boolean;
 }): Promise<T> {
   const url = new URL(`${config.github.baseUrl}${pathname}`);
-  url.searchParams.append("q", q);
+
+  // For non-search endpoints (like /repos/{owner}/{repo}/pulls/{number}/reviews)
+  const isSearchEndpoint = pathname.includes("/search/");
+
+  if (isSearchEndpoint && q) {
+    url.searchParams.append("q", q);
+  }
+
   url.searchParams.append("per_page", String(per_page));
   url.searchParams.append("page", String(page));
 
@@ -68,6 +77,42 @@ export async function fetcher<T = unknown>({
   }
 
   const data = await response.json();
+
+  // Auto-pagination: if per_page is 100 and fetchAll is true, fetch all pages
+  if (fetchAll && per_page === 100) {
+    if (Array.isArray(data)) {
+      // For direct array responses (e.g., /repos/{owner}/{repo}/pulls/{number}/reviews)
+      if (data.length === 100) {
+        const nextPage = await fetcher<T>({
+          pathname,
+          q,
+          per_page,
+          page: page + 1,
+          sort,
+          order,
+          fetchAll: true,
+        });
+        return [...data, ...(Array.isArray(nextPage) ? nextPage : [])] as T;
+      }
+    } else if (data.items && Array.isArray(data.items)) {
+      // For search API responses with items array
+      if (data.items.length === 100) {
+        const nextPage = await fetcher<{ items: unknown[] }>({
+          pathname,
+          q,
+          per_page,
+          page: page + 1,
+          sort,
+          order,
+          fetchAll: true,
+        });
+        return {
+          ...data,
+          items: [...data.items, ...(nextPage.items || [])],
+        } as T;
+      }
+    }
+  }
 
   return data;
 }

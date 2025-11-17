@@ -49,8 +49,7 @@ export interface MentionDetail {
 
 export async function fetchMentionsByMonth(
   year: number,
-  month: number,
-  page = 1
+  month: number
 ): Promise<(string | null)[]> {
   const username = await getUsername();
   const { startDate, endDate } = getMonthDateRange(year, month);
@@ -62,18 +61,10 @@ export async function fetchMentionsByMonth(
     pathname: "/search/issues",
     q: `mentions:${username} created:${startDate}..${endDate}`,
     per_page: 100,
-    page,
+    fetchAll: true,
   });
 
   const items = data.items.map((item) => item.user?.login ?? null);
-  const totalCount = data.total_count;
-  const maxPages = Math.min(Math.ceil(totalCount / 100), 10); // Max 1000 items (10 pages)
-
-  // Recursively fetch next page if available
-  if (page < maxPages) {
-    const nextPageItems = await fetchMentionsByMonth(year, month, page + 1);
-    return [...items, ...nextPageItems];
-  }
 
   return items;
 }
