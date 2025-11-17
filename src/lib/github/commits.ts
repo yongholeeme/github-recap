@@ -49,3 +49,9 @@ export async function fetchCountOfCommits(year: number): Promise<number> {
 
   return data.total_count || 0;
 }
+
+export interface RepositoryCommitStats {
+  repo: string;
+  owner: string;
+  commitCount: number;
+}

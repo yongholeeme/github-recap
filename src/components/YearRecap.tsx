@@ -4,8 +4,11 @@ import CommitActivitySection from '@/components/CommitActivitySection';
 import CommitsByHourSection from '@/components/CommitsByHourSection';
 import CommitsByDaySection from '@/components/CommitsByDaySection';
 import CommitTimelineSection from '@/components/CommitTimelineSection';
+import RepositoryCommitsSection from '@/components/RepositoryCommitsSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
+import RepositoryPullRequestsSection from '@/components/RepositoryPullRequestsSection';
+import RepositoryIssuesDiscussionsSection from '@/components/RepositoryIssuesDiscussionsSection';
 import ContributedPullRequestsSection from '@/components/ContributedPullRequestsSection';
 import ContributedIssuesSection from '@/components/ContributedIssuesSection';
 import MentionsSection from '@/components/MentionsSection';
@@ -145,25 +148,28 @@ export default function YearRecap({ year }: YearRecapProps) {
 						<HeroSection user={user} onLogout={handleLogout} />
 					</div>
 
-							{/* 커밋 섹션들 - 블루 계열 배경 */}
-							<div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
-								<CommitActivitySection />
-								<CommitsByHourSection />
-								<CommitsByDaySection />
-								<CommitTimelineSection />
-							</div>
+						{/* 커밋 섹션들 - 블루 계열 배경 */}
+						<div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
+							<CommitActivitySection />
+							<CommitsByHourSection />
+							<CommitsByDaySection />
+							<CommitTimelineSection />
+							<RepositoryCommitsSection />
+						</div>
 
-							{/* PR 섹션 - 오렌지 계열 배경 */}
-							<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
-								<ContributedPullRequestsSection />
-								<PullRequestActivitySection />
-							</div>
+						{/* PR 섹션 - 오렌지 계열 배경 */}
+						<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
+							<ContributedPullRequestsSection />
+							<PullRequestActivitySection />
+							<RepositoryPullRequestsSection />
+						</div>
 
-							{/* 이슈 섹션 - 그린 계열 배경 */}
-							<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
-								<ContributedIssuesSection />
-								<IssueActivitySection />
-							</div>
+						{/* 이슈 섹션 - 그린 계열 배경 */}
+						<div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950">
+							<ContributedIssuesSection />
+							<IssueActivitySection />
+							<RepositoryIssuesDiscussionsSection />
+						</div>
 
 							{/* 멘션 섹션들 - 퍼플 계열 배경 */}
 							<div className="bg-gradient-to-br from-indigo-950 via-purple-950 to-fuchsia-950">

@@ -236,3 +236,8 @@ export async function fetchMyMergedPRs(
 
   return prs;
 }
+
+export interface RepositoryPRStats {
+  repo: string;
+  prCount: number;
+}

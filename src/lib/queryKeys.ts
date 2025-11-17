@@ -55,4 +55,13 @@ export const queryKeys = {
 
   useMostDiscussedDiscussion: (year: number) =>
     ["useMostDiscussedDiscussion", year] as const,
+
+  useRepositoryCommits: (year: number) =>
+    ["useRepositoryCommits", year] as const,
+
+  useRepositoryPullRequests: (year: number) =>
+    ["useRepositoryPullRequests", year] as const,
+
+  useRepositoryIssuesDiscussions: (year: number) =>
+    ["useRepositoryIssuesDiscussions", year] as const,
 } as const;
