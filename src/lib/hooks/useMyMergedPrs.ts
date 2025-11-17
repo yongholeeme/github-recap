@@ -1,28 +1,37 @@
-import { fetchMyMergedPRs } from '@/lib/github/pullRequests';
+import { fetchMyMergedPRs } from "@/lib/github/pullRequests";
+import { useUser } from "@/contexts/UserContext";
 import { queryKeys } from "@/lib/queryKeys";
 import { useQueries } from "@tanstack/react-query";
 
 function useMyMergedPrs(year: number) {
+  const user = useUser();
+
   const queries = useQueries({
     queries: Array.from({ length: 12 }, (_, i) => i + 1).map((month) => ({
       queryKey: queryKeys.useMyMergedPrs(year, month),
       queryFn: () => fetchMyMergedPRs(year, month),
+      staleTime: 1000 * 60 * 60 * 24, // 24 hours
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      enabled: !!user,
     })),
   });
 
   return {
     data: queries.flatMap((query) => query.data ?? []),
     isFetching: queries.some((query) => query.isFetching),
-  }
+  };
 }
 
 export function useMyAverageMergeTime(year: number) {
-  const {data, isFetching} = useMyMergedPrs(year)
+  const { data, isFetching } = useMyMergedPrs(year);
 
   const averageMergeTime = (() => {
     if (!data || data.length === 0) return null;
 
-    const mergedPrs = data.filter(pr => pr.mergedAt && pr.createdAt);
+    const mergedPrs = data.filter((pr) => pr.mergedAt && pr.createdAt);
     if (mergedPrs.length === 0) return null;
 
     const totalHours = mergedPrs.reduce((sum, pr) => {
@@ -37,20 +46,21 @@ export function useMyAverageMergeTime(year: number) {
 
   return {
     data: averageMergeTime,
-    isFetching
-  }
+    isFetching,
+  };
 }
 
 export function useMyFastestMergedPr(year: number) {
-  const {data, isFetching} = useMyMergedPrs(year)
+  const { data, isFetching } = useMyMergedPrs(year);
 
   const fastestPr = (() => {
     if (!data || data.length === 0) return null;
 
-    const mergedPrs = data.filter(pr => pr.mergedAt && pr.createdAt);
+    const mergedPrs = data.filter((pr) => pr.mergedAt && pr.createdAt);
     if (mergedPrs.length === 0) return null;
 
-    let fastest: typeof mergedPrs[0] & { mergeTimeMs?: number } | null = null;
+    let fastest: ((typeof mergedPrs)[0] & { mergeTimeMs?: number }) | null =
+      null;
 
     for (const pr of mergedPrs) {
       const createdTime = new Date(pr.createdAt).getTime();
@@ -76,20 +86,21 @@ export function useMyFastestMergedPr(year: number) {
 
   return {
     data: fastestPr,
-    isFetching
-  }
+    isFetching,
+  };
 }
 
 export function useMySlowestMergedPr(year: number) {
-  const {data, isFetching} = useMyMergedPrs(year)
+  const { data, isFetching } = useMyMergedPrs(year);
 
   const slowestPr = (() => {
     if (!data || data.length === 0) return null;
 
-    const mergedPrs = data.filter(pr => pr.mergedAt && pr.createdAt);
+    const mergedPrs = data.filter((pr) => pr.mergedAt && pr.createdAt);
     if (mergedPrs.length === 0) return null;
 
-    let slowest: typeof mergedPrs[0] & { mergeTimeMs?: number } | null = null;
+    let slowest: ((typeof mergedPrs)[0] & { mergeTimeMs?: number }) | null =
+      null;
 
     for (const pr of mergedPrs) {
       const createdTime = new Date(pr.createdAt).getTime();
@@ -115,7 +126,6 @@ export function useMySlowestMergedPr(year: number) {
 
   return {
     data: slowestPr,
-    isFetching
-  }
+    isFetching,
+  };
 }
-
