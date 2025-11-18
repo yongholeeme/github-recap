@@ -7,7 +7,6 @@ import CommitTimelineSection from '@/components/CommitTimelineSection';
 import RepositoryCommitsSection from '@/components/RepositoryCommitsSection';
 import IssueActivitySection from '@/components/IssueActivitySection';
 import PullRequestActivitySection from '@/components/PullRequestActivitySection';
-import RepositoryPullRequestsSection from '@/components/RepositoryPullRequestsSection';
 import RepositoryIssuesDiscussionsSection from '@/components/RepositoryIssuesDiscussionsSection';
 import ContributedPullRequestsSection from '@/components/ContributedPullRequestsSection';
 import ContributedIssuesSection from '@/components/ContributedIssuesSection';
@@ -78,7 +77,7 @@ export default function YearRecap({ year }: YearRecapProps) {
 			const fetchPATUser = async () => {
 				try {
 					const { Octokit } = await import('octokit');
-					const octokit = new Octokit({ auth: pat, baseUrl: config.github.baseUrl });
+					const octokit = new Octokit({ auth: pat, baseUrl: config.github.apiUrl });
 					const { data } = await octokit.rest.users.getAuthenticated();
 					
 					// Create a pseudo User object with GitHub data
@@ -161,7 +160,6 @@ export default function YearRecap({ year }: YearRecapProps) {
 						<div className="bg-gradient-to-br from-orange-950 via-amber-950 to-orange-950">
 							<ContributedPullRequestsSection />
 							<PullRequestActivitySection />
-							<RepositoryPullRequestsSection />
 						</div>
 
 						{/* 이슈 섹션 - 그린 계열 배경 */}

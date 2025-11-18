@@ -14,8 +14,8 @@ export default function RepositoryCommitsSection() {
 
   return (
     <RepositoryStatsSection
-      title="저장소별 커밋 기여도"
-      subtitle="가장 많은 커밋을 남긴 저장소들"
+      title="2025년의 코드들이 모인 곳"
+      subtitle=""
       data={repos}
       isFetching={isFetching}
       countLabel="커밋"

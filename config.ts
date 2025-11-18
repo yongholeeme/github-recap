@@ -17,10 +17,8 @@ export const config = {
    * baseUrl: 'https://github.your-company.com/api/v3'
    */
   github: {
-    baseUrl: "https://api.github.com",
-    // baseUrl: "https://oss.fin.navercorp.com/api/v3",
+    url: "https://github.com",
+    apiUrl: "https://api.github.com",
   },
 } as const;
 
-// github: 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
-// oss:

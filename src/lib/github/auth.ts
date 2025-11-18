@@ -13,7 +13,7 @@ export async function getOctokit(): Promise<Octokit> {
 
   return new Octokit({
     auth: pat,
-    baseUrl: config.github.baseUrl,
+    baseUrl: config.github.apiUrl,
   });
 }
 

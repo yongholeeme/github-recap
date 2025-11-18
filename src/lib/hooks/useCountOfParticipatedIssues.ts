@@ -9,11 +9,6 @@ export function useCountOfParticipatedIssues(year: number) {
   return useQuery({
     queryKey: queryKeys.useCountOfParticipatedIssues(year),
     queryFn: () => fetchCountOfParticipatedIssues(year),
-    staleTime: 1000 * 60 * 60 * 24,
-    gcTime: 1000 * 60 * 60 * 24,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
     enabled: !!user,
   });
 }

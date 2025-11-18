@@ -45,7 +45,7 @@ export async function fetcher<T = unknown>({
   order?: string;
   fetchAll?: boolean;
 }): Promise<T> {
-  const url = new URL(`${config.github.baseUrl}${pathname}`);
+  const url = new URL(`${config.github.apiUrl}${pathname}`);
 
   // For non-search endpoints (like /repos/{owner}/{repo}/pulls/{number}/reviews)
   const isSearchEndpoint = pathname.includes("/search/");

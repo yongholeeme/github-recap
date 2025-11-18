@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/queryKeys";
 import { useUser } from "@/contexts/UserContext";
-import { fetchInvolvedIssues } from "@/lib/github/issues";
+import { fetchInvolvedIssues, fetchInvolvedDiscussions } from "@/lib/github/issues";
 
 interface RepositoryIssueDiscussionStats {
   repo: string;
@@ -20,15 +20,19 @@ export function useRepositoryIssuesDiscussions(year: number) {
         return [];
       }
 
-      // Fetch all issues the user participated in
-      const issues = await fetchInvolvedIssues(user.user_name, year);
+      // Fetch both issues and discussions in parallel
+      const [issues, discussions] = await Promise.all([
+        fetchInvolvedIssues(user.user_name, year),
+        fetchInvolvedDiscussions(user.user_name, year),
+      ]);
 
-      // Count issues per repository
+      // Count issues and discussions per repository
       const repoMap = new Map<
         string,
         RepositoryIssueDiscussionStats & { username: string }
       >();
 
+      // Process issues
       for (const issue of issues) {
         const [owner, repo] = issue.repository_url.split("/").slice(-2);
         const repoFullName = `${owner}/${repo}`;
@@ -47,15 +51,29 @@ export function useRepositoryIssuesDiscussions(year: number) {
         }
       }
 
-      // Note: GitHub REST API doesn't support searching discussions
-      // We would need GraphQL for discussions, but for now we'll show only issues
-      // or we can use the existing GraphQL queries if available
+      // Process discussions
+      for (const discussion of discussions) {
+        const repoFullName = discussion.repository.nameWithOwner;
+
+        if (repoMap.has(repoFullName)) {
+          repoMap.get(repoFullName)!.discussionCount++;
+          repoMap.get(repoFullName)!.totalCount++;
+        } else {
+          repoMap.set(repoFullName, {
+            repo: repoFullName,
+            username: user.user_name,
+            issueCount: 0,
+            discussionCount: 1,
+            totalCount: 1,
+          });
+        }
+      }
 
       // Sort by total count descending
       return Array.from(repoMap.values()).sort(
         (a, b) => b.totalCount - a.totalCount
       );
     },
-    staleTime: 1000 * 60 * 5,
+    enabled: !!user,
   });
 }

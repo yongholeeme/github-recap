@@ -62,6 +62,46 @@ export async function fetchInvolvedIssues(
   return data.items;
 }
 
+export async function fetchInvolvedDiscussions(
+  username: string,
+  year: number
+): Promise<Array<{ repository: { nameWithOwner: string } }>> {
+  const octokit = await getOctokit();
+  const { startDate, endDate } = getDateRange(year);
+
+  try {
+    const query = `
+      query($searchQuery: String!) {
+        search(query: $searchQuery, type: DISCUSSION, first: 100) {
+          nodes {
+            ... on Discussion {
+              repository {
+                nameWithOwner
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const searchQuery = `involves:${username} created:${startDate}..${endDate}`;
+    const response = await octokit.graphql<{
+      search: {
+        nodes: Array<{
+          repository: { nameWithOwner: string };
+        } | null>;
+      };
+    }>(query, {
+      searchQuery,
+    });
+
+    return (response.search.nodes || []).filter((node): node is { repository: { nameWithOwner: string } } => node !== null);
+  } catch (error) {
+    console.error("Error fetching involved discussions:", error);
+    return [];
+  }
+}
+
 export interface MentionDetail {
   username: string;
   count: number;

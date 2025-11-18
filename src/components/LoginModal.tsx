@@ -16,6 +16,14 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 
 	if (!isOpen) return null;
 
+	// Generate token URL based on config
+	const getTokenUrl = () => {
+		const url = new URL(config.github.url);
+		const origin = url.origin;
+		// For GitHub Enterprise, the URL pattern is the same
+		return `${origin}/settings/tokens/new?scopes=repo,read:user`;
+	};
+
 	const handlePATLogin = async () => {
 		setPATError('');
 		
@@ -29,7 +37,7 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 		// Validate PAT by making a test request
 		try {
 			const { Octokit } = await import('octokit');
-			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.baseUrl });
+			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.apiUrl });
 			const { data } = await octokit.rest.users.getAuthenticated();
 			
 			// Valid token, save it (sessionStorage for better security)
@@ -97,9 +105,9 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 								<p className="mt-2 text-sm text-red-600">{patError}</p>
 							)}
 							<p className="mt-2 text-xs text-gray-500">
-								<a 
-									href="https://github.com/settings/tokens/new?scopes=repo,read:user" 
-									target="_blank" 
+								<a
+									href={getTokenUrl()}
+									target="_blank"
 									rel="noopener noreferrer"
 									className="text-blue-600 hover:underline"
 								>
