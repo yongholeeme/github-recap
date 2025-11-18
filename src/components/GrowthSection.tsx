@@ -113,7 +113,7 @@ export default function GrowthSection() {
 						{ title: "생성한 Pull Request", icon: "🔀", current: 0, last: 0, change: 0, changeRate: 0 },
 						{ title: "리뷰한 Pull Request", icon: "👀", current: 0, last: 0, change: 0, changeRate: 0 },
 						{ title: "이슈 & 디스커션", icon: "🎯", current: 0, last: 0, change: 0, changeRate: 0 },
-					]).map((item, index) => (
+					]).map((item) => (
 						<div
 							key={item.title}
 							className={`group relative overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 border backdrop-blur-sm ${

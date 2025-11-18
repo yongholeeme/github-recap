@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useYear } from '@/contexts/YearContext';
-import { PAT_STORAGE_KEY } from "@/constants/storage";
 import type { User } from "@/types/user";
 
 interface HeroSectionProps {
@@ -13,12 +12,6 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 	const avatarUrl = user?.avatar_url || "";
 	const userName = user?.user_name || "";
 	const [showAvatar, setShowAvatar] = useState(false);
-
-	const handleLogout = () => {
-		// Remove PAT from sessionStorage
-		sessionStorage.removeItem(PAT_STORAGE_KEY);
-		onLogout();
-	};
 
 	return (
 		<div className="h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-hidden w-full">
@@ -59,7 +52,7 @@ export default function HeroSection({ user, onLogout }: HeroSectionProps) {
 					{/* Logout button */}
 					<button
 						type="button"
-						onClick={handleLogout}
+						onClick={onLogout}
 						className="px-4 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium text-white/60 hover:text-white/90 hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
 					>
 						로그아웃

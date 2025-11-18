@@ -17,11 +17,11 @@ import RefreshButton from '@/components/RefreshButton';
 import LoginModal from '@/components/LoginModal';
 import LoginToast from '@/components/LoginToast';
 import { YearProvider } from '@/contexts/YearContext';
-import { config } from "@/../config";
 import { useQueryClient } from "@tanstack/react-query";
-import { PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY } from "@/constants/storage";
+import { REACT_QUERY_CACHE_STORAGE_KEY } from "@/constants/storage";
 import type { User } from "@/types/user";
 import { UserProvider } from "@/contexts/UserContext";
+import { checkAuth, logout, clearCacheBeforeLogin } from "@/lib/auth";
 
 interface YearRecapProps {
 	year?: number;
@@ -70,55 +70,36 @@ export default function YearRecap({ year }: YearRecapProps) {
 	}, [isLoginModalOpen]);
 
 	useEffect(() => {
-		// Check for PAT in sessionStorage
-		const pat = sessionStorage.getItem(PAT_STORAGE_KEY);
-		if (pat) {
-			// Fetch user info with PAT
-			const fetchPATUser = async () => {
-				try {
-					const { Octokit } = await import('octokit');
-					const octokit = new Octokit({ auth: pat, baseUrl: config.github.apiUrl });
-					const { data } = await octokit.rest.users.getAuthenticated();
-					
-					// Create a pseudo User object with GitHub data
-					// Use avatar_url from API response (handles redirects properly)
-					setUser({
-						avatar_url: data.avatar_url,
-						user_name: data.login,
-					} );
-				} catch (error) {
-					console.error('Failed to fetch PAT user:', error);
-					// Invalid PAT, remove it and clear cache
-					sessionStorage.removeItem(PAT_STORAGE_KEY);
+		const initAuth = async () => {
+			try {
+				const user = await checkAuth();
+
+				if (!user) {
+					// Invalid PAT, clear cache
 					queryClient.clear();
 					localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
-					setUser(null);
-				} finally {
-					setIsLoading(false);
 				}
-			};
-			fetchPATUser();
-			return;
-		}
 
-		setIsLoading(false);
+				setUser(user);
+			} catch (error) {
+				console.error('Failed to check auth:', error);
+				setUser(null);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		initAuth();
 	}, [queryClient]);
 
 	const handleLogin = (newUser: User) => {
 		// Clear previous user's cache
-		queryClient.clear();
-		localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
+		clearCacheBeforeLogin(queryClient);
 		setUser(newUser);
 	};
 
 	const handleLogout = () => {
-		// Clear all React Query cache
-		queryClient.clear();
-		// Clear localStorage cache
-		localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY);
-		// Clear session token
-		sessionStorage.removeItem(PAT_STORAGE_KEY);
-		// Reset user state
+		logout(queryClient);
 		setUser(null);
 	};
 

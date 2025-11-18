@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { config } from '@/../config';
-import { PAT_STORAGE_KEY } from '@/constants/storage';
+import { loginWithPAT } from '@/lib/auth';
 import type { User } from '@/types/user';
 
 interface LoginModalProps {
@@ -26,33 +26,14 @@ export default function LoginModal({ isOpen, onClose, onLogin }: LoginModalProps
 
 	const handlePATLogin = async () => {
 		setPATError('');
-		
-		if (!patToken.trim()) {
-			setPATError('토큰을 입력해주세요');
-			return;
-		}
-
 		setIsLoading(true);
 
-		// Validate PAT by making a test request
 		try {
-			const { Octokit } = await import('octokit');
-			const octokit = new Octokit({ auth: patToken, baseUrl: config.github.apiUrl });
-			const { data } = await octokit.rest.users.getAuthenticated();
-			
-			// Valid token, save it (sessionStorage for better security)
-			localStorage.clear()
-			sessionStorage.setItem(PAT_STORAGE_KEY, patToken);
-			
-			// Use avatar_url from API response (handles redirects properly)
-
-			onLogin({
-				avatar_url: data.avatar_url,
-				user_name: data.login,
-			});
+			const user = await loginWithPAT(patToken);
+			onLogin(user);
 			onClose();
 		} catch (error) {
-			setPATError('유효하지 않은 토큰입니다');
+			setPATError(error instanceof Error ? error.message : '유효하지 않은 토큰입니다');
 			console.error('PAT validation error:', error);
 		} finally {
 			setIsLoading(false);
