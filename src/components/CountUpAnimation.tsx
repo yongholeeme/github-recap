@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import {useEffect, useRef, useState} from 'react'
+
+import {useInView} from 'react-intersection-observer'
 
 interface CountUpAnimationProps {
-  value: number;
-  duration?: number; // milliseconds
-  className?: string;
+    value: number
+    duration?: number // milliseconds
+    className?: string
 }
 
 /**
@@ -12,69 +13,70 @@ interface CountUpAnimationProps {
  * easeOutExpo 이징 함수 사용으로 자연스러운 감속 효과
  * 화면에 보일 때만 애니메이션 시작
  */
-export function CountUpAnimation({
-  value,
-  duration = 1000,
-  className = "",
-}: CountUpAnimationProps) {
-  const [displayValue, setDisplayValue] = useState(0);
-  const startTimeRef = useRef<number | null>(null);
-  const animationFrameRef = useRef<number | undefined>(undefined);
-  const hasAnimatedRef = useRef(false);
-  
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+export function CountUpAnimation({value, duration = 1000, className = ''}: CountUpAnimationProps) {
+    const [displayValue, setDisplayValue] = useState(0)
+    const startTimeRef = useRef<number | null>(null)
+    const animationFrameRef = useRef<number | undefined>(undefined)
+    const hasAnimatedRef = useRef(false)
+    const targetValueRef = useRef(value)
 
-  useEffect(() => {
-    // 아직 화면에 보이지 않거나 이미 애니메이션이 진행된 경우
-    if (!inView || hasAnimatedRef.current) {
-      return;
-    }
+    const {ref, inView} = useInView({
+        triggerOnce: true,
+        threshold: 0.1,
+    })
 
-    if (value === 0) {
-      setDisplayValue(0);
-      hasAnimatedRef.current = true;
-      return;
-    }
+    // value가 변경되면 targetValueRef 업데이트
+    useEffect(() => {
+        targetValueRef.current = value
+    }, [value])
 
-    startTimeRef.current = null;
-    hasAnimatedRef.current = true;
+    useEffect(() => {
+        // 아직 화면에 보이지 않거나 이미 애니메이션이 진행된 경우
+        if (!inView || hasAnimatedRef.current) {
+            return
+        }
 
-    const animate = (currentTime: number) => {
-      if (startTimeRef.current === null) {
-        startTimeRef.current = currentTime;
-      }
+        if (targetValueRef.current === 0) {
+            hasAnimatedRef.current = true
+            return
+        }
 
-      const elapsed = currentTime - startTimeRef.current;
-      const progress = Math.min(elapsed / duration, 1);
+        startTimeRef.current = null
+        hasAnimatedRef.current = true
 
-      // easeOutExpo: 빠르게 시작해서 천천히 끝남
-      const easeOutExpo =
-        progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const animate = (currentTime: number) => {
+            if (startTimeRef.current === null) {
+                startTimeRef.current = currentTime
+            }
 
-      setDisplayValue(Math.floor(easeOutExpo * value));
+            const elapsed = currentTime - startTimeRef.current
+            const progress = Math.min(elapsed / duration, 1)
 
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        setDisplayValue(value); // 정확한 최종값 설정
-      }
-    };
+            // easeOutExpo: 빠르게 시작해서 천천히 끝남
+            const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+            const currentTarget = targetValueRef.current
+            setDisplayValue(Math.floor(easeOutExpo * currentTarget))
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [value, duration, inView]);
+            if (progress < 1) {
+                animationFrameRef.current = requestAnimationFrame(animate)
+            } else {
+                setDisplayValue(currentTarget) // 정확한 최종값 설정
+            }
+        }
 
-  return (
-    <span ref={ref} className={`pr-4 ${className}`}>
-      {displayValue.toLocaleString()}
-    </span>
-  );
+        animationFrameRef.current = requestAnimationFrame(animate)
+
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
+            }
+        }
+    }, [value, duration, inView])
+
+    return (
+        <span ref={ref} className={`pr-4 ${className}`}>
+            {displayValue.toLocaleString()}
+        </span>
+    )
 }

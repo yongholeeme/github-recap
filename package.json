@@ -1,58 +1,61 @@
 {
-  "name": "recap-github",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "knip": "knip"
-  },
-  "dependencies": {
-    "@tanstack/query-async-storage-persister": "^5.90.9",
-    "@tanstack/react-query": "^5.90.7",
-    "@tanstack/react-query-persist-client": "^5.90.9",
-    "@tanstack/react-router": "^1.135.2",
-    "date-fns": "^4.1.0",
-    "octokit": "^5.0.5",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-intersection-observer": "^10.0.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@tailwindcss/postcss": "^4.1.17",
-    "@tanstack/router-plugin": "^1.135.2",
-    "@types/node": "^24.10.0",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^5.1.0",
-    "autoprefixer": "^10.4.22",
-    "babel-plugin-react-compiler": "^19.1.0-rc.3",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "knip": "^5.69.1",
-    "lefthook": "^2.0.4",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.17",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.3",
-    "vite": "npm:rolldown-vite@7.2.2"
-  },
-  "pnpm": {
-    "overrides": {
-      "vite": "npm:rolldown-vite@7.2.2"
+    "name": "github-recap",
+    "version": "0.0.0",
+    "private": true,
+    "description": "recap of my year on GitHub",
+    "type": "module",
+    "scripts": {
+        "build": "tsc -b && vite build",
+        "dev": "vite",
+        "format": "prettier --check \"**/*.{js,ts,tsx,json,css,md}\"",
+        "format:fix": "prettier --write \"**/*.{js,ts,tsx,json,css,md}\"",
+        "knip": "knip",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "preview": "vite preview"
     },
-    "ignoredBuiltDependencies": [
-      "lefthook"
-    ]
-  },
-  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
-  "engines": {
-    "node": ">=22.12.0"
-  }
+    "dependencies": {
+        "@tanstack/query-async-storage-persister": "^5.90.9",
+        "@tanstack/react-query": "^5.90.7",
+        "@tanstack/react-query-persist-client": "^5.90.9",
+        "@tanstack/react-router": "^1.135.2",
+        "date-fns": "^4.1.0",
+        "octokit": "^5.0.5",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "react-intersection-observer": "^10.0.0"
+    },
+    "devDependencies": {
+        "@naverpay/editorconfig": "^1.0.0",
+        "@naverpay/eslint-config": "^2.4.0",
+        "@naverpay/prettier-config": "^1.0.1",
+        "@tailwindcss/postcss": "^4.1.17",
+        "@tanstack/router-plugin": "^1.135.2",
+        "@types/node": "^24.10.0",
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.2",
+        "@vitejs/plugin-react": "^5.1.0",
+        "autoprefixer": "^10.4.22",
+        "babel-plugin-react-compiler": "^19.1.0-rc.3",
+        "eslint": "^9.39.1",
+        "knip": "^5.69.1",
+        "lefthook": "^2.0.4",
+        "postcss": "^8.5.6",
+        "prettier": "^3.6.2",
+        "tailwindcss": "^4.1.17",
+        "typescript": "~5.9.3",
+        "vite": "npm:rolldown-vite@7.2.2"
+    },
+    "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67",
+    "engines": {
+        "node": ">=22.12.0"
+    },
+    "pnpm": {
+        "overrides": {
+            "vite": "npm:rolldown-vite@7.2.2"
+        },
+        "ignoredBuiltDependencies": [
+            "lefthook"
+        ]
+    }
 }

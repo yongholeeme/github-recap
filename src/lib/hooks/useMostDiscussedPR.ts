@@ -1,14 +1,16 @@
-import { fetchMostDiscussedPR } from "@/lib/github/pullRequests";
-import { useUser } from "@/contexts/UserContext";
-import { queryKeys } from "@/lib/queryKeys";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from '@tanstack/react-query'
+
+import {useUser} from '@/contexts/UserContext'
+import {fetchMostDiscussedPR} from '@/lib/github/pullRequests'
+import {queryKeys} from '@/lib/queryKeys'
+
 
 export function useMostDiscussedPR(year: number) {
-  const user = useUser();
+    const user = useUser()
 
-  return useQuery({
-    queryKey: queryKeys.useMostDiscussedPR(year),
-    queryFn: () => fetchMostDiscussedPR(year),
-    enabled: !!user,
-  });
+    return useQuery({
+        queryKey: queryKeys.useMostDiscussedPR(year),
+        queryFn: () => fetchMostDiscussedPR(year),
+        enabled: !!user,
+    })
 }

@@ -1,18 +1,18 @@
-import StatCard from '@/components/StatCard';
-import { useYear } from '@/contexts/YearContext';
-import { useCountOfParticipatedDiscussions } from '@/lib/hooks/useCountOfParticipatedDiscussions';
+import StatCard from '@/components/StatCard'
+import {useYear} from '@/contexts/YearContext'
+import {useCountOfParticipatedDiscussions} from '@/lib/hooks/useCountOfParticipatedDiscussions'
 
 export default function ParticipatedDiscussionsCard() {
-	const { year } = useYear();
-	const { data, isFetching, error } = useCountOfParticipatedDiscussions(year);
+    const {year} = useYear()
+    const {data, isFetching, error} = useCountOfParticipatedDiscussions(year)
 
-	return (
-		<StatCard
-			title="참여한 디스커션"
-			description="작성 + 코멘트"
-			value={data as number | undefined}
-			isFetching={isFetching}
-			error={error}
-		/>
-	);
+    return (
+        <StatCard
+            title="참여한 디스커션"
+            description="작성 + 코멘트"
+            value={data as number | undefined}
+            isFetching={isFetching}
+            error={error}
+        />
+    )
 }

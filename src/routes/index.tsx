@@ -1,11 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import YearRecap from '@/components/YearRecap';
+import {createFileRoute} from '@tanstack/react-router'
 
-export const Route = createFileRoute("/")({
-	component: Index,
-});
+import YearRecap from '@/components/YearRecap'
+
+export const Route = createFileRoute('/')({
+    component: Index,
+})
 
 function Index() {
-	// Default to current year
-	return <YearRecap />;
+    // Default to current year
+    return <YearRecap />
 }
