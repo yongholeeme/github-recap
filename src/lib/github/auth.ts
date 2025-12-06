@@ -1,6 +1,6 @@
+import {config} from '@config'
 import {Octokit} from 'octokit'
 
-import {config} from '@/../config'
 import {PAT_STORAGE_KEY} from '@/constants/storage'
 
 export async function getOctokit(): Promise<Octokit> {

@@ -1,8 +1,9 @@
 import {useState} from 'react'
 
+import {config} from '@config'
+
 import type {User} from '@/types/user'
 
-import {config} from '@/../config'
 import LoginModalLayout from '@/components/LoginModalLayout'
 import {loginWithPAT} from '@/lib/auth'
 

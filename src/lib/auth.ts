@@ -1,9 +1,9 @@
+import {config} from '@config'
 import {Octokit} from 'octokit'
 
 import type {User} from '@/types/user'
 import type {QueryClient} from '@tanstack/react-query'
 
-import {config} from '@/../config'
 import {PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
 import {supabase} from '@/lib/supabase'
 

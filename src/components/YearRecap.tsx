@@ -1,10 +1,10 @@
 import {useEffect, useState, useRef} from 'react'
 
+import {config} from '@config'
 import {useQueryClient} from '@tanstack/react-query'
 
 import type {User} from '@/types/user'
 
-import {config} from '@/../config'
 import CommitActivitySection from '@/components/CommitActivitySection'
 import CommitsByDaySection from '@/components/CommitsByDaySection'
 import CommitsByHourSection from '@/components/CommitsByHourSection'

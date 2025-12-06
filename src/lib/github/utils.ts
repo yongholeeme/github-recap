@@ -1,6 +1,6 @@
+import {config} from '@config'
 import {startOfMonth, endOfMonth, startOfYear, endOfYear, format} from 'date-fns'
 
-import {config} from '@/../config'
 
 export function getDateRange(year: number) {
     const yearStart = startOfYear(new Date(year, 0, 1))

@@ -1,6 +1,7 @@
+import {config} from '@config'
+
 import type {User} from '@/types/user'
 
-import {config} from '@/../config'
 import OAuthLoginModal from '@/components/OAuthLoginModal'
 import PATLoginModal from '@/components/PATLoginModal'
 
