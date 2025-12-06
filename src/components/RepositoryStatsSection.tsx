@@ -1,3 +1,10 @@
+import {config} from '@config'
+
+import Grid from '@/components/common/Grid'
+import SectionContainer from '@/components/common/SectionContainer'
+import SectionContent from '@/components/common/SectionContent'
+import SectionHeader from '@/components/common/SectionHeader'
+
 interface RepositoryStats {
     repo: string
     count: number
@@ -18,39 +25,8 @@ interface RepositoryStatsSectionProps {
     }
 }
 
-import {config} from '@config'
-
-export default function RepositoryStatsSection({
-    title,
-    subtitle,
-    data,
-    isFetching,
-    countLabel,
-    linkType,
-    colorScheme,
-}: RepositoryStatsSectionProps) {
-    const repos = data || []
-
-    const getRepoLink = (repoFullName: string, username?: string) => {
-        // Extract origin from config.github.baseUrl
-        // Example: 'https://oss.fin.navercorp.com/api/v3' -> 'https://oss.fin.navercorp.com'
-        const url = new URL(config.github.url)
-        const origin = url.origin
-        const baseUrl = `${origin}/${repoFullName}`
-
-        switch (linkType) {
-            case 'commits':
-                return username ? `${baseUrl}/commits/main/?author=${username}` : `${baseUrl}/commits`
-            case 'pulls':
-                return `${baseUrl}/pulls?q=author%3A%40me+`
-            case 'issues':
-                return `${baseUrl}/issues?q=author%3A%40me+`
-            default:
-                return baseUrl
-        }
-    }
-
-    const SkeletonCard = () => (
+function SkeletonCard() {
+    return (
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900/40 to-gray-800/40 p-6 backdrop-blur-sm border border-gray-700/30">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-700/10 to-transparent -translate-x-full animate-shimmer" />
             <div className="relative space-y-4">
@@ -63,22 +39,47 @@ export default function RepositoryStatsSection({
             </div>
         </div>
     )
+}
+
+function getRepoLink(repoFullName: string, linkType: string, username?: string) {
+    const url = new URL(config.github.url)
+    const origin = url.origin
+    const baseUrl = `${origin}/${repoFullName}`
+
+    switch (linkType) {
+        case 'commits':
+            return username ? `${baseUrl}/commits/main/?author=${username}` : `${baseUrl}/commits`
+        case 'pulls':
+            return `${baseUrl}/pulls?q=author%3A%40me+`
+        case 'issues':
+            return `${baseUrl}/issues?q=author%3A%40me+`
+        default:
+            return baseUrl
+    }
+}
+
+export default function RepositoryStatsSection({
+    title,
+    subtitle,
+    data,
+    isFetching,
+    countLabel,
+    linkType,
+    colorScheme,
+}: RepositoryStatsSectionProps) {
+    const repos = data || []
 
     return (
-        <section className="snap-start min-h-screen flex items-center justify-center p-8">
-            <div className="max-w-6xl w-full">
-                {/* Header */}
-                <div className="text-center mb-16">
-                    <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">{title}</h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">{subtitle}</p>
-                </div>
+        <SectionContainer>
+            <SectionContent>
+                <SectionHeader title={title} subtitle={subtitle} className="mb-16" />
 
                 {isFetching ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <Grid cols={1} mdCols={2} lgCols={3} gap="md">
                         {[...Array(6)].map((_, i) => (
                             <SkeletonCard key={i} />
                         ))}
-                    </div>
+                    </Grid>
                 ) : repos.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-24">
                         <div
@@ -106,7 +107,7 @@ export default function RepositoryStatsSection({
                         <p className="text-gray-500">활동을 시작하면 여기에 표시됩니다</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[65vh] overflow-y-auto pr-2 scrollbar-custom py-2">
+                    <Grid cols={1} mdCols={2} lgCols={3} gap="md" className="max-h-[65vh] overflow-y-auto pr-2 scrollbar-custom py-2">
                         {repos.map((repo, index) => {
                             const totalCount = repos.reduce((acc, r) => acc + r.count, 0)
                             const percentage = ((repo.count / totalCount) * 100).toFixed(1)
@@ -115,7 +116,7 @@ export default function RepositoryStatsSection({
                             return (
                                 <a
                                     key={repo.repo}
-                                    href={getRepoLink(repo.repo, repo.owner)}
+                                    href={getRepoLink(repo.repo, linkType, repo.owner)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 cursor-pointer border backdrop-blur-sm"
@@ -212,37 +213,37 @@ export default function RepositoryStatsSection({
                                 </a>
                             )
                         })}
-                    </div>
+                    </Grid>
                 )}
-            </div>
 
-            <style>{`
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-        .scrollbar-custom {
-          scrollbar-width: thin;
-          scrollbar-color: ${colorScheme.primary}50 transparent;
-        }
-        .scrollbar-custom::-webkit-scrollbar {
-          width: 6px;
-        }
-        .scrollbar-custom::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .scrollbar-custom::-webkit-scrollbar-thumb {
-          background: ${colorScheme.primary}50;
-          border-radius: 10px;
-          transition: background 0.2s;
-        }
-        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-          background: ${colorScheme.primary}80;
-        }
-      `}</style>
-        </section>
+                <style>{`
+                    @keyframes shimmer {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(100%); }
+                    }
+                    .animate-shimmer {
+                        animation: shimmer 2s infinite;
+                    }
+                    .scrollbar-custom {
+                        scrollbar-width: thin;
+                        scrollbar-color: ${colorScheme.primary}50 transparent;
+                    }
+                    .scrollbar-custom::-webkit-scrollbar {
+                        width: 6px;
+                    }
+                    .scrollbar-custom::-webkit-scrollbar-track {
+                        background: transparent;
+                    }
+                    .scrollbar-custom::-webkit-scrollbar-thumb {
+                        background: ${colorScheme.primary}50;
+                        border-radius: 10px;
+                        transition: background 0.2s;
+                    }
+                    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+                        background: ${colorScheme.primary}80;
+                    }
+                `}</style>
+            </SectionContent>
+        </SectionContainer>
     )
 }

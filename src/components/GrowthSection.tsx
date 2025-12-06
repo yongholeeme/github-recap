@@ -1,4 +1,5 @@
-import {CountUpAnimation} from '@/components/CountUpAnimation'
+import {CountUpAnimation} from '@/components/common/CountUpAnimation'
+import Grid from '@/components/common/Grid'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfCommits} from '@/lib/hooks/useCountOfCommits'
 import {useCountOfMyCreatedPrs} from '@/lib/hooks/useCountOfMyCreatedPrs'
@@ -114,7 +115,7 @@ export default function GrowthSection() {
                 </div>
 
                 {/* Comparison Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <Grid cols={1} mdCols={2} gap="md">
                     {(
                         comparisonData || [
                             {title: '커밋', icon: '💻', current: 0, last: 0, change: 0, changeRate: 0},
@@ -157,7 +158,7 @@ export default function GrowthSection() {
                                 </div>
 
                                 {/* Year Comparison - Side by Side */}
-                                <div className="grid grid-cols-2 gap-6 mb-6">
+                                <div className="grid grid-cols-2 gap-6 mb-6" role="group">
                                     {/* 올해 */}
                                     <div className="space-y-1">
                                         <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
@@ -240,7 +241,7 @@ export default function GrowthSection() {
                             </div>
                         </div>
                     ))}
-                </div>
+                </Grid>
             </div>
 
             <style>{`

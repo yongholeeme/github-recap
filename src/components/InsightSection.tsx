@@ -1,5 +1,12 @@
 import type {ReactNode} from 'react'
 
+import BackgroundGrid from '@/components/common/BackgroundGrid'
+import Grid from '@/components/common/Grid'
+import LoadingOverlay from '@/components/common/LoadingOverlay'
+import SectionContainer from '@/components/common/SectionContainer'
+import SectionContent from '@/components/common/SectionContent'
+import SectionHeader from '@/components/common/SectionHeader'
+
 interface InsightSectionProps {
     title: string
     subtitle: string
@@ -16,6 +23,13 @@ interface InsightSectionProps {
     isFetching?: boolean
 }
 
+const MEDALS = ['🥇', '🥈', '🥉']
+const RANK_COLORS = [
+    'from-yellow-400/20 to-amber-400/20 border-yellow-400/30',
+    'from-gray-300/20 to-gray-400/20 border-gray-300/30',
+    'from-orange-400/20 to-amber-600/20 border-orange-400/30',
+]
+
 export default function InsightSection({
     title,
     subtitle,
@@ -24,45 +38,25 @@ export default function InsightSection({
     stats,
     isFetching = false,
 }: InsightSectionProps) {
-    const medals = ['🥇', '🥈', '🥉']
-    const colors = [
-        'from-yellow-400/20 to-amber-400/20 border-yellow-400/30',
-        'from-gray-300/20 to-gray-400/20 border-gray-300/30',
-        'from-orange-400/20 to-amber-600/20 border-orange-400/30',
-    ]
-
     return (
-        <div className="min-h-screen snap-start flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden w-full">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
+        <SectionContainer>
+            <BackgroundGrid />
+            <LoadingOverlay isLoading={isFetching} />
 
-            {isFetching && (
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-[shimmer_2s_infinite] z-20" />
-            )}
+            <SectionContent maxWidth="7xl" isFetching={isFetching}>
+                <SectionHeader title={title} subtitle={subtitle} variant="large" className="mb-8 sm:mb-12" />
 
-            <div
-                className={`relative z-10 w-full max-w-7xl mx-auto ${isFetching ? 'opacity-60 pointer-events-none' : ''}`}
-            >
-                {/* Header */}
-                <div className="text-center mb-8 sm:mb-12">
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[0.9] tracking-[-0.02em] mb-4">
-                        {title}
-                    </h2>
-                    <p className="text-base sm:text-lg text-white/50 font-medium">{subtitle}</p>
-                </div>
-
-                {/* Chart */}
                 <div className="space-y-8">
                     {chart}
 
-                    {/* Top Items */}
                     {topItems && topItems.length > 0 && (
-                        <div className="grid grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto">
+                        <Grid cols={3} gap="sm" className="max-w-2xl mx-auto">
                             {topItems.slice(0, 3).map((item, index) => (
                                 <div
                                     key={index}
-                                    className={`relative bg-gradient-to-br ${colors[index]} backdrop-blur-sm border rounded-2xl p-4 text-center transition-transform hover:scale-105`}
+                                    className={`relative bg-gradient-to-br ${RANK_COLORS[index]} backdrop-blur-sm border rounded-2xl p-4 text-center transition-transform hover:scale-105`}
                                 >
-                                    <div className="text-3xl mb-2">{medals[index]}</div>
+                                    <div className="text-3xl mb-2">{MEDALS[index]}</div>
                                     <div className="text-2xl sm:text-3xl font-black text-white mb-1">{item.label}</div>
                                     <div className="text-sm sm:text-base text-white/60 font-medium">{item.value}</div>
                                     {index === 0 && (
@@ -72,10 +66,9 @@ export default function InsightSection({
                                     )}
                                 </div>
                             ))}
-                        </div>
+                        </Grid>
                     )}
 
-                    {/* Stats Summary */}
                     {stats && stats.length > 0 && (
                         <div className="mt-10 pt-8 border-t border-white/10">
                             <div
@@ -101,7 +94,7 @@ export default function InsightSection({
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+            </SectionContent>
+        </SectionContainer>
     )
 }
