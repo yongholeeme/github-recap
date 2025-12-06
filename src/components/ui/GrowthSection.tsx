@@ -1,5 +1,5 @@
-import {CountUpAnimation} from '@/components/common/CountUpAnimation'
-import Grid from '@/components/common/Grid'
+import {CountUpAnimation} from '@/components/ui/CountUpAnimation'
+import Grid from '@/components/ui/Grid'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfCommits} from '@/lib/hooks/useCountOfCommits'
 import {useCountOfMyCreatedPrs} from '@/lib/hooks/useCountOfMyCreatedPrs'

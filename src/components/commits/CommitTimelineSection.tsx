@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 
-import BarChart from '@/components/common/BarChart'
-import InsightSection from '@/components/InsightSection'
+import BarChart from '@/components/ui/BarChart'
+import InsightSection from '@/components/ui/InsightSection'
 import {useYear} from '@/contexts/YearContext'
 import {type SimplifiedCommit} from '@/lib/github/commits'
 import {useCommits} from '@/lib/hooks/useCommits'

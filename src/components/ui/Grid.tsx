@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react'
 
 type GridCols = 1 | 2 | 3 | 4
+type Spacing = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
 interface GridProps {
     children: ReactNode
@@ -9,6 +10,7 @@ interface GridProps {
     mdCols?: GridCols
     lgCols?: GridCols
     gap?: 'sm' | 'md' | 'lg'
+    mb?: Spacing
     className?: string
 }
 
@@ -46,6 +48,14 @@ const gapMap = {
     lg: 'gap-6 sm:gap-8',
 }
 
+const mbMap: Record<Spacing, string> = {
+    none: '',
+    sm: 'mb-4',
+    md: 'mb-8',
+    lg: 'mb-12',
+    xl: 'mb-16 sm:mb-20',
+}
+
 export default function Grid({
     children,
     cols = 1,
@@ -53,6 +63,7 @@ export default function Grid({
     mdCols,
     lgCols,
     gap = 'md',
+    mb = 'none',
     className = '',
 }: GridProps) {
     const classes = [
@@ -62,6 +73,7 @@ export default function Grid({
         mdCols ? mdColsMap[mdCols] : '',
         lgCols ? lgColsMap[lgCols] : '',
         gapMap[gap],
+        mbMap[mb],
         className,
     ]
         .filter(Boolean)

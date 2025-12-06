@@ -1,4 +1,4 @@
-import RepositoryStatsSection from '@/components/RepositoryStatsSection'
+import RepositoryStatsSection from '@/components/ui/RepositoryStatsSection'
 import {useYear} from '@/contexts/YearContext'
 import {useRepositoryCommits} from '@/lib/hooks/useRepositoryCommits'
 

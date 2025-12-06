@@ -1,8 +1,8 @@
-import BigNumberSection from '@/components/BigNumberSection'
-import BackgroundGrid from '@/components/common/BackgroundGrid'
-import SectionContainer from '@/components/common/SectionContainer'
-import SectionContent from '@/components/common/SectionContent'
 import TopMentionedByCard from '@/components/issues/TopMentionedByCard'
+import BackgroundGrid from '@/components/ui/BackgroundGrid'
+import BigNumberSection from '@/components/ui/BigNumberSection'
+import SectionContainer from '@/components/ui/SectionContainer'
+import SectionContent from '@/components/ui/SectionContent'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfMentionsMe} from '@/lib/hooks/useCountOfMentionsMe'
 

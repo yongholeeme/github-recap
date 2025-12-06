@@ -1,4 +1,4 @@
-import {CountUpAnimation} from '@/components/common/CountUpAnimation'
+import {CountUpAnimation} from '@/components/ui/CountUpAnimation'
 
 interface StatCardProps {
     title: string

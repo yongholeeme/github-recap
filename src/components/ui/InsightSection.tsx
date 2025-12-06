@@ -1,11 +1,11 @@
 import type {ReactNode} from 'react'
 
-import BackgroundGrid from '@/components/common/BackgroundGrid'
-import Grid from '@/components/common/Grid'
-import LoadingOverlay from '@/components/common/LoadingOverlay'
-import SectionContainer from '@/components/common/SectionContainer'
-import SectionContent from '@/components/common/SectionContent'
-import SectionHeader from '@/components/common/SectionHeader'
+import BackgroundGrid from '@/components/ui/BackgroundGrid'
+import Grid from '@/components/ui/Grid'
+import LoadingOverlay from '@/components/ui/LoadingOverlay'
+import SectionContainer from '@/components/ui/SectionContainer'
+import SectionContent from '@/components/ui/SectionContent'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 interface InsightSectionProps {
     title: string
@@ -44,13 +44,13 @@ export default function InsightSection({
             <LoadingOverlay isLoading={isFetching} />
 
             <SectionContent maxWidth="7xl" isFetching={isFetching}>
-                <SectionHeader title={title} subtitle={subtitle} variant="large" className="mb-8 sm:mb-12" />
+                <SectionHeader title={title} subtitle={subtitle} variant="large" mb="md" />
 
                 <div className="space-y-8">
                     {chart}
 
                     {topItems && topItems.length > 0 && (
-                        <Grid cols={3} gap="sm" className="max-w-2xl mx-auto">
+                        <Grid cols={3} gap="sm">
                             {topItems.slice(0, 3).map((item, index) => (
                                 <div
                                     key={index}

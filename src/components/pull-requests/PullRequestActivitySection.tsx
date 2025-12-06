@@ -1,8 +1,3 @@
-import BackgroundGrid from '@/components/common/BackgroundGrid'
-import Grid from '@/components/common/Grid'
-import SectionContainer from '@/components/common/SectionContainer'
-import SectionContent from '@/components/common/SectionContent'
-import SectionHeader from '@/components/common/SectionHeader'
 import ApprovedPullRequestsCard from '@/components/pull-requests/ApprovedPullRequestsCard'
 import AverageMergeTimeCard from '@/components/pull-requests/AverageMergeTimeCard'
 import ClosedNotMergedPullRequestsCard from '@/components/pull-requests/ClosedNotMergedPullRequestsCard'
@@ -14,6 +9,11 @@ import PullRequestReviewCommentsCard from '@/components/pull-requests/PullReques
 import PullRequestReviewsCard from '@/components/pull-requests/PullRequestReviewsCard'
 import RequestedChangesPullRequestsCard from '@/components/pull-requests/RequestedChangesPullRequestsCard'
 import SlowestMergedPRCard from '@/components/pull-requests/SlowestMergedPRCard'
+import BackgroundGrid from '@/components/ui/BackgroundGrid'
+import Grid from '@/components/ui/Grid'
+import SectionContainer from '@/components/ui/SectionContainer'
+import SectionContent from '@/components/ui/SectionContent'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 export default function PullRequestActivitySection() {
     return (
@@ -30,16 +30,16 @@ export default function PullRequestActivitySection() {
                     }
                     subtitle="Pull Request로 협업하고 성장합니다"
                     variant="large"
-                    className="mb-16 sm:mb-20"
+                    mb="xl"
                 />
 
-                <Grid cols={1} smCols={3} className="mb-8">
+                <Grid cols={1} smCols={3} mb="md">
                     <CreatedPullRequestsCard />
                     <MergedPullRequestsCard />
                     <PullRequestReviewsCard />
                 </Grid>
 
-                <Grid cols={2} lgCols={4} className="mb-8">
+                <Grid cols={2} lgCols={4} mb="md">
                     <PullRequestReviewCommentsCard />
                     <ApprovedPullRequestsCard />
                     <RequestedChangesPullRequestsCard />

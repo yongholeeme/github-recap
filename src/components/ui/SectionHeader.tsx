@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react'
 
 type HeaderVariant = 'default' | 'large' | 'compact'
+type Spacing = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
 interface SectionHeaderProps {
     title: ReactNode
@@ -8,7 +9,7 @@ interface SectionHeaderProps {
     label?: string
     variant?: HeaderVariant
     align?: 'left' | 'center'
-    className?: string
+    mb?: Spacing
 }
 
 const variantStyles = {
@@ -29,19 +30,27 @@ const variantStyles = {
     },
 }
 
+const mbMap: Record<Spacing, string> = {
+    none: '',
+    sm: 'mb-4 sm:mb-6',
+    md: 'mb-8 sm:mb-12',
+    lg: 'mb-12 sm:mb-16',
+    xl: 'mb-16 sm:mb-20',
+}
+
 export default function SectionHeader({
     title,
     subtitle,
     label,
     variant = 'default',
     align = 'center',
-    className = '',
+    mb = 'none',
 }: SectionHeaderProps) {
     const styles = variantStyles[variant]
     const alignClass = align === 'center' ? 'text-center' : 'text-left'
 
     return (
-        <div className={`${alignClass} ${className}`}>
+        <div className={`${alignClass} ${mbMap[mb]}`}>
             {label && (
                 <div
                     className={`inline-flex items-center gap-3 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full mb-6 ${

@@ -1,4 +1,4 @@
-import BigNumberSection from '@/components/BigNumberSection'
+import BigNumberSection from '@/components/ui/BigNumberSection'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfParticipatedDiscussions} from '@/lib/hooks/useCountOfParticipatedDiscussions'
 import {useCountOfParticipatedIssues} from '@/lib/hooks/useCountOfParticipatedIssues'

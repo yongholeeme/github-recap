@@ -4,7 +4,7 @@ import {config} from '@config'
 
 import type {User} from '@/types/user'
 
-import LoginModalLayout from '@/components/common/LoginModalLayout'
+import LoginModalLayout from '@/components/ui/LoginModalLayout'
 import {loginWithPAT} from '@/lib/auth'
 
 interface PATLoginModalProps {

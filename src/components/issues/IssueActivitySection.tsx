@@ -1,14 +1,14 @@
-import BackgroundGrid from '@/components/common/BackgroundGrid'
-import Grid from '@/components/common/Grid'
-import SectionContainer from '@/components/common/SectionContainer'
-import SectionContent from '@/components/common/SectionContent'
-import SectionHeader from '@/components/common/SectionHeader'
 import DiscussionCommentsCard from '@/components/issues/DiscussionCommentsCard'
 import IssueCommentsCard from '@/components/issues/IssueCommentsCard'
 import MostDiscussedDiscussionCard from '@/components/issues/MostDiscussedDiscussionCard'
 import MostDiscussedIssueCard from '@/components/issues/MostDiscussedIssueCard'
 import ParticipatedDiscussionsCard from '@/components/issues/ParticipatedDiscussionsCard'
 import ParticipatedIssuesCard from '@/components/issues/ParticipatedIssuesCard'
+import BackgroundGrid from '@/components/ui/BackgroundGrid'
+import Grid from '@/components/ui/Grid'
+import SectionContainer from '@/components/ui/SectionContainer'
+import SectionContent from '@/components/ui/SectionContent'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 export default function IssueActivitySection() {
     return (
@@ -26,10 +26,10 @@ export default function IssueActivitySection() {
                     }
                     subtitle="이슈와 토론으로 함께 성장하는 커뮤니티"
                     variant="large"
-                    className="mb-16 sm:mb-20"
+                    mb="xl"
                 />
 
-                <Grid cols={2} lgCols={4} className="mb-8">
+                <Grid cols={2} lgCols={4} mb="md">
                     <ParticipatedIssuesCard />
                     <IssueCommentsCard />
                     <ParticipatedDiscussionsCard />

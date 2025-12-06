@@ -1,9 +1,9 @@
 import {config} from '@config'
 
-import Grid from '@/components/common/Grid'
-import SectionContainer from '@/components/common/SectionContainer'
-import SectionContent from '@/components/common/SectionContent'
-import SectionHeader from '@/components/common/SectionHeader'
+import Grid from '@/components/ui/Grid'
+import SectionContainer from '@/components/ui/SectionContainer'
+import SectionContent from '@/components/ui/SectionContent'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 interface RepositoryStats {
     repo: string
@@ -72,7 +72,7 @@ export default function RepositoryStatsSection({
     return (
         <SectionContainer>
             <SectionContent>
-                <SectionHeader title={title} subtitle={subtitle} className="mb-16" />
+                <SectionHeader title={title} subtitle={subtitle} mb="lg" />
 
                 {isFetching ? (
                     <Grid cols={1} mdCols={2} lgCols={3} gap="md">
@@ -107,7 +107,7 @@ export default function RepositoryStatsSection({
                         <p className="text-gray-500">활동을 시작하면 여기에 표시됩니다</p>
                     </div>
                 ) : (
-                    <Grid cols={1} mdCols={2} lgCols={3} gap="md" className="max-h-[65vh] overflow-y-auto pr-2 scrollbar-custom py-2">
+                    <Grid cols={1} mdCols={2} lgCols={3} gap="md">
                         {repos.map((repo, index) => {
                             const totalCount = repos.reduce((acc, r) => acc + r.count, 0)
                             const percentage = ((repo.count / totalCount) * 100).toFixed(1)

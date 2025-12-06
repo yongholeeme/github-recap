@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react'
 
-import BackgroundGrid from '@/components/common/BackgroundGrid'
-import {CountUpAnimation} from '@/components/common/CountUpAnimation'
-import SectionContainer from '@/components/common/SectionContainer'
+import BackgroundGrid from '@/components/ui/BackgroundGrid'
+import {CountUpAnimation} from '@/components/ui/CountUpAnimation'
+import SectionContainer from '@/components/ui/SectionContainer'
 
 interface BigNumberSectionProps {
     value: number | undefined

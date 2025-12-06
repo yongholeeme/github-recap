@@ -1,4 +1,4 @@
-import StatCard from '@/components/common/StatCard'
+import StatCard from '@/components/ui/StatCard'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfParticipatedDiscussions} from '@/lib/hooks/useCountOfParticipatedDiscussions'
 
