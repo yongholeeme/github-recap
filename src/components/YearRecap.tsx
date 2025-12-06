@@ -4,6 +4,7 @@ import {useQueryClient} from '@tanstack/react-query'
 
 import type {User} from '@/types/user'
 
+import {config} from '@/../config'
 import CommitActivitySection from '@/components/CommitActivitySection'
 import CommitsByDaySection from '@/components/CommitsByDaySection'
 import CommitsByHourSection from '@/components/CommitsByHourSection'
@@ -24,7 +25,7 @@ import RepositoryIssuesDiscussionsSection from '@/components/RepositoryIssuesDis
 import {REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
 import {UserProvider} from '@/contexts/UserContext'
 import {YearProvider} from '@/contexts/YearContext'
-import {checkAuth, logout, clearCacheBeforeLogin} from '@/lib/auth'
+import {checkAuth, checkOAuthSession, logout, logoutOAuth, clearCacheBeforeLogin} from '@/lib/auth'
 
 interface YearRecapProps {
     year?: number
@@ -79,17 +80,25 @@ export default function YearRecap({year}: YearRecapProps) {
     useEffect(() => {
         const initAuth = async () => {
             try {
-                const _user = await checkAuth()
+                let _user: User | null = null
+
+                if (config.auth.method === 'oauth') {
+                    // OAuth: Supabase 세션 확인
+                    _user = await checkOAuthSession()
+                } else {
+                    // PAT: sessionStorage에서 토큰 확인
+                    _user = await checkAuth()
+                }
 
                 if (!_user) {
-                    // Invalid PAT, clear cache
+                    // Invalid auth, clear cache
                     queryClient.clear()
                     localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY)
                 }
 
                 setUser(_user)
             } catch (error) {
-                 
+
                 console.error('Failed to check auth:', error)
                 setUser(null)
             } finally {
@@ -106,8 +115,12 @@ export default function YearRecap({year}: YearRecapProps) {
         setUser(newUser)
     }
 
-    const handleLogout = () => {
-        logout(queryClient)
+    const handleLogout = async () => {
+        if (config.auth.method === 'oauth') {
+            await logoutOAuth(queryClient)
+        } else {
+            logout(queryClient)
+        }
         setUser(null)
     }
 

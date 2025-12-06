@@ -5,6 +5,7 @@ import type {QueryClient} from '@tanstack/react-query'
 
 import {config} from '@/../config'
 import {PAT_STORAGE_KEY, REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
+import {supabase} from '@/lib/supabase'
 
 /**
  * Validate PAT and fetch user information
@@ -78,4 +79,54 @@ export function clearCacheBeforeLogin(queryClient: QueryClient): void {
 
     // Clear React Query cache
     queryClient.clear()
+}
+
+/**
+ * Login with GitHub OAuth via Supabase
+ */
+export async function loginWithOAuth(): Promise<void> {
+    const {error} = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+            scopes: 'repo read:user',
+            redirectTo: window.location.origin,
+        },
+    })
+
+    if (error) {
+        throw new Error(error.message)
+    }
+}
+
+/**
+ * Check OAuth session and get user info
+ */
+export async function checkOAuthSession(): Promise<User | null> {
+    const {data: {session}} = await supabase.auth.getSession()
+
+    if (!session) {
+        return null
+    }
+
+    const providerToken = session.provider_token
+    if (!providerToken) {
+        return null
+    }
+
+    // Store provider token for API calls
+    sessionStorage.setItem(PAT_STORAGE_KEY, providerToken)
+
+    const user = session.user
+    return {
+        avatar_url: user.user_metadata.avatar_url,
+        user_name: user.user_metadata.user_name,
+    }
+}
+
+/**
+ * Logout from OAuth session
+ */
+export async function logoutOAuth(queryClient: QueryClient): Promise<void> {
+    await supabase.auth.signOut()
+    logout(queryClient)
 }
