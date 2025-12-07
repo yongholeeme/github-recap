@@ -1,9 +1,7 @@
 import {config} from '@config'
 
 import Grid from '@/components/ui/Grid'
-import SectionContainer from '@/components/ui/SectionContainer'
-import SectionContent from '@/components/ui/SectionContent'
-import SectionHeader from '@/components/ui/SectionHeader'
+import Section from '@/components/ui/Section'
 
 interface RepositoryStats {
     repo: string
@@ -70,11 +68,8 @@ export default function RepositoryStatsSection({
     const repos = data || []
 
     return (
-        <SectionContainer>
-            <SectionContent>
-                <SectionHeader title={title} subtitle={subtitle} mb="lg" />
-
-                {isFetching ? (
+        <Section title={title} subtitle={subtitle} headerMb="lg" variant="default">
+            {isFetching ? (
                     <Grid cols={1} mdCols={2} lgCols={3} gap="md">
                         {[...Array(6)].map((_, i) => (
                             <SkeletonCard key={i} />
@@ -216,34 +211,15 @@ export default function RepositoryStatsSection({
                     </Grid>
                 )}
 
-                <style>{`
-                    @keyframes shimmer {
-                        0% { transform: translateX(-100%); }
-                        100% { transform: translateX(100%); }
-                    }
-                    .animate-shimmer {
-                        animation: shimmer 2s infinite;
-                    }
-                    .scrollbar-custom {
-                        scrollbar-width: thin;
-                        scrollbar-color: ${colorScheme.primary}50 transparent;
-                    }
-                    .scrollbar-custom::-webkit-scrollbar {
-                        width: 6px;
-                    }
-                    .scrollbar-custom::-webkit-scrollbar-track {
-                        background: transparent;
-                    }
-                    .scrollbar-custom::-webkit-scrollbar-thumb {
-                        background: ${colorScheme.primary}50;
-                        border-radius: 10px;
-                        transition: background 0.2s;
-                    }
-                    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-                        background: ${colorScheme.primary}80;
-                    }
-                `}</style>
-            </SectionContent>
-        </SectionContainer>
+            <style>{`
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+                .animate-shimmer {
+                    animation: shimmer 2s infinite;
+                }
+            `}</style>
+        </Section>
     )
 }

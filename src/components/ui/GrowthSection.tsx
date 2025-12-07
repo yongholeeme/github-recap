@@ -1,5 +1,6 @@
 import {CountUpAnimation} from '@/components/ui/CountUpAnimation'
 import Grid from '@/components/ui/Grid'
+import Section from '@/components/ui/Section'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfCommits} from '@/lib/hooks/useCountOfCommits'
 import {useCountOfMyCreatedPrs} from '@/lib/hooks/useCountOfMyCreatedPrs'
@@ -106,16 +107,8 @@ export default function GrowthSection() {
     }
 
     return (
-        <section className="snap-start min-h-screen flex items-center justify-center p-8">
-            <div className="max-w-6xl w-full">
-                {/* Header */}
-                <div className="text-center mb-16">
-                    <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-white">작년과 비교해볼까요?</h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">같은 기간, 숫자로 보는 변화</p>
-                </div>
-
-                {/* Comparison Cards */}
-                <Grid cols={1} mdCols={2} gap="md">
+        <Section title="작년과 비교해볼까요?" subtitle="같은 기간, 숫자로 보는 변화" variant="default" headerMb="lg">
+            <Grid cols={1} mdCols={2} gap="md">
                     {(
                         comparisonData || [
                             {title: '커밋', icon: '💻', current: 0, last: 0, change: 0, changeRate: 0},
@@ -241,8 +234,7 @@ export default function GrowthSection() {
                             </div>
                         </div>
                     ))}
-                </Grid>
-            </div>
+            </Grid>
 
             <style>{`
 				@keyframes shimmer {
@@ -253,6 +245,6 @@ export default function GrowthSection() {
 					animation: shimmer 2s infinite;
 				}
 			`}</style>
-        </section>
+        </Section>
     )
 }

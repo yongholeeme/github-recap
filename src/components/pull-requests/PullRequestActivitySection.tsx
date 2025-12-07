@@ -9,50 +9,39 @@ import PullRequestReviewCommentsCard from '@/components/pull-requests/PullReques
 import PullRequestReviewsCard from '@/components/pull-requests/PullRequestReviewsCard'
 import RequestedChangesPullRequestsCard from '@/components/pull-requests/RequestedChangesPullRequestsCard'
 import SlowestMergedPRCard from '@/components/pull-requests/SlowestMergedPRCard'
-import BackgroundGrid from '@/components/ui/BackgroundGrid'
 import Grid from '@/components/ui/Grid'
-import SectionContainer from '@/components/ui/SectionContainer'
-import SectionContent from '@/components/ui/SectionContent'
-import SectionHeader from '@/components/ui/SectionHeader'
+import Section from '@/components/ui/Section'
 
 export default function PullRequestActivitySection() {
     return (
-        <SectionContainer>
-            <BackgroundGrid />
+        <Section
+            title={
+                <>
+                    함께 만드는
+                    <br />더 나은 코드
+                </>
+            }
+            subtitle="Pull Request로 협업하고 성장합니다"
+        >
+            <Grid cols={1} smCols={3} mb="md">
+                <CreatedPullRequestsCard />
+                <MergedPullRequestsCard />
+                <PullRequestReviewsCard />
+            </Grid>
 
-            <SectionContent>
-                <SectionHeader
-                    title={
-                        <>
-                            함께 만드는
-                            <br />더 나은 코드
-                        </>
-                    }
-                    subtitle="Pull Request로 협업하고 성장합니다"
-                    variant="large"
-                    mb="xl"
-                />
+            <Grid cols={2} lgCols={4} mb="md">
+                <PullRequestReviewCommentsCard />
+                <ApprovedPullRequestsCard />
+                <RequestedChangesPullRequestsCard />
+                <ClosedNotMergedPullRequestsCard />
+            </Grid>
 
-                <Grid cols={1} smCols={3} mb="md">
-                    <CreatedPullRequestsCard />
-                    <MergedPullRequestsCard />
-                    <PullRequestReviewsCard />
-                </Grid>
-
-                <Grid cols={2} lgCols={4} mb="md">
-                    <PullRequestReviewCommentsCard />
-                    <ApprovedPullRequestsCard />
-                    <RequestedChangesPullRequestsCard />
-                    <ClosedNotMergedPullRequestsCard />
-                </Grid>
-
-                <Grid cols={1} smCols={2} lgCols={4}>
-                    <MostDiscussedPRCard />
-                    <AverageMergeTimeCard />
-                    <FastestMergedPRCard />
-                    <SlowestMergedPRCard />
-                </Grid>
-            </SectionContent>
-        </SectionContainer>
+            <Grid cols={1} smCols={2} lgCols={4}>
+                <MostDiscussedPRCard />
+                <AverageMergeTimeCard />
+                <FastestMergedPRCard />
+                <SlowestMergedPRCard />
+            </Grid>
+        </Section>
     )
 }
