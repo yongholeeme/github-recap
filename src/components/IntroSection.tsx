@@ -4,19 +4,19 @@ import type {User} from '@/types/user'
 
 import {useYear} from '@/contexts/YearContext'
 
-interface HeroSectionProps {
+interface IntroSectionProps {
     user: User | null
     onLogout: () => void
 }
 
-export default function HeroSection({user, onLogout}: HeroSectionProps) {
+export default function IntroSection({user, onLogout}: IntroSectionProps) {
     const {year} = useYear()
     const avatarUrl = user?.avatar_url || ''
     const userName = user?.user_name || ''
     const [showAvatar, setShowAvatar] = useState(false)
 
     return (
-        <div className="h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-hidden w-full">
+        <div className="snap-start h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-hidden w-full">
             {/* Dynamic gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
                 {/* Animated gradient orbs */}

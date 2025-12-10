@@ -14,7 +14,7 @@ import CommitTimelineSection from '@/components/CommitTimelineSection'
 import ContributedIssuesSection from '@/components/ContributedIssuesSection'
 import ContributedPullRequestsSection from '@/components/ContributedPullRequestsSection'
 import EndingSection from '@/components/EndingSection'
-import HeroSection from '@/components/HeroSection'
+import IntroSection from '@/components/IntroSection'
 import IssueActivitySection from '@/components/IssueActivitySection'
 import MentionsSection from '@/components/MentionsSection'
 import PullRequestActivitySection from '@/components/PullRequestActivitySection'
@@ -145,9 +145,7 @@ export default function YearRecap({year}: YearRecapProps) {
                     className="h-screen overflow-y-scroll snap-y snap-mandatory bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950"
                 >
                     {/* 시작 그룹 */}
-                    <div className="snap-start">
-                        <HeroSection user={user} onLogout={handleLogout} />
-                    </div>
+                    <IntroSection user={user} onLogout={handleLogout} />
 
                     {/* 커밋 섹션들 - 블루 계열 배경 */}
                     <div className="bg-gradient-to-br from-blue-950 via-cyan-950 to-blue-950">
