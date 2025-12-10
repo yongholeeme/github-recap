@@ -1,9 +1,10 @@
+import SectionGroup from '@/components/commons/SectionGroup'
 import GrowthSection from '@/components/section/growth/GrowthSection'
 
 export default function GrowthSections() {
     return (
-        <div className="bg-gradient-to-br from-slate-950 via-gray-900 to-zinc-950">
+        <SectionGroup gradient="gray">
             <GrowthSection />
-        </div>
+        </SectionGroup>
     )
 }
