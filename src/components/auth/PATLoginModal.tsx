@@ -4,8 +4,8 @@ import {config} from '@config'
 
 import type {User} from '@/types/user'
 
-import LoginModalLayout from '@/components/ui/LoginModalLayout'
-import {loginWithPAT} from '@/lib/auth'
+import LoginModalLayout from '@/components/commons/LoginModalLayout'
+import {loginWithPAT} from '@/libs/auth'
 
 interface PATLoginModalProps {
     isOpen: boolean

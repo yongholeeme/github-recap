@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
-import LoginModalLayout from '@/components/ui/LoginModalLayout'
-import {loginWithOAuth} from '@/lib/auth'
+import LoginModalLayout from '@/components/commons/LoginModalLayout'
+import {loginWithOAuth} from '@/libs/auth'
 
 interface OAuthLoginModalProps {
     isOpen: boolean
