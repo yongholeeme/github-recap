@@ -1,4 +1,4 @@
-import TopMentionedByCard from '@/components/issues/TopMentionedByCard'
+import TopMentionedByCard from '@/components/TopMentionedByCard'
 import BackgroundGrid from '@/components/ui/BackgroundGrid'
 import BigNumberSection from '@/components/ui/BigNumberSection'
 import SectionContainer from '@/components/ui/SectionContainer'

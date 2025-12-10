@@ -7,21 +7,21 @@ import type {User} from '@/types/user'
 
 import LoginModal from '@/components/auth/LoginModal'
 import LoginToast from '@/components/auth/LoginToast'
-import CommitActivitySection from '@/components/commits/CommitActivitySection'
-import CommitsByDaySection from '@/components/commits/CommitsByDaySection'
-import CommitsByHourSection from '@/components/commits/CommitsByHourSection'
-import CommitTimelineSection from '@/components/commits/CommitTimelineSection'
-import RepositoryCommitsSection from '@/components/commits/RepositoryCommitsSection'
+import CommitActivitySection from '@/components/CommitActivitySection'
+import CommitsByDaySection from '@/components/CommitsByDaySection'
+import CommitsByHourSection from '@/components/CommitsByHourSection'
+import CommitTimelineSection from '@/components/CommitTimelineSection'
+import ContributedIssuesSection from '@/components/ContributedIssuesSection'
+import ContributedPullRequestsSection from '@/components/ContributedPullRequestsSection'
 import EndingSection from '@/components/EndingSection'
 import HeroSection from '@/components/HeroSection'
-import ContributedIssuesSection from '@/components/issues/ContributedIssuesSection'
-import IssueActivitySection from '@/components/issues/IssueActivitySection'
-import MentionsSection from '@/components/issues/MentionsSection'
-import RepositoryIssuesDiscussionsSection from '@/components/issues/RepositoryIssuesDiscussionsSection'
-import ContributedPullRequestsSection from '@/components/pull-requests/ContributedPullRequestsSection'
-import PullRequestActivitySection from '@/components/pull-requests/PullRequestActivitySection'
-import RefreshButton from '@/components/RefreshButton'
+import IssueActivitySection from '@/components/IssueActivitySection'
+import MentionsSection from '@/components/MentionsSection'
+import PullRequestActivitySection from '@/components/PullRequestActivitySection'
+import RepositoryCommitsSection from '@/components/RepositoryCommitsSection'
+import RepositoryIssuesDiscussionsSection from '@/components/RepositoryIssuesDiscussionsSection'
 import GrowthSection from '@/components/ui/GrowthSection'
+import RefreshButton from '@/components/ui/RefreshButton'
 import {REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
 import {UserProvider} from '@/contexts/UserContext'
 import {YearProvider} from '@/contexts/YearContext'
@@ -98,7 +98,6 @@ export default function YearRecap({year}: YearRecapProps) {
 
                 setUser(_user)
             } catch (error) {
-
                 console.error('Failed to check auth:', error)
                 setUser(null)
             } finally {

@@ -2,9 +2,9 @@ import {useMemo, useState, useEffect} from 'react'
 
 import {useInView} from 'react-intersection-observer'
 
-import Toast from '@/components/Toast'
 import BarChart from '@/components/ui/BarChart'
 import InsightSection from '@/components/ui/InsightSection'
+import Toast from '@/components/ui/Toast'
 import {useYear} from '@/contexts/YearContext'
 import {type SimplifiedCommit} from '@/lib/github/commits'
 import {useCommits} from '@/lib/hooks/useCommits'
