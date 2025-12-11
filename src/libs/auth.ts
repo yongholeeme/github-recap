@@ -102,6 +102,39 @@ export async function loginWithOAuth(): Promise<void> {
  * Check OAuth session and get user info
  */
 export async function checkOAuthSession(): Promise<User | null> {
+    // URL fragment에서 OAuth 토큰 파싱 시도 (redirect 후)
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const accessToken = hashParams.get('access_token')
+    const providerToken = hashParams.get('provider_token')
+
+    if (accessToken && providerToken) {
+        // URL에서 토큰을 찾았으면 세션 설정
+        const {error} = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: hashParams.get('refresh_token') || '',
+        })
+
+        if (!error) {
+            // URL fragment 정리
+            window.history.replaceState(null, '', window.location.pathname)
+
+            // provider_token 저장
+            sessionStorage.setItem(PAT_STORAGE_KEY, providerToken)
+
+            const {
+                data: {user},
+            } = await supabase.auth.getUser()
+
+            if (user) {
+                return {
+                    avatar_url: user.user_metadata.avatar_url,
+                    user_name: user.user_metadata.user_name,
+                }
+            }
+        }
+    }
+
+    // 기존 세션 확인
     const {
         data: {session},
     } = await supabase.auth.getSession()
@@ -110,13 +143,16 @@ export async function checkOAuthSession(): Promise<User | null> {
         return null
     }
 
-    const providerToken = session.provider_token
-    if (!providerToken) {
-        return null
+    // 세션에서 provider_token 확인
+    if (session.provider_token) {
+        sessionStorage.setItem(PAT_STORAGE_KEY, session.provider_token)
     }
 
-    // Store provider token for API calls
-    sessionStorage.setItem(PAT_STORAGE_KEY, providerToken)
+    // sessionStorage에 저장된 토큰이 없으면 로그인 필요
+    const storedToken = sessionStorage.getItem(PAT_STORAGE_KEY)
+    if (!storedToken) {
+        return null
+    }
 
     const user = session.user
     return {
