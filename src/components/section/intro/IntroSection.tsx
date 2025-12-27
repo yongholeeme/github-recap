@@ -4,7 +4,6 @@ import {config} from '@config'
 import {useQueryClient} from '@tanstack/react-query'
 import {useTranslation} from 'react-i18next'
 
-import LanguageSwitcher from '@/components/commons/LanguageSwitcher'
 import {useUser} from '@/contexts/UserContext'
 import {useYear} from '@/contexts/YearContext'
 import {logout, logoutOAuth} from '@/libs/auth'
@@ -42,11 +41,6 @@ export default function IntroSection() {
             {/* Grid overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-            {/* Top bar - Language switcher only */}
-            <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20">
-                <LanguageSwitcher />
-            </div>
-
             {/* Main content - Apple Event Style */}
             <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
                 {/* Main title - Gradient & Bold with Glow */}
@@ -80,29 +74,25 @@ export default function IntroSection() {
                     <span className="relative block text-gray-200 mt-2">GitHub Wrapped</span>
                 </h1>
 
-                {/* Profile button (like login button style) */}
+                {/* Profile button */}
                 {userName && (
-                    <div className="inline-flex flex-col items-center gap-4 mb-8">
-                        <button
-                            type="button"
-                            onClick={handleLogout}
-                            className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full hover:from-blue-400 hover:to-purple-400 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
-                        >
+                    <div className="inline-flex flex-col items-center gap-3 mb-6">
+                        <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white text-sm font-medium rounded-full shadow-lg">
                             {avatarUrl && (
                                 <img
                                     src={avatarUrl}
                                     alt={userName}
                                     onLoad={() => setShowAvatar(true)}
                                     onError={() => setShowAvatar(false)}
-                                    className={`w-8 h-8 rounded-full ring-2 ring-white/30 ${showAvatar ? 'opacity-100' : 'opacity-0 absolute'}`}
+                                    className={`w-6 h-6 rounded-full ring-2 ring-white/30 ${showAvatar ? 'opacity-100' : 'opacity-0 absolute'}`}
                                 />
                             )}
                             <span>@{userName}</span>
-                        </button>
+                        </div>
                         <button
                             type="button"
                             onClick={handleLogout}
-                            className="text-sm text-white/40 hover:text-white/70 transition-colors"
+                            className="text-xs text-white/40 hover:text-white/70 transition-colors"
                         >
                             {t('auth.logout')}
                         </button>

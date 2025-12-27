@@ -24,11 +24,11 @@ export default function LanguageSwitcher() {
 
     return (
         <>
-            {/* Trigger Button */}
+            {/* Floating Trigger Button */}
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="w-10 h-10 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                className="fixed top-6 right-6 sm:top-8 sm:right-8 z-50 w-12 h-12 flex items-center justify-center bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-full text-xl shadow-xl hover:shadow-2xl hover:border-white/30 transition-all duration-300"
             >
                 {currentFlag}
             </button>
@@ -36,7 +36,7 @@ export default function LanguageSwitcher() {
             {/* Modal Backdrop */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm"
                     onClick={() => setIsOpen(false)}
                 >
                     {/* Modal Content */}

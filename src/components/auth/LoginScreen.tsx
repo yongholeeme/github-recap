@@ -1,7 +1,6 @@
 import {config} from '@config'
 import {useTranslation} from 'react-i18next'
 
-import LanguageSwitcher from '@/components/commons/LanguageSwitcher'
 import {loginWithOAuth} from '@/libs/auth'
 
 interface LoginScreenProps {
@@ -31,11 +30,6 @@ export default function LoginScreen({onPATLogin}: LoginScreenProps) {
 
             {/* Grid overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
-
-            {/* Top bar - Language switcher */}
-            <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20">
-                <LanguageSwitcher />
-            </div>
 
             {/* Main content - Apple Event Style */}
             <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">

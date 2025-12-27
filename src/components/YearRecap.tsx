@@ -7,6 +7,7 @@ import type {User} from '@/types/user'
 
 import LoginModal from '@/components/auth/LoginModal'
 import LoginScreen from '@/components/auth/LoginScreen'
+import LanguageSwitcher from '@/components/commons/LanguageSwitcher'
 import RefreshButton from '@/components/commons/RefreshButton'
 import CommitSections from '@/components/section/commit'
 import GrowthSections from '@/components/section/growth'
@@ -120,6 +121,7 @@ export default function YearRecap({year}: YearRecapProps) {
     if (!user) {
         return (
             <>
+                <LanguageSwitcher />
                 <LoginScreen onPATLogin={() => setIsLoginModalOpen(true)} />
                 <LoginModal
                     isOpen={isLoginModalOpen}
@@ -135,6 +137,7 @@ export default function YearRecap({year}: YearRecapProps) {
         <UserProvider user={user}>
             <YearProvider year={targetYear}>
                 <RefreshButton />
+                <LanguageSwitcher />
 
                 <div
                     ref={containerRef}
