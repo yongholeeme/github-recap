@@ -42,43 +42,10 @@ export default function IntroSection() {
             {/* Grid overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-            {/* Top bar - Profile badge and logout */}
-            {user && (
-                <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 flex items-center gap-3">
-                    {/* Profile badge */}
-                    {userName && (
-                        <div className="inline-flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-full shadow-xl hover:shadow-2xl hover:border-white/30 transition-all duration-300 group">
-                            {avatarUrl && (
-                                <div className="relative">
-                                    <img
-                                        src={avatarUrl}
-                                        alt={userName}
-                                        onLoad={() => setShowAvatar(true)}
-                                        onError={() => setShowAvatar(false)}
-                                        className={`w-8 h-8 rounded-full ring-2 ring-white/20 group-hover:ring-white/40 transition-all duration-300 ${showAvatar ? 'opacity-100 scale-100' : 'opacity-0 scale-50 absolute'}`}
-                                    />
-                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-sm group-hover:blur-md transition-all duration-300" />
-                                </div>
-                            )}
-                            <span className="text-sm sm:text-base font-bold text-white/95 tracking-tight pr-1 group-hover:text-white transition-colors duration-300">
-                                @{userName}
-                            </span>
-                        </div>
-                    )}
-
-                    {/* Language switcher */}
-                    <LanguageSwitcher />
-
-                    {/* Logout button */}
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="px-4 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium text-white/60 hover:text-white/90 hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
-                    >
-                        {t('auth.logout')}
-                    </button>
-                </div>
-            )}
+            {/* Top bar - Language switcher only */}
+            <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20">
+                <LanguageSwitcher />
+            </div>
 
             {/* Main content - Apple Event Style */}
             <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
@@ -112,6 +79,35 @@ export default function IntroSection() {
                     <span className="relative block text-gray-200">{year}</span>
                     <span className="relative block text-gray-200 mt-2">GitHub Wrapped</span>
                 </h1>
+
+                {/* Profile button (like login button style) */}
+                {userName && (
+                    <div className="inline-flex flex-col items-center gap-4 mb-8">
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full hover:from-blue-400 hover:to-purple-400 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+                        >
+                            {avatarUrl && (
+                                <img
+                                    src={avatarUrl}
+                                    alt={userName}
+                                    onLoad={() => setShowAvatar(true)}
+                                    onError={() => setShowAvatar(false)}
+                                    className={`w-8 h-8 rounded-full ring-2 ring-white/30 ${showAvatar ? 'opacity-100' : 'opacity-0 absolute'}`}
+                                />
+                            )}
+                            <span>@{userName}</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="text-sm text-white/40 hover:text-white/70 transition-colors"
+                        >
+                            {t('auth.logout')}
+                        </button>
+                    </div>
+                )}
 
                 {/* Scroll CTA - Blue accent */}
                 <div className="inline-flex flex-col items-center gap-3 text-blue-400 hover:text-blue-300 transition-colors cursor-default">
