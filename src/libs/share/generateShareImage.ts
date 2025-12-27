@@ -201,64 +201,64 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
 
     // === BACKGROUND ===
     const bgGradient = ctx.createRadialGradient(600, 600, 0, 600, 600, 900)
-    bgGradient.addColorStop(0, '#1a1025')
-    bgGradient.addColorStop(0.5, '#0f0a15')
-    bgGradient.addColorStop(1, '#050308')
+    bgGradient.addColorStop(0, '#141414')
+    bgGradient.addColorStop(0.5, '#0a0a0a')
+    bgGradient.addColorStop(1, '#000000')
     ctx.fillStyle = bgGradient
     ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT)
 
     const drawOrb = (x: number, y: number, radius: number, color: string) => {
         const orbGradient = ctx.createRadialGradient(x, y, 0, x, y, radius)
         orbGradient.addColorStop(0, color)
-        orbGradient.addColorStop(0.5, color.replace(/[\d.]+\)$/, '0.02)'))
+        orbGradient.addColorStop(0.5, color.replace(/[\d.]+\)$/, '0.01)'))
         orbGradient.addColorStop(1, 'transparent')
         ctx.fillStyle = orbGradient
         ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT)
     }
-    drawOrb(200, 200, 500, 'rgba(255, 100, 50, 0.12)')
-    drawOrb(1000, 300, 450, 'rgba(150, 50, 255, 0.08)')
-    drawOrb(400, 900, 500, 'rgba(50, 150, 255, 0.06)')
-    drawOrb(900, 1000, 400, 'rgba(255, 50, 150, 0.05)')
+    drawOrb(200, 200, 500, 'rgba(255, 255, 255, 0.03)')
+    drawOrb(1000, 300, 450, 'rgba(255, 255, 255, 0.02)')
+    drawOrb(400, 900, 500, 'rgba(255, 255, 255, 0.02)')
+    drawOrb(900, 1000, 400, 'rgba(255, 255, 255, 0.015)')
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.008)'
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 150; i++) {
         const x = Math.random() * CARD_WIDTH
         const y = Math.random() * CARD_HEIGHT
         ctx.beginPath()
-        ctx.arc(x, y, Math.random() * 1.5, 0, Math.PI * 2)
+        ctx.arc(x, y, Math.random() * 1, 0, Math.PI * 2)
         ctx.fill()
     }
 
     const colors = {
         orange: {
-            gradient: ['rgba(180, 80, 40, 0.4)', 'rgba(120, 50, 30, 0.4)'] as [string, string],
-            border: 'rgba(255, 150, 100, 0.2)',
-            glow: 'rgba(255, 120, 50, 0.3)',
+            gradient: ['rgba(60, 60, 60, 0.6)', 'rgba(40, 40, 40, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.08)',
+            glow: 'rgba(255, 255, 255, 0.05)',
         },
         purple: {
-            gradient: ['rgba(120, 60, 180, 0.4)', 'rgba(80, 40, 140, 0.4)'] as [string, string],
-            border: 'rgba(180, 130, 255, 0.2)',
-            glow: 'rgba(150, 100, 255, 0.3)',
+            gradient: ['rgba(55, 55, 55, 0.6)', 'rgba(35, 35, 35, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.08)',
+            glow: 'rgba(255, 255, 255, 0.05)',
         },
         blue: {
-            gradient: ['rgba(50, 100, 180, 0.4)', 'rgba(30, 70, 140, 0.4)'] as [string, string],
-            border: 'rgba(100, 180, 255, 0.2)',
-            glow: 'rgba(80, 150, 255, 0.3)',
+            gradient: ['rgba(50, 50, 50, 0.6)', 'rgba(30, 30, 30, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.08)',
+            glow: 'rgba(255, 255, 255, 0.05)',
         },
         green: {
-            gradient: ['rgba(50, 150, 100, 0.4)', 'rgba(30, 100, 70, 0.4)'] as [string, string],
-            border: 'rgba(100, 255, 180, 0.2)',
-            glow: 'rgba(80, 220, 150, 0.3)',
+            gradient: ['rgba(55, 55, 55, 0.6)', 'rgba(35, 35, 35, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.08)',
+            glow: 'rgba(255, 255, 255, 0.05)',
         },
         pink: {
-            gradient: ['rgba(180, 60, 120, 0.4)', 'rgba(140, 40, 90, 0.4)'] as [string, string],
-            border: 'rgba(255, 130, 180, 0.2)',
-            glow: 'rgba(255, 100, 150, 0.3)',
+            gradient: ['rgba(65, 65, 65, 0.6)', 'rgba(45, 45, 45, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.1)',
+            glow: 'rgba(255, 255, 255, 0.06)',
         },
         cyan: {
-            gradient: ['rgba(50, 150, 180, 0.4)', 'rgba(30, 100, 140, 0.4)'] as [string, string],
-            border: 'rgba(100, 220, 255, 0.2)',
-            glow: 'rgba(80, 200, 255, 0.3)',
+            gradient: ['rgba(50, 50, 50, 0.6)', 'rgba(30, 30, 30, 0.6)'] as [string, string],
+            border: 'rgba(255, 255, 255, 0.08)',
+            glow: 'rgba(255, 255, 255, 0.05)',
         },
     }
 
@@ -294,8 +294,8 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
 
     ctx.font = 'bold 28px system-ui, -apple-system, sans-serif'
     const yearGrad = ctx.createLinearGradient(titleCenterX - 40, 0, titleCenterX + 40, 0)
-    yearGrad.addColorStop(0, 'rgba(255, 180, 200, 0.9)')
-    yearGrad.addColorStop(1, 'rgba(255, 150, 180, 0.9)')
+    yearGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
+    yearGrad.addColorStop(1, 'rgba(200, 200, 200, 0.9)')
     ctx.fillStyle = yearGrad
     ctx.fillText(data.year.toString(), titleCenterX, titleCenterY + 75)
 
@@ -322,7 +322,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     const personalityCenterX = personalityCell.x + personalityCell.width / 2
     const personalityCenterY = personalityCell.y + personalityCell.height / 2
 
-    ctx.fillStyle = 'rgba(255, 200, 150, 0.03)'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.03)'
     ctx.beginPath()
     ctx.arc(personalityCell.x + personalityCell.width - 80, personalityCell.y + 80, 120, 0, Math.PI * 2)
     ctx.fill()
@@ -336,7 +336,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
         const avatarX = personalityCenterX - avatarSize / 2
         const avatarY = personalityCenterY - 170
 
-        ctx.shadowColor = 'rgba(255, 180, 120, 0.5)'
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.4)'
         ctx.shadowBlur = 30
 
         ctx.save()
@@ -350,8 +350,8 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
         ctx.shadowBlur = 0
 
         const ringGrad = ctx.createLinearGradient(avatarX, avatarY, avatarX + avatarSize, avatarY + avatarSize)
-        ringGrad.addColorStop(0, 'rgba(255, 200, 150, 0.8)')
-        ringGrad.addColorStop(1, 'rgba(255, 150, 100, 0.4)')
+        ringGrad.addColorStop(0, 'rgba(255, 255, 255, 0.8)')
+        ringGrad.addColorStop(1, 'rgba(180, 180, 180, 0.4)')
         ctx.strokeStyle = ringGrad
         ctx.lineWidth = 4
         ctx.beginPath()
@@ -374,8 +374,8 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
 
     ctx.font = 'bold 30px system-ui, -apple-system, sans-serif'
     const typeGrad = ctx.createLinearGradient(personalityCenterX - 100, 0, personalityCenterX + 100, 0)
-    typeGrad.addColorStop(0, '#ffcc99')
-    typeGrad.addColorStop(1, '#ffaa77')
+    typeGrad.addColorStop(0, '#ffffff')
+    typeGrad.addColorStop(1, '#cccccc')
     ctx.fillStyle = typeGrad
     ctx.fillText(data.developerType, personalityCenterX, personalityCenterY + 130)
 
@@ -384,10 +384,10 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     // [0-1, 2-3] 12-Month Graph (2x2)
     const graphCell = getCell(0, 2, 2, 2)
     drawCard(ctx, graphCell.x, graphCell.y, graphCell.width, graphCell.height, {
-        gradient: ['rgba(40, 50, 80, 0.5)', 'rgba(25, 30, 50, 0.5)'],
-        borderColor: 'rgba(100, 150, 255, 0.15)',
-        glow: 'rgba(80, 120, 255, 0.2)',
-        glowIntensity: 40,
+        gradient: ['rgba(45, 45, 45, 0.6)', 'rgba(25, 25, 25, 0.6)'],
+        borderColor: 'rgba(255, 255, 255, 0.08)',
+        glow: 'rgba(255, 255, 255, 0.04)',
+        glowIntensity: 20,
     })
 
     ctx.font = 'bold 20px system-ui, -apple-system, sans-serif'
@@ -396,7 +396,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     ctx.fillText('12 Months Activity', graphCell.x + 28, graphCell.y + 38)
 
     ctx.font = '500 14px system-ui, -apple-system, sans-serif'
-    ctx.fillStyle = 'rgba(100, 180, 255, 0.8)'
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
     ctx.textAlign = 'right'
     ctx.fillText(`${formatNumber(data.commits)} total`, graphCell.x + graphCell.width - 28, graphCell.y + 38)
 
@@ -415,17 +415,17 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
         const isPeak = index === peakMonthIndex && count > 0
 
         if (isPeak) {
-            ctx.shadowColor = 'rgba(100, 200, 255, 0.6)'
-            ctx.shadowBlur = 15
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.3)'
+            ctx.shadowBlur = 12
         }
 
         const barGradient = ctx.createLinearGradient(x, y, x, y + barHeight)
         if (isPeak) {
-            barGradient.addColorStop(0, 'rgba(100, 200, 255, 1)')
-            barGradient.addColorStop(1, 'rgba(80, 150, 255, 0.7)')
+            barGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
+            barGradient.addColorStop(1, 'rgba(200, 200, 200, 0.6)')
         } else {
-            barGradient.addColorStop(0, 'rgba(100, 150, 255, 0.8)')
-            barGradient.addColorStop(1, 'rgba(60, 100, 200, 0.4)')
+            barGradient.addColorStop(0, 'rgba(150, 150, 150, 0.7)')
+            barGradient.addColorStop(1, 'rgba(100, 100, 100, 0.35)')
         }
         ctx.fillStyle = barGradient
         drawRoundedRect(ctx, x, y, barWidth, barHeight, 5)
@@ -434,7 +434,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
         ctx.shadowBlur = 0
 
         ctx.font = '500 13px system-ui, -apple-system, sans-serif'
-        ctx.fillStyle = isPeak ? 'rgba(100, 200, 255, 0.9)' : 'rgba(255, 255, 255, 0.35)'
+        ctx.fillStyle = isPeak ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)'
         ctx.textAlign = 'center'
         ctx.fillText(String(index + 1), x + barWidth / 2, barAreaY + barAreaHeight - 8)
     })
