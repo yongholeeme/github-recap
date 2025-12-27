@@ -40,15 +40,15 @@ export default function EndingSection() {
                 </div>
 
                 {/* Credit */}
-                <div className="inline-flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-lg">
-                    <span className="text-sm sm:text-base text-white/70 font-medium">Made with</span>
-                    <span className="text-lg text-red-400">❤️</span>
-                    <span className="text-sm sm:text-base text-white/70 font-medium">by</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+                    <span className="text-xs text-white/50">Made with</span>
+                    <span className="text-xs text-red-400">❤️</span>
+                    <span className="text-xs text-white/50">by</span>
                     <a
                         href="https://github.com/yongholeeme"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm sm:text-base text-white/90 font-semibold hover:text-white transition-colors"
+                        className="text-xs text-white/70 font-medium hover:text-white transition-colors"
                     >
                         @yongholeeme
                     </a>
