@@ -31,7 +31,7 @@ export function CountUpAnimation({value, duration = 1000, className = ''}: Count
     }, [value])
 
     useEffect(() => {
-        // 아직 화면에 보이지 않거나 이미 애니메이션이 진행된 경우
+        // Skip if not in view or already animated
         if (!inView || hasAnimatedRef.current) {
             return
         }
@@ -61,7 +61,7 @@ export function CountUpAnimation({value, duration = 1000, className = ''}: Count
             if (progress < 1) {
                 animationFrameRef.current = requestAnimationFrame(animate)
             } else {
-                setDisplayValue(currentTarget) // 정확한 최종값 설정
+                setDisplayValue(currentTarget) // Set exact final value
             }
         }
 

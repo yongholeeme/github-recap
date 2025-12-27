@@ -35,12 +35,12 @@ export default function GrowthSection() {
         isFetchingCurrentParticipatedIssues ||
         isFetchingLastParticipatedIssues
 
-    // 변화량 계산
+    // Calculate change amount
     const calculateChange = (current: number, last: number): number => {
         return current - last
     }
 
-    // 변화율 계산
+    // Calculate change rate
     const calculateChangeRate = (current: number, last: number): number => {
         if (last === 0) {
             return current > 0 ? 100 : 0

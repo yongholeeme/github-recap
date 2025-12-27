@@ -107,7 +107,7 @@ export default function YearRecap({year}: YearRecapProps) {
         setUser(newUser)
     }
 
-    // 로딩 중
+    // Loading
     if (isLoading) {
         return (
             <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
@@ -116,7 +116,7 @@ export default function YearRecap({year}: YearRecapProps) {
         )
     }
 
-    // 미로그인 상태
+    // Not logged in
     if (!user) {
         return (
             <>
@@ -130,7 +130,7 @@ export default function YearRecap({year}: YearRecapProps) {
         )
     }
 
-    // 로그인 상태
+    // Logged in
     return (
         <UserProvider user={user}>
             <YearProvider year={targetYear}>

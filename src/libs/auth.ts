@@ -134,7 +134,7 @@ export async function checkOAuthSession(): Promise<User | null> {
         }
     }
 
-    // 기존 세션 확인
+    // Check existing session
     const {
         data: {session},
     } = await supabase.auth.getSession()
@@ -143,12 +143,12 @@ export async function checkOAuthSession(): Promise<User | null> {
         return null
     }
 
-    // 세션에서 provider_token 확인
+    // Check provider_token from session
     if (session.provider_token) {
         sessionStorage.setItem(PAT_STORAGE_KEY, session.provider_token)
     }
 
-    // sessionStorage에 저장된 토큰이 없으면 로그인 필요
+    // Require login if no token stored in sessionStorage
     const storedToken = sessionStorage.getItem(PAT_STORAGE_KEY)
     if (!storedToken) {
         return null

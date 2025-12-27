@@ -10,7 +10,7 @@ export type SupportedLanguage = 'ko' | 'en' | 'ja'
 const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['ko', 'en', 'ja']
 const LANGUAGE_STORAGE_KEY = 'github-recap-language'
 
-// 브라우저 언어 감지
+// Detect browser language
 function detectLanguage(): SupportedLanguage {
     const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY)
     if (stored && SUPPORTED_LANGUAGES.includes(stored as SupportedLanguage)) {
