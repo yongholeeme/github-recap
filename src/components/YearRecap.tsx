@@ -6,7 +6,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import type {User} from '@/types/user'
 
 import LoginModal from '@/components/auth/LoginModal'
-import LoginToast from '@/components/auth/LoginToast'
+import LoginScreen from '@/components/auth/LoginScreen'
 import RefreshButton from '@/components/commons/RefreshButton'
 import CommitSections from '@/components/section/commit'
 import GrowthSections from '@/components/section/growth'
@@ -107,21 +107,34 @@ export default function YearRecap({year}: YearRecapProps) {
         setUser(newUser)
     }
 
-    return (
-        <UserProvider user={user}>
-            <YearProvider year={targetYear}>
-                {user && (
-                    <>
-                        <RefreshButton />
-                    </>
-                )}
+    // 로딩 중
+    if (isLoading) {
+        return (
+            <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
+                <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+            </div>
+        )
+    }
 
-                {!user && !isLoading && <LoginToast onLoginClick={() => setIsLoginModalOpen(true)} />}
+    // 미로그인 상태
+    if (!user) {
+        return (
+            <>
+                <LoginScreen onPATLogin={() => setIsLoginModalOpen(true)} />
                 <LoginModal
                     isOpen={isLoginModalOpen}
                     onClose={() => setIsLoginModalOpen(false)}
                     onLogin={handleLogin}
                 />
+            </>
+        )
+    }
+
+    // 로그인 상태
+    return (
+        <UserProvider user={user}>
+            <YearProvider year={targetYear}>
+                <RefreshButton />
 
                 <div
                     ref={containerRef}
