@@ -1,9 +1,12 @@
+import {useTranslation} from 'react-i18next'
+
 import BigNumberSection from '@/components/commons/BigNumberSection'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfParticipatedDiscussions} from '@/libs/hooks/useCountOfParticipatedDiscussions'
 import {useCountOfParticipatedIssues} from '@/libs/hooks/useCountOfParticipatedIssues'
 
 export default function ContributedIssuesSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
 
     const {data: issuesCount, isFetching: isFetchingIssues} = useCountOfParticipatedIssues(year)
@@ -16,8 +19,8 @@ export default function ContributedIssuesSection() {
         <BigNumberSection
             value={contributedCount}
             isFetching={isFetchingIssues || isFetchingDiscussions}
-            title="참여한 이슈와 디스커션"
-            subtitle="당신의 목소리가 닿은 곳"
+            title={t('issue.contributed.title')}
+            subtitle={t('issue.contributed.subtitle')}
         />
     )
 }

@@ -1,3 +1,5 @@
+import {useTranslation} from 'react-i18next'
+
 import Grid from '@/components/commons/Grid'
 import Section from '@/components/commons/Section'
 import ApprovedPullRequestsCard from '@/components/section/pr/PullRequestActivityCardsSection/ApprovedPullRequestsCard'
@@ -13,15 +15,16 @@ import RequestedChangesPullRequestsCard from '@/components/section/pr/PullReques
 import SlowestMergedPRCard from '@/components/section/pr/PullRequestActivityCardsSection/SlowestMergedPRCard'
 
 export default function PullRequestActivityCardsSection() {
+    const {t} = useTranslation()
     return (
         <Section
             title={
                 <>
-                    함께 만드는
-                    <br />더 나은 코드
+                    {t('pr.activity.title')}
+                    <br />{t('pr.activity.title2')}
                 </>
             }
-            subtitle="Pull Request로 협업하고 성장합니다"
+            subtitle={t('pr.activity.subtitle')}
         >
             <Grid cols={1} smCols={3} mb="md">
                 <CreatedPullRequestsCard />

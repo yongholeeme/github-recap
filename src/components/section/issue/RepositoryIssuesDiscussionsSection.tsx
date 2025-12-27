@@ -1,8 +1,11 @@
+import {useTranslation} from 'react-i18next'
+
 import RepositoryStatsSection from '@/components/commons/RepositoryStatsSection'
 import {useYear} from '@/contexts/YearContext'
 import {useRepositoryIssuesDiscussions} from '@/libs/hooks/useRepositoryIssuesDiscussions'
 
 export default function RepositoryIssuesDiscussionsSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data, isFetching} = useRepositoryIssuesDiscussions(year)
 
@@ -14,11 +17,11 @@ export default function RepositoryIssuesDiscussionsSection() {
 
     return (
         <RepositoryStatsSection
-            title="저장소별 이슈 참여도"
-            subtitle="가장 많이 참여한 이슈가 있는 저장소들"
+            title={t('issue.repository.title')}
+            subtitle={t('issue.repository.subtitle')}
             data={repos}
             isFetching={isFetching}
-            countLabel="이슈"
+            countLabel={t('issue.repository.countLabel')}
             linkType="issues"
             colorScheme={{
                 primary: '#10b981',

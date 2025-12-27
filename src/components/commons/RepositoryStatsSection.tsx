@@ -1,4 +1,5 @@
 import {config} from '@config'
+import {useTranslation} from 'react-i18next'
 
 import Grid from '@/components/commons/Grid'
 import Section from '@/components/commons/Section'
@@ -65,6 +66,7 @@ export default function RepositoryStatsSection({
     linkType,
     colorScheme,
 }: RepositoryStatsSectionProps) {
+    const {t} = useTranslation()
     const repos = data || []
 
     return (
@@ -98,8 +100,8 @@ export default function RepositoryStatsSection({
                             />
                         </svg>
                     </div>
-                    <p className="text-2xl font-bold text-gray-300 mb-2">데이터가 없습니다</p>
-                    <p className="text-gray-500">활동을 시작하면 여기에 표시됩니다</p>
+                    <p className="text-2xl font-bold text-gray-300 mb-2">{t('common.noData')}</p>
+                    <p className="text-gray-500">{t('common.noDataDescription')}</p>
                 </div>
             ) : (
                 <Grid cols={1} mdCols={2} lgCols={3} gap="md">
@@ -165,7 +167,7 @@ export default function RepositoryStatsSection({
                                 {/* Activity proportion */}
                                 <div className="relative">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-xs text-gray-500 font-medium">내 활동 비중</span>
+                                        <span className="text-xs text-gray-500 font-medium">{t('common.activityRatio')}</span>
                                         <span className="text-sm font-bold" style={{color: colorScheme.primary}}>
                                             {percentage}%
                                         </span>

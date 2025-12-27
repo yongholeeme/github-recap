@@ -2,12 +2,15 @@ import {useState} from 'react'
 
 import {config} from '@config'
 import {useQueryClient} from '@tanstack/react-query'
+import {useTranslation} from 'react-i18next'
 
+import LanguageSwitcher from '@/components/commons/LanguageSwitcher'
 import {useUser} from '@/contexts/UserContext'
 import {useYear} from '@/contexts/YearContext'
 import {logout, logoutOAuth} from '@/libs/auth'
 
 export default function IntroSection() {
+    const {t} = useTranslation()
     const user = useUser()
     const {year} = useYear()
     const avatarUrl = user?.avatar_url || ''
@@ -63,13 +66,16 @@ export default function IntroSection() {
                         </div>
                     )}
 
+                    {/* Language switcher */}
+                    <LanguageSwitcher />
+
                     {/* Logout button */}
                     <button
                         type="button"
                         onClick={handleLogout}
                         className="px-4 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-sm font-medium text-white/60 hover:text-white/90 hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
-                        로그아웃
+                        {t('auth.logout')}
                     </button>
                 </div>
             )}
@@ -109,7 +115,7 @@ export default function IntroSection() {
 
                 {/* Scroll CTA - Blue accent */}
                 <div className="inline-flex flex-col items-center gap-3 text-blue-400 hover:text-blue-300 transition-colors cursor-default">
-                    <span className="text-sm font-semibold">스크롤 또는 방향키로 확인하기</span>
+                    <span className="text-sm font-semibold">{t('intro.scrollHint')}</span>
                     <div className="flex items-center gap-3 animate-bounce">
                         <svg className="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />

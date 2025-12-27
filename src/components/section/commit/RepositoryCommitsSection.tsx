@@ -1,8 +1,11 @@
+import {useTranslation} from 'react-i18next'
+
 import RepositoryStatsSection from '@/components/commons/RepositoryStatsSection'
 import {useYear} from '@/contexts/YearContext'
 import {useRepositoryCommits} from '@/libs/hooks/useRepositoryCommits'
 
 export default function RepositoryCommitsSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data, isFetching} = useRepositoryCommits(year)
 
@@ -14,11 +17,11 @@ export default function RepositoryCommitsSection() {
 
     return (
         <RepositoryStatsSection
-            title="2025년의 코드들이 모인 곳"
+            title={t('commit.repository.title', {year})}
             subtitle=""
             data={repos}
             isFetching={isFetching}
-            countLabel="커밋"
+            countLabel={t('commit.repository.countLabel')}
             linkType="commits"
             colorScheme={{
                 primary: '#3b82f6',

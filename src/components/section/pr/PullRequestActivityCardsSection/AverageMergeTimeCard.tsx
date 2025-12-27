@@ -1,32 +1,35 @@
+import {useTranslation} from 'react-i18next'
+
 import StatCard from '@/components/commons/StatCard'
 import {useYear} from '@/contexts/YearContext'
 import {useMyAverageMergeTime} from '@/libs/hooks/useMyMergedPrs'
 
 export default function AverageMergeTimeCard() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data, isFetching} = useMyAverageMergeTime(year)
 
     if (data === null || data === undefined) {
-        return <StatCard title="PR 평균 머지 속도" value="-" description="생성부터 머지까지" isFetching={isFetching} />
+        return <StatCard title={t('pr.cards.avgMergeTime.title')} value="-" description={t('pr.cards.avgMergeTime.description')} isFetching={isFetching} />
     }
 
     const formatTime = (hours: number) => {
         if (hours < 1) {
-            return `${Math.round(hours * 60)}분`
+            return t('time.minutes', {count: Math.round(hours * 60)})
         } else if (hours < 24) {
-            return `${Math.round(hours)}시간`
+            return t('time.hours', {count: Math.round(hours)})
         } else {
             const days = Math.floor(hours / 24)
             const remainingHours = Math.round(hours % 24)
-            return remainingHours > 0 ? `${days}일 ${remainingHours}시간` : `${days}일`
+            return remainingHours > 0 ? t('time.daysAndHours', {days, hours: remainingHours}) : t('time.days', {count: days})
         }
     }
 
     return (
         <StatCard
-            title="PR 평균 머지 속도"
+            title={t('pr.cards.avgMergeTime.title')}
             value={formatTime(data)}
-            description="생성부터 머지까지"
+            description={t('pr.cards.avgMergeTime.description')}
             isFetching={isFetching}
         />
     )

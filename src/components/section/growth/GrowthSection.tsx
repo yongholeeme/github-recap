@@ -1,3 +1,5 @@
+import {useTranslation} from 'react-i18next'
+
 import {CountUpAnimation} from '@/components/commons/CountUpAnimation'
 import Grid from '@/components/commons/Grid'
 import Section from '@/components/commons/Section'
@@ -8,6 +10,7 @@ import {useCountOfParticipatedIssues} from '@/libs/hooks/useCountOfParticipatedI
 import {useCountOfPrsReviewedByMe} from '@/libs/hooks/useCountOfPrsReviewedByMe'
 
 export default function GrowthSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
 
     const {data: currentCommits, isFetching: isFetchingCurrentCommits} = useCountOfCommits(year)
@@ -57,7 +60,7 @@ export default function GrowthSection() {
             ? undefined
             : [
                   {
-                      title: '커밋',
+                      title: t('growth.metrics.commits'),
                       icon: '💻',
                       current: currentCommits,
                       last: lastCommits,
@@ -65,7 +68,7 @@ export default function GrowthSection() {
                       changeRate: calculateChangeRate(currentCommits, lastCommits),
                   },
                   {
-                      title: '생성한 Pull Request',
+                      title: t('growth.metrics.createdPR'),
                       icon: '🔀',
                       current: currentMyCreatedPrs,
                       last: lastMyCreatedPrs,
@@ -73,7 +76,7 @@ export default function GrowthSection() {
                       changeRate: calculateChangeRate(currentMyCreatedPrs, lastMyCreatedPrs),
                   },
                   {
-                      title: '리뷰한 Pull Request',
+                      title: t('growth.metrics.reviewedPR'),
                       icon: '👀',
                       current: currentPrsReviewedByMe,
                       last: lastPrsReviewedByMe,
@@ -81,7 +84,7 @@ export default function GrowthSection() {
                       changeRate: calculateChangeRate(currentPrsReviewedByMe, lastPrsReviewedByMe),
                   },
                   {
-                      title: '이슈 & 디스커션',
+                      title: t('growth.metrics.issues'),
                       icon: '🎯',
                       current: currentParticipatedIssues,
                       last: lastParticipatedIssues,
@@ -121,14 +124,28 @@ export default function GrowthSection() {
     }
 
     return (
-        <Section title="작년과 비교해볼까요?" subtitle="같은 기간, 숫자로 보는 변화" variant="default" headerMb="lg">
+        <Section title={t('growth.title')} subtitle={t('growth.subtitle')} variant="default" headerMb="lg">
             <Grid cols={1} mdCols={2} gap="md">
                 {(
                     comparisonData || [
-                        {title: '커밋', icon: '💻', current: 0, last: 0, change: 0, changeRate: 0},
-                        {title: '생성한 Pull Request', icon: '🔀', current: 0, last: 0, change: 0, changeRate: 0},
-                        {title: '리뷰한 Pull Request', icon: '👀', current: 0, last: 0, change: 0, changeRate: 0},
-                        {title: '이슈 & 디스커션', icon: '🎯', current: 0, last: 0, change: 0, changeRate: 0},
+                        {title: t('growth.metrics.commits'), icon: '💻', current: 0, last: 0, change: 0, changeRate: 0},
+                        {
+                            title: t('growth.metrics.createdPR'),
+                            icon: '🔀',
+                            current: 0,
+                            last: 0,
+                            change: 0,
+                            changeRate: 0,
+                        },
+                        {
+                            title: t('growth.metrics.reviewedPR'),
+                            icon: '👀',
+                            current: 0,
+                            last: 0,
+                            change: 0,
+                            changeRate: 0,
+                        },
+                        {title: t('growth.metrics.issues'), icon: '🎯', current: 0, last: 0, change: 0, changeRate: 0},
                     ]
                 ).map((item) => (
                     <div
@@ -168,7 +185,7 @@ export default function GrowthSection() {
                                 {/* 올해 */}
                                 <div className="space-y-1">
                                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                                        {year}년
+                                        {t('growth.year', {year})}
                                     </p>
                                     <p className="text-4xl font-black text-white">
                                         <CountUpAnimation value={item.current} duration={1200} />
@@ -178,7 +195,7 @@ export default function GrowthSection() {
                                 {/* 작년 */}
                                 <div className="space-y-1">
                                     <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                                        {year - 1}년
+                                        {t('growth.year', {year: year - 1})}
                                     </p>
                                     <p className="text-4xl font-black text-white/40">
                                         <CountUpAnimation value={item.last} duration={1200} />
@@ -190,7 +207,7 @@ export default function GrowthSection() {
                             <div className="pt-6 border-t border-white/10">
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                                        변화량
+                                        {t('growth.change')}
                                     </span>
                                     <div className="flex items-center gap-2">
                                         <span

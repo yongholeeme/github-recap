@@ -7,6 +7,9 @@ import {RouterProvider, createRouter} from '@tanstack/react-router'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 
+// i18n 초기화
+import '@/libs/i18n'
+
 // Import the generated route tree
 import {REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
 import {routeTree} from '@/routeTree.gen'

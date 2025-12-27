@@ -1,6 +1,8 @@
 import {useState} from 'react'
 
 import {config} from '@config'
+import {useTranslation} from 'react-i18next'
+
 
 import type {User} from '@/types/user'
 
@@ -14,6 +16,7 @@ interface PATLoginModalProps {
 }
 
 export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalProps) {
+    const {t} = useTranslation()
     const [patToken, setPATToken] = useState('')
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +36,7 @@ export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalP
             onLogin(user)
             onClose()
         } catch (e) {
-            setError(e instanceof Error ? e.message : '유효하지 않은 토큰입니다')
+            setError(e instanceof Error ? e.message : t('auth.patLogin.invalidToken'))
         } finally {
             setIsLoading(false)
         }
@@ -42,12 +45,12 @@ export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalP
     return (
         <LoginModalLayout
             onClose={onClose}
-            title="로그인"
+            title={t('auth.patLogin.title')}
             description={
                 <>
-                    Personal Access Token으로
+                    {t('auth.patLogin.description')}
                     <br />
-                    올해의 활동을 확인하세요
+                    {t('auth.patLogin.description2')}
                 </>
             }
         >
@@ -61,7 +64,7 @@ export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalP
                     value={patToken}
                     onChange={(e) => setPATToken(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                    placeholder="ghp_xxxxxxxxxxxx"
+                    placeholder={t('auth.patLogin.enterToken')}
                     className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
                     disabled={isLoading}
                 />
@@ -73,9 +76,9 @@ export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalP
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
                     >
-                        토큰 생성하기
+                        {t('auth.patLogin.createToken')}
                     </a>{' '}
-                    (필요한 권한: repo, read:user)
+                    {t('auth.patLogin.requiredScopes')}
                 </p>
             </div>
             <button
@@ -84,7 +87,7 @@ export default function PATLoginModal({isOpen, onClose, onLogin}: PATLoginModalP
                 disabled={isLoading}
                 className="w-full px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                {isLoading ? '확인 중...' : '계속하기'}
+                {isLoading ? t('auth.patLogin.checking') : t('auth.patLogin.continue')}
             </button>
         </LoginModalLayout>
     )

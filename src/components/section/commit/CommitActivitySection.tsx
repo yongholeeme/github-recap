@@ -1,8 +1,11 @@
+import {useTranslation} from 'react-i18next'
+
 import BigNumberSection from '@/components/commons/BigNumberSection'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfCommits} from '@/libs/hooks/useCountOfCommits'
 
 export default function CommitActivitySection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data, isFetching} = useCountOfCommits(year)
 
@@ -10,8 +13,8 @@ export default function CommitActivitySection() {
         <BigNumberSection
             value={data}
             isFetching={isFetching}
-            title={`${year}년 작성한 커밋`}
-            subtitle="한 줄 한 줄 쌓아올린 당신의 기록"
+            title={t('commit.activity.title', {year})}
+            subtitle={t('commit.activity.subtitle')}
         />
     )
 }

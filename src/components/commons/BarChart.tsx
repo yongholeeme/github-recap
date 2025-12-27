@@ -1,3 +1,5 @@
+import {useTranslation} from 'react-i18next'
+
 interface BarChartProps {
     data: {
         label: string | number
@@ -10,6 +12,7 @@ interface BarChartProps {
 }
 
 export default function BarChart({data, maxValue, height = 384, barHeight = 320}: BarChartProps) {
+    const {t} = useTranslation()
     return (
         <div className="flex items-end justify-between gap-1 sm:gap-2" style={{height: `${height}px`}}>
             {data.map((item, index) => {
@@ -55,7 +58,7 @@ export default function BarChart({data, maxValue, height = 384, barHeight = 320}
                                             className="absolute left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold text-white bg-black/80 px-2 py-1 rounded whitespace-nowrap pointer-events-none"
                                             style={{bottom: '100%', marginBottom: '4px'}}
                                         >
-                                            {item.value}개
+                                            {t('common.items', {count: item.value})}
                                         </div>
                                     )}
                                 </div>

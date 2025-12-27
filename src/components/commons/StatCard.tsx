@@ -1,3 +1,5 @@
+import {useTranslation} from 'react-i18next'
+
 import {CountUpAnimation} from '@/components/commons/CountUpAnimation'
 
 interface StatCardProps {
@@ -23,6 +25,7 @@ export default function StatCard({
     suffix,
     link,
 }: StatCardProps) {
+    const {t} = useTranslation()
     const isNumberValue = typeof value === 'number'
 
     const content = (
@@ -43,7 +46,9 @@ export default function StatCard({
                 </div>
 
                 <div className="mt-auto">
-                    {error && value === undefined && <p className="text-sm text-red-400 font-semibold">오류 발생</p>}
+                    {error && value === undefined && (
+                        <p className="text-sm text-red-400 font-semibold">{t('common.error')}</p>
+                    )}
                     {error && value !== undefined && isNumberValue && (
                         <>
                             <div className="flex items-center gap-1 mb-2">
@@ -60,7 +65,7 @@ export default function StatCard({
                                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                 </svg>
-                                <p className="text-xs text-red-400">새로고침 실패</p>
+                                <p className="text-xs text-red-400">{t('common.refreshFailed')}</p>
                             </div>
                             <div className="flex items-baseline gap-1 flex-wrap">
                                 <span className="text-3xl sm:text-4xl font-black text-white tabular-nums">
@@ -69,7 +74,9 @@ export default function StatCard({
                                 {suffix && (
                                     <span className="text-2xl sm:text-3xl font-bold text-white/80">{suffix}</span>
                                 )}
-                                {isClickable && <span className="text-xs text-white/50 ml-auto">클릭하여 보기</span>}
+                                {isClickable && (
+                                    <span className="text-xs text-white/50 ml-auto">{t('common.clickToView')}</span>
+                                )}
                             </div>
                         </>
                     )}
@@ -94,7 +101,9 @@ export default function StatCard({
                                     />
                                 </svg>
                             )}
-                            {isClickable && <span className="text-xs text-white/50 ml-auto">클릭하여 보기</span>}
+                            {isClickable && (
+                                <span className="text-xs text-white/50 ml-auto">{t('common.clickToView')}</span>
+                            )}
                         </div>
                     )}
                 </div>

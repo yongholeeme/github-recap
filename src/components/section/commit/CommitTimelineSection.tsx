@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {useTranslation} from 'react-i18next'
+
 import BarChart from '@/components/commons/BarChart'
 import InsightSection from '@/components/commons/InsightSection'
 import {useYear} from '@/contexts/YearContext'
@@ -21,8 +23,8 @@ function calculateCommitsByMonth(commits: SimplifiedCommit[]) {
     return monthCounts
 }
 
-function getMonthName(month: number): string {
-    return `${month + 1}월`
+function getMonthName(month: number, t: (key: string, options?: {month?: number}) => string): string {
+    return t('commit.timeline.month', {month: month + 1})
 }
 
 function getTopMonths(monthCounts: Record<number, number>) {
@@ -32,6 +34,7 @@ function getTopMonths(monthCounts: Record<number, number>) {
 }
 
 export default function CommitTimelineSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data: commits, isFetching} = useCommits(year)
 
@@ -52,32 +55,32 @@ export default function CommitTimelineSection() {
     const maxCount = timelineData ? Math.max(...Object.values(timelineData.monthCounts)) : 0
     const chartData = timelineData
         ? Object.entries(timelineData.monthCounts).map(([month, count]) => ({
-              label: getMonthName(Number.parseInt(month)),
+              label: getMonthName(Number.parseInt(month), t),
               value: count,
               isPeak: count === maxCount,
           }))
         : Array.from({length: 12}, (_, i) => ({
-              label: getMonthName(i),
+              label: getMonthName(i, t),
               value: 0,
               isPeak: false,
           }))
 
     return (
         <InsightSection
-            title="12개월의 여정"
-            subtitle="한 해 동안 당신의 개발 스토리"
+            title={t('commit.timeline.title')}
+            subtitle={t('commit.timeline.subtitle')}
             chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
             topItems={
                 timelineData?.topMonths.map(([month, count]) => ({
-                    label: getMonthName(Number.parseInt(month)),
-                    value: `${count}개`,
+                    label: getMonthName(Number.parseInt(month), t),
+                    value: t('common.items', {count}),
                     rank: 0,
                 })) || []
             }
             stats={[
-                {label: '활동 개월', value: timelineData ? `${timelineData.activeMonths}/12` : '-'},
-                {label: '월평균 커밋', value: timelineData?.avgPerMonth || '-'},
-                {label: '최고 기록', value: maxMonth ? `${maxMonth[1]}개` : '-'},
+                {label: t('commit.timeline.activeMonths'), value: timelineData ? `${timelineData.activeMonths}/12` : '-'},
+                {label: t('commit.timeline.avgPerMonth'), value: timelineData?.avgPerMonth || '-'},
+                {label: t('commit.timeline.bestRecord'), value: maxMonth ? t('common.items', {count: maxMonth[1]}) : '-'},
             ]}
             isFetching={isFetching}
         />

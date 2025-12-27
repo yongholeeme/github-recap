@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {useTranslation} from 'react-i18next'
+
 import BarChart from '@/components/commons/BarChart'
 import InsightSection from '@/components/commons/InsightSection'
 import {useYear} from '@/contexts/YearContext'
@@ -21,8 +23,16 @@ function calculateCommitsByDay(commits: SimplifiedCommit[]) {
     return dayCounts
 }
 
-function getDayName(day: number): string {
-    const days = ['일', '월', '화', '수', '목', '금', '토']
+function getDayName(day: number, t: (key: string) => string): string {
+    const days = [
+        t('commit.byDay.days.0'),
+        t('commit.byDay.days.1'),
+        t('commit.byDay.days.2'),
+        t('commit.byDay.days.3'),
+        t('commit.byDay.days.4'),
+        t('commit.byDay.days.5'),
+        t('commit.byDay.days.6'),
+    ]
     return days[day]
 }
 
@@ -33,6 +43,7 @@ function getTopDays(dayCounts: Record<number, number>) {
 }
 
 export default function CommitsByDaySection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data: commits, isFetching} = useCommits(year)
 
@@ -53,31 +64,31 @@ export default function CommitsByDaySection() {
     const maxCount = dayData ? Math.max(...Object.values(dayData.dayCounts)) : 0
     const chartData = dayData
         ? Object.entries(dayData.dayCounts).map(([day, count]) => ({
-              label: getDayName(Number.parseInt(day)),
+              label: getDayName(Number.parseInt(day), t),
               value: count,
               isPeak: count === maxCount,
           }))
         : Array.from({length: 7}, (_, i) => ({
-              label: getDayName(i),
+              label: getDayName(i, t),
               value: 0,
               isPeak: false,
           }))
 
     return (
         <InsightSection
-            title="7일의 패턴"
-            subtitle="일주일 동안 어떤 리듬으로 작업하셨나요?"
+            title={t('commit.byDay.title')}
+            subtitle={t('commit.byDay.subtitle')}
             chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
             topItems={
                 dayData?.topDays.map(([day, count]) => ({
-                    label: `${getDayName(Number.parseInt(day))}요일`,
-                    value: `${count}개`,
+                    label: t('commit.byDay.dayFormat', {day: getDayName(Number.parseInt(day), t)}),
+                    value: t('common.items', {count}),
                     rank: 0,
                 })) || []
             }
             stats={[
-                {label: '평일 커밋', value: weekdayCommits || '-'},
-                {label: '주말 커밋', value: weekendCommits || '-'},
+                {label: t('commit.byDay.weekdayCommits'), value: weekdayCommits || '-'},
+                {label: t('commit.byDay.weekendCommits'), value: weekendCommits || '-'},
             ]}
             isFetching={isFetching}
         />

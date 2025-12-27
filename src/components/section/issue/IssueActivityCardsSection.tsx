@@ -1,3 +1,5 @@
+import {useTranslation} from 'react-i18next'
+
 import Grid from '@/components/commons/Grid'
 import Section from '@/components/commons/Section'
 import DiscussionCommentsCard from '@/components/section/issue/IssueActivityCardsSection/DiscussionCommentsCard'
@@ -8,16 +10,18 @@ import ParticipatedDiscussionsCard from '@/components/section/issue/IssueActivit
 import ParticipatedIssuesCard from '@/components/section/issue/IssueActivityCardsSection/ParticipatedIssuesCard'
 
 export default function IssueActivityCardsSection() {
+    const {t} = useTranslation()
+
     return (
         <Section
             title={
                 <>
-                    문제를 찾고
+                    {t('issue.activity.title')}
                     <br />
-                    해결합니다
+                    {t('issue.activity.title2')}
                 </>
             }
-            subtitle="이슈와 토론으로 함께 성장하는 커뮤니티"
+            subtitle={t('issue.activity.subtitle')}
         >
             <Grid cols={2} lgCols={4} mb="md">
                 <ParticipatedIssuesCard />

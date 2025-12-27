@@ -1,8 +1,10 @@
 import {useEffect, useState} from 'react'
 
 import {useQueryClient} from '@tanstack/react-query'
+import {useTranslation} from 'react-i18next'
 
 export default function RefreshButton() {
+    const {t} = useTranslation()
     const queryClient = useQueryClient()
     const [percent, setPercent] = useState(100)
     const [fetchingCount, setFetchingCount] = useState(0)
@@ -35,7 +37,7 @@ export default function RefreshButton() {
             onClick={handleRefresh}
             disabled={isFetching}
             className="fixed top-6 left-6 sm:top-8 sm:left-8 z-50 inline-flex items-center gap-3 px-4 py-2.5 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-full shadow-xl hover:shadow-2xl hover:border-white/30 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
-            title={isFetching ? `데이터 로딩 중... ${percent}%` : '전체 데이터 최신화'}
+            title={isFetching ? `${t('common.loading')} ${percent}%` : t('common.refreshAll')}
         >
             <div className="relative">
                 <svg
@@ -54,7 +56,7 @@ export default function RefreshButton() {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-sm group-hover:blur-md transition-all duration-300" />
             </div>
             <span className="text-sm font-bold text-white/95 tracking-tight group-hover:text-white transition-colors duration-300">
-                {isFetching ? `${percent}%` : '최신화'}
+                {isFetching ? `${percent}%` : t('common.refresh')}
             </span>
         </button>
     )

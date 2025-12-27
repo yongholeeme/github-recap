@@ -1,5 +1,7 @@
 import {useMemo} from 'react'
 
+import {useTranslation} from 'react-i18next'
+
 import BarChart from '@/components/commons/BarChart'
 import InsightSection from '@/components/commons/InsightSection'
 import {useYear} from '@/contexts/YearContext'
@@ -30,6 +32,7 @@ function getPeakHours(hourCounts: Record<number, number>) {
 }
 
 export default function CommitsByHourSection() {
+    const {t} = useTranslation()
     const {year} = useYear()
     const {data: commits, isFetching} = useCommits(year)
 
@@ -62,19 +65,19 @@ export default function CommitsByHourSection() {
 
     return (
         <InsightSection
-            title="24시간의 흔적"
-            subtitle="하루 중 언제 가장 몰입하시나요?"
+            title={t('commit.byHour.title')}
+            subtitle={t('commit.byHour.subtitle')}
             chart={<BarChart data={chartData} maxValue={hourData?.maxCount || 0} />}
             topItems={
                 hourData?.peakHours.map(([hour, count]) => ({
-                    label: `${hour}시`,
-                    value: `${count}개`,
+                    label: t('commit.byHour.hour', {hour}),
+                    value: t('common.items', {count}),
                     rank: 0,
                 })) || []
             }
             stats={[
-                {label: '최다 커밋', value: hourData?.maxCount || '-'},
-                {label: '평균 커밋', value: hourData?.avgPerHour || '-'},
+                {label: t('commit.byHour.maxCommits'), value: hourData?.maxCount || '-'},
+                {label: t('commit.byHour.avgCommits'), value: hourData?.avgPerHour || '-'},
             ]}
             isFetching={isFetching}
         />
