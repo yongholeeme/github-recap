@@ -2,24 +2,22 @@ import {useState} from 'react'
 
 import {useTranslation} from 'react-i18next'
 
-import {setLanguage} from '@/libs/i18n'
+import {setLanguage, type SupportedLanguage} from '@/libs/i18n'
 
-const FLAGS = {
-    ko: '🇰🇷',
-    en: '🇺🇸',
-} as const
-
-const LANGUAGE_NAMES = {
-    ko: '한국어',
-    en: 'English',
-} as const
+const LANGUAGES: {code: SupportedLanguage; flag: string; name: string}[] = [
+    {code: 'ko', flag: '🇰🇷', name: '한국어'},
+    {code: 'en', flag: '🇺🇸', name: 'English'},
+    {code: 'ja', flag: '🇯🇵', name: '日本語'},
+]
 
 export default function LanguageSwitcher() {
     const {i18n} = useTranslation()
-    const currentLang = i18n.language as 'ko' | 'en'
+    const currentLang = i18n.language as SupportedLanguage
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleSelect = (lang: 'ko' | 'en') => {
+    const currentFlag = LANGUAGES.find((l) => l.code === currentLang)?.flag ?? '🌐'
+
+    const handleSelect = (lang: SupportedLanguage) => {
         setLanguage(lang)
         setIsOpen(false)
     }
@@ -32,7 +30,7 @@ export default function LanguageSwitcher() {
                 onClick={() => setIsOpen(true)}
                 className="w-10 h-10 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-xl hover:bg-white/10 hover:border-white/20 transition-all duration-300"
             >
-                {FLAGS[currentLang]}
+                {currentFlag}
             </button>
 
             {/* Modal Backdrop */}
@@ -48,20 +46,20 @@ export default function LanguageSwitcher() {
                     >
                         <h3 className="text-lg font-bold text-white mb-4 text-center">Language</h3>
                         <div className="flex flex-col gap-2">
-                            {(['ko', 'en'] as const).map((lang) => (
+                            {LANGUAGES.map((lang) => (
                                 <button
-                                    key={lang}
+                                    key={lang.code}
                                     type="button"
-                                    onClick={() => handleSelect(lang)}
+                                    onClick={() => handleSelect(lang.code)}
                                     className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                                        currentLang === lang
+                                        currentLang === lang.code
                                             ? 'bg-blue-500/20 border border-blue-500/50 text-white'
                                             : 'bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
                                     }`}
                                 >
-                                    <span className="text-2xl">{FLAGS[lang]}</span>
-                                    <span className="font-medium">{LANGUAGE_NAMES[lang]}</span>
-                                    {currentLang === lang && (
+                                    <span className="text-2xl">{lang.flag}</span>
+                                    <span className="font-medium">{lang.name}</span>
+                                    {currentLang === lang.code && (
                                         <svg
                                             className="w-5 h-5 ml-auto text-blue-400"
                                             fill="none"
