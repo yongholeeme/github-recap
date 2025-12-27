@@ -74,7 +74,7 @@ export default function CommitsByDaySection() {
         <InsightSection
             title={t('commit.byDay.title')}
             subtitle={t('commit.byDay.subtitle')}
-            chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
+            chart={<BarChart data={chartData} maxValue={maxCount} />}
             topItems={
                 dayData?.topDays.map(([day, count]) => ({
                     label: t('commit.byDay.dayFormat', {day: getDayName(Number.parseInt(day), t)}),

@@ -11,7 +11,7 @@ interface BarChartProps {
     barHeight?: number
 }
 
-export default function BarChart({data, maxValue, height = 384, barHeight = 320}: BarChartProps) {
+export default function BarChart({data, maxValue, height = 320, barHeight = 280}: BarChartProps) {
     const {t} = useTranslation()
     return (
         <div className="flex items-end justify-between gap-1 sm:gap-2" style={{height: `${height}px`}}>

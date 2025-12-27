@@ -65,7 +65,7 @@ export default function CommitTimelineSection() {
         <InsightSection
             title={t('commit.timeline.title')}
             subtitle={t('commit.timeline.subtitle')}
-            chart={<BarChart data={chartData} maxValue={maxCount} height={320} barHeight={280} />}
+            chart={<BarChart data={chartData} maxValue={maxCount} />}
             topItems={
                 timelineData?.topMonths.map(([month, count]) => ({
                     label: getMonthName(Number.parseInt(month), t),
