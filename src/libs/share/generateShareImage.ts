@@ -8,8 +8,6 @@ export interface ShareData {
     prsReviewed: number
     issuesParticipated: number
     mentions: number
-    developerType: string
-    developerTypeEmoji: string
     monthlyCommits: number[] // 12 months of commit counts
     // i18n labels
     labels: {
@@ -33,34 +31,6 @@ const GRID_COLS = 4
 const GRID_ROWS = 4
 const CELL_WIDTH = (CARD_WIDTH - PADDING * 2 - GAP * (GRID_COLS - 1)) / GRID_COLS
 const CELL_HEIGHT = (CARD_HEIGHT - PADDING * 2 - GAP * (GRID_ROWS - 1)) / GRID_ROWS
-
-// Developer type key based on patterns
-type DeveloperTypeKey = 'nightOwl' | 'earlyBird' | 'weekendWarrior' | 'codeGuardian' | 'commitMachine' | 'developer'
-
-export function getDeveloperType(
-    peakHour: number,
-    peakDayIndex: number,
-    commits: number,
-    prsReviewed: number
-): {typeKey: DeveloperTypeKey; emoji: string} {
-    if (peakHour >= 22 || peakHour <= 4) {
-        return {typeKey: 'nightOwl', emoji: '🦉'}
-    }
-    if (peakHour >= 5 && peakHour <= 8) {
-        return {typeKey: 'earlyBird', emoji: '🐦'}
-    }
-    // 0 = Sunday, 6 = Saturday
-    if (peakDayIndex === 0 || peakDayIndex === 6) {
-        return {typeKey: 'weekendWarrior', emoji: '⚔️'}
-    }
-    if (prsReviewed > commits / 10 && prsReviewed > 50) {
-        return {typeKey: 'codeGuardian', emoji: '🛡️'}
-    }
-    if (commits > 1000) {
-        return {typeKey: 'commitMachine', emoji: '🤖'}
-    }
-    return {typeKey: 'developer', emoji: '💻'}
-}
 
 async function loadImage(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
@@ -279,25 +249,12 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     const titleCenterX = titleCell.x + titleCell.width / 2
     const titleCenterY = titleCell.y + titleCell.height / 2
 
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.3)'
-    ctx.shadowBlur = 30
-    ctx.font = '48px system-ui'
-    ctx.fillStyle = '#ffffff'
-    ctx.textAlign = 'center'
-    ctx.fillText('🐙', titleCenterX, titleCenterY - 70)
-    ctx.shadowBlur = 0
-
     ctx.font = 'bold 42px system-ui, -apple-system, sans-serif'
     ctx.fillStyle = '#ffffff'
-    ctx.fillText('GitHub', titleCenterX, titleCenterY - 15)
-    ctx.fillText('Wrapped', titleCenterX, titleCenterY + 35)
-
-    ctx.font = 'bold 28px system-ui, -apple-system, sans-serif'
-    const yearGrad = ctx.createLinearGradient(titleCenterX - 40, 0, titleCenterX + 40, 0)
-    yearGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)')
-    yearGrad.addColorStop(1, 'rgba(200, 200, 200, 0.9)')
-    ctx.fillStyle = yearGrad
-    ctx.fillText(data.year.toString(), titleCenterX, titleCenterY + 75)
+    ctx.textAlign = 'center'
+    ctx.fillText(data.year.toString(), titleCenterX, titleCenterY - 45)
+    ctx.fillText('GitHub', titleCenterX, titleCenterY + 5)
+    ctx.fillText('Wrapped', titleCenterX, titleCenterY + 55)
 
     // [3, 0] Commits (1x1)
     drawStatCard(ctx, getCell(3, 0), '📝', formatNumber(data.commits), data.labels.commits, colors.blue)
@@ -332,9 +289,9 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
 
     try {
         const avatar = await loadImage(data.avatarUrl)
-        const avatarSize = 110
+        const avatarSize = 120
         const avatarX = personalityCenterX - avatarSize / 2
-        const avatarY = personalityCenterY - 170
+        const avatarY = personalityCenterY - 80
 
         ctx.shadowColor = 'rgba(255, 255, 255, 0.4)'
         ctx.shadowBlur = 30
@@ -361,23 +318,10 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
         // Skip avatar if failed
     }
 
-    ctx.font = 'bold 26px system-ui, -apple-system, sans-serif'
+    ctx.font = 'bold 32px system-ui, -apple-system, sans-serif'
     ctx.fillStyle = '#ffffff'
     ctx.textAlign = 'center'
-    ctx.fillText(`@${data.userName}`, personalityCenterX, personalityCenterY - 30)
-
-    ctx.shadowColor = colors.orange.glow
-    ctx.shadowBlur = 40
-    ctx.font = '72px system-ui'
-    ctx.fillText(data.developerTypeEmoji, personalityCenterX, personalityCenterY + 70)
-    ctx.shadowBlur = 0
-
-    ctx.font = 'bold 30px system-ui, -apple-system, sans-serif'
-    const typeGrad = ctx.createLinearGradient(personalityCenterX - 100, 0, personalityCenterX + 100, 0)
-    typeGrad.addColorStop(0, '#ffffff')
-    typeGrad.addColorStop(1, '#cccccc')
-    ctx.fillStyle = typeGrad
-    ctx.fillText(data.developerType, personalityCenterX, personalityCenterY + 130)
+    ctx.fillText(`@${data.userName}`, personalityCenterX, personalityCenterY + 95)
 
     // --- Row 2-3 ---
 

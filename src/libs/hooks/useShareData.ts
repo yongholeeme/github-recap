@@ -10,7 +10,7 @@ import {useCountOfMyMergedPrs} from './useCountOfMyMergedPrs'
 import {useCountOfParticipatedIssues} from './useCountOfParticipatedIssues'
 import {useCountOfPrsReviewedByMe} from './useCountOfPrsReviewedByMe'
 
-import {type ShareData, getDeveloperType} from '@/libs/share/generateShareImage'
+import {type ShareData} from '@/libs/share/generateShareImage'
 
 interface UseShareDataParams {
     year: number
@@ -34,32 +34,6 @@ export function useShareData({year, userName, avatarUrl}: UseShareDataParams) {
             return null
         }
 
-        // Calculate peak hour
-        let peakHour = 12
-        if (commits && commits.length > 0) {
-            const hourCounts: Record<number, number> = {}
-            for (const commit of commits) {
-                const hour = new Date(commit.committedDate).getHours()
-                hourCounts[hour] = (hourCounts[hour] || 0) + 1
-            }
-            peakHour = Number(
-                Object.entries(hourCounts).reduce((a, b) => (hourCounts[Number(a[0])] > hourCounts[Number(b[0])] ? a : b))[0]
-            )
-        }
-
-        // Calculate peak day index for developer type
-        let peakDayIndex = 1 // Default to Monday
-        if (commits && commits.length > 0) {
-            const dayCounts: Record<number, number> = {}
-            for (const commit of commits) {
-                const day = new Date(commit.committedDate).getDay()
-                dayCounts[day] = (dayCounts[day] || 0) + 1
-            }
-            peakDayIndex = Number(
-                Object.entries(dayCounts).reduce((a, b) => (dayCounts[Number(a[0])] > dayCounts[Number(b[0])] ? a : b))[0]
-            )
-        }
-
         // Calculate monthly commits
         const monthlyCommits: number[] = Array(12).fill(0)
         if (commits && commits.length > 0) {
@@ -68,15 +42,6 @@ export function useShareData({year, userName, avatarUrl}: UseShareDataParams) {
                 monthlyCommits[month]++
             }
         }
-
-        // Get developer type
-        const {typeKey: developerTypeKey, emoji: developerTypeEmoji} = getDeveloperType(
-            peakHour,
-            peakDayIndex,
-            commitCount || 0,
-            prsReviewed || 0
-        )
-        const developerType = t(`share.developerTypes.${developerTypeKey}`)
 
         return {
             year,
@@ -88,8 +53,6 @@ export function useShareData({year, userName, avatarUrl}: UseShareDataParams) {
             prsReviewed: prsReviewed || 0,
             issuesParticipated: issuesParticipated || 0,
             mentions: mentions || 0,
-            developerType,
-            developerTypeEmoji,
             monthlyCommits,
             labels: {
                 commits: t('share.image.commits'),
