@@ -11,6 +11,7 @@ export default {
         refresh: 'Refresh',
         refreshAll: 'Refresh all data',
         more: 'More',
+        collapse: 'Collapse',
         times: '{{count}} times',
         items: '{{count}}',
         comments: '{{count}} comments',

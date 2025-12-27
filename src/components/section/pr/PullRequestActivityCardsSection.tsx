@@ -16,34 +16,39 @@ import SlowestMergedPRCard from '@/components/section/pr/PullRequestActivityCard
 
 export default function PullRequestActivityCardsSection() {
     const {t} = useTranslation()
+
     return (
         <Section
             title={
                 <>
                     {t('pr.activity.title')}
-                    <br />{t('pr.activity.title2')}
+                    <br />
+                    {t('pr.activity.title2')}
                 </>
             }
             subtitle={t('pr.activity.subtitle')}
         >
-            <Grid cols={1} smCols={3} mb="md">
+            {/* 주요 지표 */}
+            <Grid cols={2} smCols={3} mb="md">
                 <CreatedPullRequestsCard />
                 <MergedPullRequestsCard />
-                <PullRequestReviewsCard />
-            </Grid>
-
-            <Grid cols={2} lgCols={4} mb="md">
-                <PullRequestReviewCommentsCard />
-                <ApprovedPullRequestsCard />
-                <RequestedChangesPullRequestsCard />
                 <ClosedNotMergedPullRequestsCard />
             </Grid>
 
-            <Grid cols={1} smCols={2} lgCols={4}>
-                <MostDiscussedPRCard />
+            {/* 리뷰 활동 */}
+            <Grid cols={2} lgCols={4} mb="md">
+                <PullRequestReviewsCard />
+                <PullRequestReviewCommentsCard />
+                <ApprovedPullRequestsCard />
+                <RequestedChangesPullRequestsCard />
+            </Grid>
+
+            {/* 머지 시간 & 하이라이트 */}
+            <Grid cols={2} lgCols={4}>
                 <AverageMergeTimeCard />
                 <FastestMergedPRCard />
                 <SlowestMergedPRCard />
+                <MostDiscussedPRCard />
             </Grid>
         </Section>
     )

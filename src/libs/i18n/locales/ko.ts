@@ -11,6 +11,7 @@ export default {
         refresh: '최신화',
         refreshAll: '전체 데이터 최신화',
         more: '더보기',
+        collapse: '접기',
         times: '{{count}}회',
         items: '{{count}}개',
         comments: '{{count}}개의 댓글',

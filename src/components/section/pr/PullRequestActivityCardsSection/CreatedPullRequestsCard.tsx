@@ -4,7 +4,11 @@ import StatCard from '@/components/commons/StatCard'
 import {useYear} from '@/contexts/YearContext'
 import {useCountOfMyCreatedPrs} from '@/libs/hooks/useCountOfMyCreatedPrs'
 
-export default function CreatedPullRequestsCard() {
+interface Props {
+    compact?: boolean
+}
+
+export default function CreatedPullRequestsCard({compact}: Props) {
     const {t} = useTranslation()
     const {year} = useYear()
     const {data, isFetching, error} = useCountOfMyCreatedPrs(year)
@@ -16,6 +20,7 @@ export default function CreatedPullRequestsCard() {
             value={data as number | undefined}
             isFetching={isFetching}
             error={error}
+            compact={compact}
         />
     )
 }

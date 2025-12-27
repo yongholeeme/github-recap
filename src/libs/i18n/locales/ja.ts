@@ -11,6 +11,7 @@ export default {
         refresh: '更新',
         refreshAll: 'すべてのデータを更新',
         more: 'もっと見る',
+        collapse: '閉じる',
         times: '{{count}}回',
         items: '{{count}}件',
         comments: '{{count}}件のコメント',

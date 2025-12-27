@@ -1,8 +1,12 @@
+import {useState} from 'react'
+
 import {config} from '@config'
 import {useTranslation} from 'react-i18next'
 
 import Grid from '@/components/commons/Grid'
 import Section from '@/components/commons/Section'
+import {useUser} from '@/contexts/UserContext'
+import {formatRepoName} from '@/libs/utils/formatRepoName'
 
 interface RepositoryStats {
     repo: string
@@ -22,6 +26,7 @@ interface RepositoryStatsSectionProps {
         secondary: string
         accent: string
     }
+    defaultVisibleCount?: number
 }
 
 function SkeletonCard() {
@@ -65,9 +70,14 @@ export default function RepositoryStatsSection({
     countLabel,
     linkType,
     colorScheme,
+    defaultVisibleCount = 6,
 }: RepositoryStatsSectionProps) {
     const {t} = useTranslation()
+    const user = useUser()
+    const [isExpanded, setIsExpanded] = useState(false)
     const repos = data || []
+    const hasMore = repos.length > defaultVisibleCount
+    const visibleRepos = isExpanded ? repos : repos.slice(0, defaultVisibleCount)
 
     return (
         <Section title={title} subtitle={subtitle} headerMb="lg" variant="default">
@@ -104,8 +114,9 @@ export default function RepositoryStatsSection({
                     <p className="text-gray-500">{t('common.noDataDescription')}</p>
                 </div>
             ) : (
+                <>
                 <Grid cols={1} mdCols={2} lgCols={3} gap="md">
-                    {repos.map((repo, index) => {
+                    {visibleRepos.map((repo, index) => {
                         const totalCount = repos.reduce((acc, r) => acc + r.count, 0)
                         const percentage = ((repo.count / totalCount) * 100).toFixed(1)
                         const isTopThree = index < 3
@@ -146,7 +157,9 @@ export default function RepositoryStatsSection({
 
                                 {/* Repository name */}
                                 <div className="relative mb-6 pr-12">
-                                    <h3 className="text-lg font-bold text-white truncate">{repo.repo}</h3>
+                                    <h3 className="text-lg font-bold text-white truncate">
+                                        {formatRepoName(repo.repo, user?.user_name)}
+                                    </h3>
                                 </div>
 
                                 {/* Count */}
@@ -209,6 +222,31 @@ export default function RepositoryStatsSection({
                         )
                     })}
                 </Grid>
+                {hasMore && (
+                    <div className="flex justify-center mt-6">
+                        <button
+                            type="button"
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
+                            style={{
+                                background: `linear-gradient(135deg, ${colorScheme.primary}20, ${colorScheme.secondary}20)`,
+                                color: colorScheme.accent,
+                                border: `1px solid ${colorScheme.primary}30`,
+                            }}
+                        >
+                            {isExpanded ? t('common.collapse') : t('common.more')}
+                            <svg
+                                className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
+                </>
             )}
 
             <style>{`
