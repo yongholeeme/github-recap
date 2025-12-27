@@ -240,8 +240,8 @@ export default {
 
     // Share
     share: {
-        button: 'Share My Wrapped',
-        title: 'Share Your Wrapped',
+        button: 'Share My Recap',
+        title: 'Share Your Recap',
         generating: 'Generating image...',
         previewFailed: 'Preview failed',
         download: 'Download',

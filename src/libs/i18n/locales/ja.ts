@@ -241,7 +241,7 @@ export default {
     // Share
     share: {
         button: 'シェアする',
-        title: 'Wrappedをシェア',
+        title: 'Recapをシェア',
         generating: '画像を生成中...',
         previewFailed: 'プレビュー失敗',
         download: 'ダウンロード',

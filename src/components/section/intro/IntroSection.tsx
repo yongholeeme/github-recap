@@ -54,7 +54,7 @@ export default function IntroSection() {
                             {year}
                         </span>
                         <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 mt-2">
-                            GitHub Wrapped
+                            GitHub Recap
                         </span>
                     </span>
                     <span
@@ -65,13 +65,13 @@ export default function IntroSection() {
                             {year}
                         </span>
                         <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 mt-2">
-                            GitHub Wrapped
+                            GitHub Recap
                         </span>
                     </span>
 
                     {/* Main text */}
                     <span className="relative block text-gray-200">{year}</span>
-                    <span className="relative block text-gray-200 mt-2">GitHub Wrapped</span>
+                    <span className="relative block text-gray-200 mt-2">GitHub Recap</span>
                 </h1>
 
                 {/* Profile button */}

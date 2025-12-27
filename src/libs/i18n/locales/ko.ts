@@ -241,7 +241,7 @@ export default {
     // Share
     share: {
         button: '공유하기',
-        title: '내 Wrapped 공유하기',
+        title: '내 Recap 공유하기',
         generating: '이미지 생성 중...',
         previewFailed: '미리보기 실패',
         download: '다운로드',

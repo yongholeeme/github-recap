@@ -1,75 +1,71 @@
-# React + TypeScript + Vite
+# GitHub Recap
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Your year on GitHub, beautifully wrapped.
 
-Currently, two official plugins are available:
+GitHub Recap visualizes your GitHub activity in a beautiful way. It displays your commits, Pull Requests, Issues, code reviews, and more in an interactive story format.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Commit Analytics** - Analyze commit patterns by hour, day of week, and month
+- **Pull Request Insights** - Stats on created/merged/reviewed PRs, average merge time
+- **Issue & Discussion** - Track your issue and discussion participation
+- **Mentions** - See who mentioned you the most
+- **Year-over-Year Growth** - Compare your growth with last year
+- **Share Your Recap** - Share as an image
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Privacy First
 
-Note: This will impact Vite dev & build performances.
+**All data is processed entirely in your browser.**
 
-## Expanding the ESLint configuration
+- GitHub API calls are made directly from your browser
+- No data is stored on any server
+- Token information is stored only in browser session
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Self-Hosted (On-Premise)
 
-```js
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
+For self-hosted deployments, OAuth from the public instance is not available. You'll need to use Personal Access Token (PAT) authentication.
 
-            // Remove tseslint.configs.recommended and replace with this
-            tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            tseslint.configs.stylisticTypeChecked,
+### 1. Configuration
 
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
+Set the auth method to `pat` in `config.ts`:
+
+```typescript
+export const config = {
+    auth: {
+        method: 'pat', // 'oauth' | 'pat'
     },
-])
+    // ...
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Create GitHub PAT
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Go to GitHub Settings > Developer settings > [Personal access tokens](https://github.com/settings/tokens)
+2. Click "Generate new token (classic)"
+3. Select required scopes:
+    - `repo` - Access to private repositories
+    - `read:user` - Read user information
+4. Generate and copy the token
 
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs['recommended-typescript'],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-])
-```
+## Tech Stack
+
+- React 19 + TypeScript
+- TanStack Router & Query
+- Tailwind CSS 4
+- Vite (rolldown)
+
+## Supported Years
+
+Supports data from 2008 (GitHub launch) to 2025.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## License
+
+MIT
+
+---
+
+Made with ❤️

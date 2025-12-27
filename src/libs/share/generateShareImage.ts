@@ -55,7 +55,7 @@ function drawRoundedRect(
     y: number,
     width: number,
     height: number,
-    radius: number
+    radius: number,
 ) {
     ctx.beginPath()
     ctx.moveTo(x + radius, y)
@@ -90,7 +90,7 @@ function drawCard(
         borderColor?: string
         glow?: string
         glowIntensity?: number
-    }
+    },
 ) {
     const radius = 20
 
@@ -134,7 +134,7 @@ function drawStatCard(
     emoji: string,
     value: string,
     label: string,
-    colors: {gradient: [string, string]; border: string; glow: string}
+    colors: {gradient: [string, string]; border: string; glow: string},
 ) {
     drawCard(ctx, cell.x, cell.y, cell.width, cell.height, {
         gradient: colors.gradient,
@@ -254,7 +254,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     ctx.textAlign = 'center'
     ctx.fillText(data.year.toString(), titleCenterX, titleCenterY - 45)
     ctx.fillText('GitHub', titleCenterX, titleCenterY + 5)
-    ctx.fillText('Wrapped', titleCenterX, titleCenterY + 55)
+    ctx.fillText('Recap', titleCenterX, titleCenterY + 55)
 
     // [3, 0] Commits (1x1)
     drawStatCard(ctx, getCell(3, 0), '📝', formatNumber(data.commits), data.labels.commits, colors.blue)
@@ -407,7 +407,7 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
                 }
             },
             'image/png',
-            1.0
+            1.0,
         )
     })
 }
@@ -417,7 +417,7 @@ export async function downloadShareImage(data: ShareData): Promise<void> {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `github-wrapped-${data.year}-${data.userName}.png`
+    a.download = `github-recap-${data.year}-${data.userName}.png`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -431,10 +431,10 @@ export async function shareImage(data: ShareData): Promise<boolean> {
 
     try {
         const blob = await generateShareImage(data)
-        const file = new File([blob], `github-wrapped-${data.year}-${data.userName}.png`, {type: 'image/png'})
+        const file = new File([blob], `github-recap-${data.year}-${data.userName}.png`, {type: 'image/png'})
 
         await navigator.share({
-            title: `${data.year} GitHub Wrapped`,
+            title: `${data.year} GitHub Recap`,
             text: `Check out my ${data.year} GitHub activity! ${data.commits} commits, ${data.prsCreated} PRs created 🚀`,
             files: [file],
         })
