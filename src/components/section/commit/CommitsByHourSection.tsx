@@ -75,10 +75,6 @@ export default function CommitsByHourSection() {
                     rank: 0,
                 })) || []
             }
-            stats={[
-                {label: t('commit.byHour.maxCommits'), value: hourData?.maxCount || '-'},
-                {label: t('commit.byHour.avgCommits'), value: hourData?.avgPerHour || '-'},
-            ]}
             isFetching={isFetching}
         />
     )

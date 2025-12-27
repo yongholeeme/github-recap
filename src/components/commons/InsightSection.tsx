@@ -12,10 +12,6 @@ interface InsightSectionProps {
         value: string | number
         rank: number
     }[]
-    stats?: {
-        label: string
-        value: string | number
-    }[]
     isFetching?: boolean
 }
 
@@ -31,7 +27,6 @@ export default function InsightSection({
     subtitle,
     chart,
     topItems,
-    stats,
     isFetching = false,
 }: InsightSectionProps) {
     return (
@@ -59,28 +54,6 @@ export default function InsightSection({
                     </Grid>
                 )}
 
-                {stats && stats.length > 0 && (
-                    <div className="mt-10 pt-8 border-t border-white/10">
-                        <div
-                            className={`grid gap-4 ${
-                                stats.length === 4
-                                    ? 'grid-cols-2 sm:grid-cols-4'
-                                    : stats.length === 3
-                                      ? 'grid-cols-3'
-                                      : stats.length === 2
-                                        ? 'grid-cols-2'
-                                        : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'
-                            }`}
-                        >
-                            {stats.map((stat, index) => (
-                                <div key={index} className="text-center">
-                                    <div className="text-3xl sm:text-4xl font-black text-white mb-1">{stat.value}</div>
-                                    <div className="text-xs sm:text-sm text-white/50 font-medium">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </Section>
     )

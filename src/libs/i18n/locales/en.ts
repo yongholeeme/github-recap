@@ -76,8 +76,6 @@ export default {
             title: '24 Hours of Code',
             subtitle: 'When do you focus the most?',
             hour: '{{hour}}:00',
-            maxCommits: 'Max commits',
-            avgCommits: 'Avg commits',
         },
         byDay: {
             title: '7 Days Pattern',
@@ -92,16 +90,11 @@ export default {
                 6: 'Sat',
             },
             dayFormat: '{{day}}',
-            weekdayCommits: 'Weekday commits',
-            weekendCommits: 'Weekend commits',
         },
         timeline: {
             title: '12 Months Journey',
             subtitle: 'Your development story throughout the year',
             month: '{{month}}',
-            activeMonths: 'Active months',
-            avgPerMonth: 'Avg per month',
-            bestRecord: 'Best record',
         },
         repository: {
             title: "Where {{year}}'s code lives",

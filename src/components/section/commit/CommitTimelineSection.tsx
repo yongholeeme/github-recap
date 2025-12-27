@@ -44,14 +44,10 @@ export default function CommitTimelineSection() {
         }
         const monthCounts = calculateCommitsByMonth(commits)
         const topMonths = getTopMonths(monthCounts)
-        const totalCommits = Object.values(monthCounts).reduce((a, b) => a + b, 0)
-        const activeMonths = Object.values(monthCounts).filter((c) => c > 0).length
-        const avgPerMonth = Math.round(totalCommits / activeMonths)
 
-        return {monthCounts, topMonths, totalCommits, activeMonths, avgPerMonth}
+        return {monthCounts, topMonths}
     }, [commits])
 
-    const maxMonth = timelineData?.topMonths[0]
     const maxCount = timelineData ? Math.max(...Object.values(timelineData.monthCounts)) : 0
     const chartData = timelineData
         ? Object.entries(timelineData.monthCounts).map(([month, count]) => ({
@@ -77,11 +73,6 @@ export default function CommitTimelineSection() {
                     rank: 0,
                 })) || []
             }
-            stats={[
-                {label: t('commit.timeline.activeMonths'), value: timelineData ? `${timelineData.activeMonths}/12` : '-'},
-                {label: t('commit.timeline.avgPerMonth'), value: timelineData?.avgPerMonth || '-'},
-                {label: t('commit.timeline.bestRecord'), value: maxMonth ? t('common.items', {count: maxMonth[1]}) : '-'},
-            ]}
             isFetching={isFetching}
         />
     )

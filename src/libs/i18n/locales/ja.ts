@@ -76,8 +76,6 @@ export default {
             title: '24時間の軌跡',
             subtitle: '一日の中でいつ最も集中しますか？',
             hour: '{{hour}}時',
-            maxCommits: '最多コミット',
-            avgCommits: '平均コミット',
         },
         byDay: {
             title: '7日間のパターン',
@@ -92,16 +90,11 @@ export default {
                 6: '土',
             },
             dayFormat: '{{day}}曜日',
-            weekdayCommits: '平日コミット',
-            weekendCommits: '週末コミット',
         },
         timeline: {
             title: '12ヶ月の旅',
             subtitle: '一年間のあなたの開発ストーリー',
             month: '{{month}}月',
-            activeMonths: '活動した月',
-            avgPerMonth: '月平均コミット',
-            bestRecord: '最高記録',
         },
         repository: {
             title: '{{year}}年のコードが集まる場所',

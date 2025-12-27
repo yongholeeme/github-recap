@@ -76,8 +76,6 @@ export default {
             title: '24시간의 흔적',
             subtitle: '하루 중 언제 가장 몰입하시나요?',
             hour: '{{hour}}시',
-            maxCommits: '최다 커밋',
-            avgCommits: '평균 커밋',
         },
         byDay: {
             title: '7일의 패턴',
@@ -92,16 +90,11 @@ export default {
                 6: '토',
             },
             dayFormat: '{{day}}요일',
-            weekdayCommits: '평일 커밋',
-            weekendCommits: '주말 커밋',
         },
         timeline: {
             title: '12개월의 여정',
             subtitle: '한 해 동안 당신의 개발 스토리',
             month: '{{month}}월',
-            activeMonths: '활동 개월',
-            avgPerMonth: '월평균 커밋',
-            bestRecord: '최고 기록',
         },
         repository: {
             title: '{{year}}년의 코드들이 모인 곳',

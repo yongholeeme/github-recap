@@ -53,13 +53,9 @@ export default function CommitsByDaySection() {
         }
         const dayCounts = calculateCommitsByDay(commits)
         const topDays = getTopDays(dayCounts)
-        const totalCommits = Object.values(dayCounts).reduce((a, b) => a + b, 0)
 
-        return {dayCounts, topDays, totalCommits}
+        return {dayCounts, topDays}
     }, [commits])
-
-    const weekdayCommits = dayData ? [1, 2, 3, 4, 5].reduce((sum, day) => sum + dayData.dayCounts[day], 0) : 0
-    const weekendCommits = dayData ? dayData.dayCounts[0] + dayData.dayCounts[6] : 0
 
     const maxCount = dayData ? Math.max(...Object.values(dayData.dayCounts)) : 0
     const chartData = dayData
@@ -86,10 +82,6 @@ export default function CommitsByDaySection() {
                     rank: 0,
                 })) || []
             }
-            stats={[
-                {label: t('commit.byDay.weekdayCommits'), value: weekdayCommits || '-'},
-                {label: t('commit.byDay.weekendCommits'), value: weekendCommits || '-'},
-            ]}
             isFetching={isFetching}
         />
     )
