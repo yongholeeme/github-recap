@@ -9,9 +9,9 @@ export default function CommitSections() {
     return (
         <SectionGroup gradient="blue">
             <CommitActivitySection />
-            <CommitsByHourSection />
-            <CommitsByDaySection />
             <CommitTimelineSection />
+            <CommitsByDaySection />
+            <CommitsByHourSection />
             <RepositoryCommitsSection />
         </SectionGroup>
     )
