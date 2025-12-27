@@ -243,4 +243,30 @@ export default {
         days: '{{count}}日',
         daysAndHours: '{{days}}日{{hours}}時間',
     },
+
+    // Share
+    share: {
+        button: 'シェアする',
+        title: 'Wrappedをシェア',
+        generating: '画像を生成中...',
+        previewFailed: 'プレビュー失敗',
+        download: 'ダウンロード',
+        share: 'シェア',
+        image: {
+            commits: 'コミット',
+            prsCreated: '作成したPR',
+            prsMerged: 'マージされたPR',
+            reviews: 'レビュー',
+            issues: 'イシュー',
+            mentions: 'メンション',
+        },
+        developerTypes: {
+            nightOwl: '夜型開発者',
+            earlyBird: '朝型開発者',
+            weekendWarrior: '週末戦士',
+            codeGuardian: 'コードガーディアン',
+            commitMachine: 'コミットマシン',
+            developer: '開発者',
+        },
+    },
 }

@@ -1,5 +1,6 @@
 import {useTranslation} from 'react-i18next'
 
+import ShareButton from '@/components/commons/ShareButton'
 import {useYear} from '@/contexts/YearContext'
 
 export default function EndingSection() {
@@ -31,6 +32,11 @@ export default function EndingSection() {
                     <p className="text-lg sm:text-xl md:text-2xl text-white/70 font-medium">
                         {t('outro.message3')}
                     </p>
+                </div>
+
+                {/* Share Button */}
+                <div className="pt-4">
+                    <ShareButton />
                 </div>
 
                 {/* Credit */}

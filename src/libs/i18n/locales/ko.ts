@@ -243,4 +243,30 @@ export default {
         days: '{{count}}일',
         daysAndHours: '{{days}}일 {{hours}}시간',
     },
+
+    // Share
+    share: {
+        button: '공유하기',
+        title: '내 Wrapped 공유하기',
+        generating: '이미지 생성 중...',
+        previewFailed: '미리보기 실패',
+        download: '다운로드',
+        share: '공유',
+        image: {
+            commits: '커밋',
+            prsCreated: '생성한 PR',
+            prsMerged: '머지된 PR',
+            reviews: '리뷰',
+            issues: '이슈',
+            mentions: '멘션',
+        },
+        developerTypes: {
+            nightOwl: '올빼미 개발자',
+            earlyBird: '아침형 개발자',
+            weekendWarrior: '주말 전사',
+            codeGuardian: '코드 수호자',
+            commitMachine: '커밋 머신',
+            developer: '개발자',
+        },
+    },
 }

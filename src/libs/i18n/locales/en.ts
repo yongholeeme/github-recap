@@ -243,4 +243,30 @@ export default {
         days: '{{count}}d',
         daysAndHours: '{{days}}d {{hours}}h',
     },
+
+    // Share
+    share: {
+        button: 'Share My Wrapped',
+        title: 'Share Your Wrapped',
+        generating: 'Generating image...',
+        previewFailed: 'Preview failed',
+        download: 'Download',
+        share: 'Share',
+        image: {
+            commits: 'Commits',
+            prsCreated: 'PRs Created',
+            prsMerged: 'PRs Merged',
+            reviews: 'Reviews',
+            issues: 'Issues',
+            mentions: 'Mentions',
+        },
+        developerTypes: {
+            nightOwl: 'Night Owl',
+            earlyBird: 'Early Bird',
+            weekendWarrior: 'Weekend Warrior',
+            codeGuardian: 'Code Guardian',
+            commitMachine: 'Commit Machine',
+            developer: 'Developer',
+        },
+    },
 }
