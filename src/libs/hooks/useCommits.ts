@@ -11,11 +11,6 @@ export function useCommits(year: number) {
         queries: Array.from({length: 12}, (_, i) => i + 1).map((month) => ({
             queryKey: queryKeys.useCommits(year, month),
             queryFn: () => fetchCommitsByMonth(year, month),
-            staleTime: 1000 * 60 * 60 * 24, // 24 hours
-            gcTime: 1000 * 60 * 60 * 24, // 24 hours
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
             enabled: !!user,
         })),
     })

@@ -11,7 +11,6 @@ export function usePeopleToMentionMe(year: number, limit = 10) {
     const {data: currentUsername} = useQuery({
         queryKey: ['currentUser'],
         queryFn: getUsername,
-        staleTime: Infinity, // Never refetch current user
         enabled: !!user,
     })
 
@@ -19,11 +18,6 @@ export function usePeopleToMentionMe(year: number, limit = 10) {
         queries: Array.from({length: 12}, (_, i) => i + 1).map((month) => ({
             queryKey: queryKeys.usePeopleToMentionMe(year, month),
             queryFn: () => fetchMentionsByMonth(year, month),
-            staleTime: 1000 * 60 * 60 * 24, // 24 hours
-            gcTime: 1000 * 60 * 60 * 24, // 24 hours
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: false,
             enabled: !!user,
         })),
     })

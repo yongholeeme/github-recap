@@ -13,7 +13,6 @@ export function useRepositoryCommits(year: number) {
         queries: Array.from({length: 12}, (_, i) => ({
             queryKey: [...queryKeys.useRepositoryCommits(year), i + 1],
             queryFn: () => fetchCommitsByMonth(year, i + 1),
-            staleTime: 1000 * 60 * 5,
         })),
     })
 
