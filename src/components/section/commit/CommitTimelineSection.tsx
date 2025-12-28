@@ -23,8 +23,8 @@ function calculateCommitsByMonth(commits: SimplifiedCommit[]) {
     return monthCounts
 }
 
-function getMonthName(month: number, t: (key: string, options?: {month?: number}) => string): string {
-    return t('commit.timeline.month', {month: month + 1})
+function getMonthName(month: number, t: (key: string) => string): string {
+    return t(`commit.timeline.months.${month}`)
 }
 
 function getTopMonths(monthCounts: Record<number, number>) {
