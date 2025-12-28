@@ -61,7 +61,7 @@ export async function fetcher<T = unknown>({
 
     const response = await fetch(url.toString(), {
         headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('github_pat_token')}`,
+            Authorization: `Bearer ${localStorage.getItem('github_pat_token')}`,
             Accept: 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
         },

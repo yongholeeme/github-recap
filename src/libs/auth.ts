@@ -19,8 +19,8 @@ export async function loginWithPAT(patToken: string): Promise<User> {
         const octokit = new Octokit({auth: patToken, baseUrl: config.github.apiUrl})
         const {data} = await octokit.rest.users.getAuthenticated()
 
-        // Save PAT to sessionStorage
-        sessionStorage.setItem(PAT_STORAGE_KEY, patToken)
+        // Save PAT to localStorage
+        localStorage.setItem(PAT_STORAGE_KEY, patToken)
 
         return {
             avatar_url: data.avatar_url,
@@ -35,7 +35,7 @@ export async function loginWithPAT(patToken: string): Promise<User> {
  * Check if user is already logged in and fetch user info
  */
 export async function checkAuth(): Promise<User | null> {
-    const pat = sessionStorage.getItem(PAT_STORAGE_KEY)
+    const pat = localStorage.getItem(PAT_STORAGE_KEY)
 
     if (!pat) {
         return null
@@ -51,7 +51,7 @@ export async function checkAuth(): Promise<User | null> {
         }
     } catch {
         // Invalid PAT, remove it
-        sessionStorage.removeItem(PAT_STORAGE_KEY)
+        localStorage.removeItem(PAT_STORAGE_KEY)
         return null
     }
 }
@@ -67,7 +67,7 @@ export function logout(queryClient: QueryClient): void {
     localStorage.removeItem(REACT_QUERY_CACHE_STORAGE_KEY)
 
     // Clear session token
-    sessionStorage.removeItem(PAT_STORAGE_KEY)
+    localStorage.removeItem(PAT_STORAGE_KEY)
 }
 
 /**
@@ -119,7 +119,7 @@ export async function checkOAuthSession(): Promise<User | null> {
             window.history.replaceState(null, '', window.location.pathname)
 
             // provider_token 저장
-            sessionStorage.setItem(PAT_STORAGE_KEY, providerToken)
+            localStorage.setItem(PAT_STORAGE_KEY, providerToken)
 
             const {
                 data: {user},
@@ -145,11 +145,11 @@ export async function checkOAuthSession(): Promise<User | null> {
 
     // Check provider_token from session
     if (session.provider_token) {
-        sessionStorage.setItem(PAT_STORAGE_KEY, session.provider_token)
+        localStorage.setItem(PAT_STORAGE_KEY, session.provider_token)
     }
 
-    // Require login if no token stored in sessionStorage
-    const storedToken = sessionStorage.getItem(PAT_STORAGE_KEY)
+    // Require login if no token stored in localStorage
+    const storedToken = localStorage.getItem(PAT_STORAGE_KEY)
     if (!storedToken) {
         return null
     }

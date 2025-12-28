@@ -4,7 +4,7 @@ import {Octokit} from 'octokit'
 import {PAT_STORAGE_KEY} from '@/constants/storage'
 
 export async function getOctokit(): Promise<Octokit> {
-    const pat = sessionStorage.getItem(PAT_STORAGE_KEY)
+    const pat = localStorage.getItem(PAT_STORAGE_KEY)
 
     if (!pat) {
         throw new Error('GitHub Personal Access Token이 없습니다. 다시 로그인해주세요.')

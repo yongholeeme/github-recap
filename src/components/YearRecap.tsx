@@ -80,7 +80,7 @@ export default function YearRecap({year}: YearRecapProps) {
                     // OAuth: Supabase 세션 확인
                     _user = await checkOAuthSession()
                 } else {
-                    // PAT: sessionStorage에서 토큰 확인
+                    // PAT: localStorage에서 토큰 확인
                     _user = await checkAuth()
                 }
 
