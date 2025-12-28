@@ -1,46 +1,41 @@
+// Query key prefixes for selective invalidation
+export const QUERY_PREFIX = {
+    YEAR: 'year', // Year-based queries (past years are immutable)
+    YEAR_MONTH: 'year-month', // Year-month based queries (past months are immutable)
+} as const
+
 export const queryKeys = {
-    useCountOfCommits: (year: number) => ['useCountOfCommits', year] as const,
-    useCommits: (year: number, month: number) => ['useCommits2233333123123222222', year, month] as const,
+    // Year-month based queries: ['year-month', year, month, 'queryName']
+    useCommits: (year: number, month: number) =>
+        [QUERY_PREFIX.YEAR_MONTH, year, month, 'useCommits'] as const,
+    useMyMergedPrs: (year: number, month: number) =>
+        [QUERY_PREFIX.YEAR_MONTH, year, month, 'useMyMergedPrs'] as const,
+    usePeopleToMentionMe: (year: number, month: number) =>
+        [QUERY_PREFIX.YEAR_MONTH, year, month, 'usePeopleToMentionMe'] as const,
 
-    useCountOfMyMergedPrs: (year: number) => ['useCountOfMyMergedPrs', year] as const,
-
-    useMyMergedPrs: (year: number, month: number) => ['useMyMergedPrs', year, month] as const,
-
-    useCountOfPrsApprovedByMe: (year: number) => ['useCountOfPrsApprovedByMe', year] as const,
-
-    useCountOfPrsRequestedChangeByMe: (year: number) => ['useCountOfPrsRequestedChangeByMe', year] as const,
-
-    useCountOfCommentsByMeToPr: (year: number) => ['useCountOfCommentsByMeToPr', year] as const,
-
-    useCountOfMyClosedPrsNotMerged: (year: number) => ['useCountOfMyClosedPrsNotMerged', year] as const,
-
-    useMostDiscussedPR: (year: number) => ['useMostDiscussedPR', year] as const,
-
-    useCountOfParticipatedPrs: (year: number) => ['useCountOfParticipatedPrs', year] as const,
-
-    useCountOfMyCreatedPrs: (year: number) => ['useCountOfMyCreatedPrs', year] as const,
-
-    useCountOfPrsReviewedByMe: (year: number) => ['useCountOfPrsReviewedByMe', year] as const,
-
-    useCountOfIssueComments: (year: number) => ['useCountOfIssueComments', year] as const,
-
-    useCountOfParticipatedIssues: (year: number) => ['useCountOfParticipatedIssues', year] as const,
-
-    useMostDiscussedIssue: (year: number) => ['useMostDiscussedIssue', year] as const,
-
-    useCountOfMentionsMe: (year: number) => ['useCountOfMentionsMe', year] as const,
-
-    usePeopleToMentionMe: (year: number, month: number) => ['usePeopleToMentionMe', year, month] as const,
-
-    useCountOfDiscussionComments: (year: number) => ['useCountOfDiscussionComments', year] as const,
-
-    useCountOfParticipatedDiscussions: (year: number) => ['useCountOfParticipatedDiscussions', year] as const,
-
-    useMostDiscussedDiscussion: (year: number) => ['useMostDiscussedDiscussion', year] as const,
-
-    useRepositoryCommits: (year: number) => ['useRepositoryCommits', year] as const,
-
-    useRepositoryPullRequests: (year: number) => ['useRepositoryPullRequests', year] as const,
-
-    useRepositoryIssuesDiscussions: (year: number) => ['useRepositoryIssuesDiscussions', year] as const,
+    // Year based queries: ['year', year, 'queryName']
+    useCountOfCommits: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfCommits'] as const,
+    useCountOfMyMergedPrs: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfMyMergedPrs'] as const,
+    useCountOfPrsApprovedByMe: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfPrsApprovedByMe'] as const,
+    useCountOfPrsRequestedChangeByMe: (year: number) =>
+        [QUERY_PREFIX.YEAR, year, 'useCountOfPrsRequestedChangeByMe'] as const,
+    useCountOfCommentsByMeToPr: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfCommentsByMeToPr'] as const,
+    useCountOfMyClosedPrsNotMerged: (year: number) =>
+        [QUERY_PREFIX.YEAR, year, 'useCountOfMyClosedPrsNotMerged'] as const,
+    useMostDiscussedPR: (year: number) => [QUERY_PREFIX.YEAR, year, 'useMostDiscussedPR'] as const,
+    useCountOfParticipatedPrs: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfParticipatedPrs'] as const,
+    useCountOfMyCreatedPrs: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfMyCreatedPrs'] as const,
+    useCountOfPrsReviewedByMe: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfPrsReviewedByMe'] as const,
+    useCountOfIssueComments: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfIssueComments'] as const,
+    useCountOfParticipatedIssues: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfParticipatedIssues'] as const,
+    useMostDiscussedIssue: (year: number) => [QUERY_PREFIX.YEAR, year, 'useMostDiscussedIssue'] as const,
+    useCountOfMentionsMe: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfMentionsMe'] as const,
+    useCountOfDiscussionComments: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfDiscussionComments'] as const,
+    useCountOfParticipatedDiscussions: (year: number) =>
+        [QUERY_PREFIX.YEAR, year, 'useCountOfParticipatedDiscussions'] as const,
+    useMostDiscussedDiscussion: (year: number) => [QUERY_PREFIX.YEAR, year, 'useMostDiscussedDiscussion'] as const,
+    useRepositoryCommits: (year: number) => [QUERY_PREFIX.YEAR, year, 'useRepositoryCommits'] as const,
+    useRepositoryPullRequests: (year: number) => [QUERY_PREFIX.YEAR, year, 'useRepositoryPullRequests'] as const,
+    useRepositoryIssuesDiscussions: (year: number) =>
+        [QUERY_PREFIX.YEAR, year, 'useRepositoryIssuesDiscussions'] as const,
 } as const
