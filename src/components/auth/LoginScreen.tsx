@@ -98,7 +98,7 @@ export default function LoginScreen({onPATLogin}: LoginScreenProps) {
                         href="https://github.com/yongholeeme/github-recap"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-white/40 max-w-xs text-center"
+                        className="text-sm text-white/40 text-center hover:text-white/60 transition-colors"
                     >
                         {t('auth.privacyNotice')}
                         <br />

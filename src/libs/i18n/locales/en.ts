@@ -23,8 +23,8 @@ export default {
         logout: 'Logout',
         loginWithGitHub: 'Continue with GitHub',
         loginWithToken: 'Continue with Token',
-        privacyNotice: 'All data is processed only in your browser',
-        privacyNotice2: 'and is not stored on any server',
+        privacyNotice: 'All data except login is securely processed only in your browser.',
+        privacyNotice2: 'View source code →',
         patLogin: {
             title: 'Login',
             description: 'With Personal Access Token,',

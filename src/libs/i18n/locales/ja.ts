@@ -23,8 +23,8 @@ export default {
         logout: 'ログアウト',
         loginWithGitHub: 'GitHubで続ける',
         loginWithToken: 'トークンで続ける',
-        privacyNotice: 'すべてのデータはブラウザ内でのみ処理され',
-        privacyNotice2: 'サーバーには保存されません',
+        privacyNotice: 'ログインを除くすべてのデータは安全にブラウザ内でのみ処理されます。',
+        privacyNotice2: 'ソースコードを見る →',
         patLogin: {
             title: 'ログイン',
             description: 'Personal Access Tokenで',

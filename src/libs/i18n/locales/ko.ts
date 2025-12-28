@@ -23,8 +23,8 @@ export default {
         logout: '로그아웃',
         loginWithGitHub: 'GitHub로 시작하기',
         loginWithToken: '토큰으로 시작하기',
-        privacyNotice: '모든 데이터는 브라우저에서만 처리되며',
-        privacyNotice2: '서버에 저장되지 않습니다',
+        privacyNotice: '로그인을 제외한 모든 데이터는 안전하게 브라우저에서만 처리됩니다.',
+        privacyNotice2: '공개된 소스코드 보기 →',
         patLogin: {
             title: '로그인',
             description: 'Personal Access Token으로',
