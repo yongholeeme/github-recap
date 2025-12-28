@@ -21,8 +21,8 @@ const router = createRouter({routeTree})
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 1000 * 60 * 60 * 24, // 24 hours
-            gcTime: 1000 * 60 * 60 * 24, // 24 hours (formerly cacheTime)
+            staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
+            gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days (formerly cacheTime)
             refetchOnWindowFocus: false,
             refetchOnReconnect: false,
             refetchOnMount: false,
