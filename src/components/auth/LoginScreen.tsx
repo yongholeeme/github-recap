@@ -94,11 +94,16 @@ export default function LoginScreen({onPATLogin}: LoginScreenProps) {
                             {t('auth.loginWithToken')}
                         </button>
                     )}
-                    <p className="text-sm text-white/40 max-w-xs text-center">
+                    <a
+                        href="https://github.com/yongholeeme/github-recap"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-white/40 max-w-xs text-center"
+                    >
                         {t('auth.privacyNotice')}
                         <br />
                         {t('auth.privacyNotice2')}
-                    </p>
+                    </a>
                 </div>
             </div>
         </div>

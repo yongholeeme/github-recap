@@ -29,9 +29,7 @@ export default function EndingSection() {
                         <br />
                         {t('outro.message2')}
                     </p>
-                    <p className="text-lg sm:text-xl md:text-2xl text-white/70 font-medium">
-                        {t('outro.message3')}
-                    </p>
+                    <p className="text-lg sm:text-xl md:text-2xl text-white/70 font-medium">{t('outro.message3')}</p>
                 </div>
 
                 {/* Share Button */}
@@ -40,19 +38,15 @@ export default function EndingSection() {
                 </div>
 
                 {/* Credit */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+                <a
+                    href="https://github.com/yongholeeme/github-recap"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
+                >
                     <span className="text-xs text-white/50">Made with</span>
                     <span className="text-xs text-red-400">❤️</span>
-                    <span className="text-xs text-white/50">by</span>
-                    <a
-                        href="https://github.com/yongholeeme"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-white/70 font-medium hover:text-white transition-colors"
-                    >
-                        @yongholeeme
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
     )
