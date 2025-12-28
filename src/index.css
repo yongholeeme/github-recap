@@ -2,7 +2,14 @@
 
 html,
 body {
-    background: linear-gradient(to bottom right, #020617, #1e1b4b, #020617); /* slate-950 via purple-950 */
+    background: #020617; /* slate-950 fallback */
+    background-color: #020617;
+    min-height: 100%;
+}
+
+html {
+    overflow: hidden;
+    height: 100%;
 }
 
 body {
