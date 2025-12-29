@@ -4,6 +4,7 @@ import {createAsyncStoragePersister} from '@tanstack/query-async-storage-persist
 import {QueryClient} from '@tanstack/react-query'
 import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import {RouterProvider, createRouter} from '@tanstack/react-router'
+import {Analytics} from '@vercel/analytics/react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 
@@ -15,7 +16,9 @@ import {REACT_QUERY_CACHE_STORAGE_KEY} from '@/constants/storage'
 import {routeTree} from '@/routeTree.gen'
 
 // Create a new router instance
-const router = createRouter({routeTree})
+const router = createRouter({
+    routeTree,
+})
 
 // Create a query client
 const queryClient = new QueryClient({
@@ -61,6 +64,7 @@ if (!rootElement.innerHTML) {
                 }}
             >
                 <RouterProvider router={router} />
+                <Analytics />
             </PersistQueryClientProvider>
         </StrictMode>,
     )
