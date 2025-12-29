@@ -103,10 +103,15 @@ export default function YearRecap({year}: YearRecapProps) {
     }, [queryClient])
 
     const handleLogin = (newUser: User) => {
-        // Clear previous user's cache
-        clearCacheBeforeLogin(queryClient)
         setUser(newUser)
     }
+
+    useEffect(() => {
+        if (isLoginModalOpen) {
+            // Clear previous user's cache
+            clearCacheBeforeLogin(queryClient)
+        }
+    }, [isLoginModalOpen, queryClient])
 
     // Loading
     if (isLoading) {
