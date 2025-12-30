@@ -74,9 +74,13 @@ export async function fetcher<T = unknown>({
     const data = await response.json()
 
     // Auto-pagination: if per_page is 100 and fetchAll is true, fetch all pages
+    // GitHub Search API limit: max 1000 results (10 pages × 100)
+    const MAX_SEARCH_PAGES = 10
+
     if (fetchAll && per_page === 100) {
         if (Array.isArray(data)) {
             // For direct array responses (e.g., /repos/{owner}/{repo}/pulls/{number}/reviews)
+            // Non-search endpoints don't have the 1000 result limit
             if (data.length === 100) {
                 const nextPage = await fetcher<T>({
                     pathname,
@@ -91,7 +95,8 @@ export async function fetcher<T = unknown>({
             }
         } else if (data.items && Array.isArray(data.items)) {
             // For search API responses with items array
-            if (data.items.length === 100) {
+            // Stop at page 10 to avoid 422 error (GitHub Search API limit)
+            if (data.items.length === 100 && page < MAX_SEARCH_PAGES) {
                 const nextPage = await fetcher<{items: unknown[]}>({
                     pathname,
                     q,
