@@ -1,12 +1,17 @@
-import {StrictMode} from 'react'
+import {StrictMode, Suspense, lazy} from 'react'
 
 import {createAsyncStoragePersister} from '@tanstack/query-async-storage-persister'
 import {QueryClient} from '@tanstack/react-query'
 import {PersistQueryClientProvider} from '@tanstack/react-query-persist-client'
 import {RouterProvider, createRouter} from '@tanstack/react-router'
-import {Analytics} from '@vercel/analytics/react'
 import ReactDOM from 'react-dom/client'
+
+import {config} from '../config'
 import './index.css'
+
+const Analytics = config.github.isSelfHosted
+    ? null
+    : lazy(() => import('@vercel/analytics/react').then((mod) => ({default: mod.Analytics})))
 
 // i18n 초기화
 import '@/libs/i18n'
@@ -64,7 +69,11 @@ if (!rootElement.innerHTML) {
                 }}
             >
                 <RouterProvider router={router} />
-                <Analytics />
+                {Analytics && (
+                    <Suspense fallback={null}>
+                        <Analytics />
+                    </Suspense>
+                )}
             </PersistQueryClientProvider>
         </StrictMode>,
     )
