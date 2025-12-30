@@ -1,23 +1,25 @@
-import {useQueries} from '@tanstack/react-query'
+import {useQuery} from '@tanstack/react-query'
 
 import {useUser} from '@/contexts/UserContext'
-import {fetchMyMergedPRs} from '@/libs/github/pullRequests'
-import {queryKeys} from '@/libs/queryKeys'
+import {fetchMyMergedPRsByYear, type MergedPr} from '@/libs/github/pullRequests'
+import {QUERY_PREFIX} from '@/libs/queryKeys'
 
+/**
+ * Fetches all merged PRs for a year using a single request.
+ * Falls back to monthly requests only if total exceeds 1000 (GitHub limit).
+ */
 function useMyMergedPrs(year: number) {
     const user = useUser()
 
-    const queries = useQueries({
-        queries: Array.from({length: 12}, (_, i) => i + 1).map((month) => ({
-            queryKey: queryKeys.useMyMergedPrs(year, month),
-            queryFn: () => fetchMyMergedPRs(year, month),
-            enabled: !!user,
-        })),
+    const query = useQuery({
+        queryKey: [QUERY_PREFIX.YEAR, year, 'useMyMergedPrs'] as const,
+        queryFn: () => fetchMyMergedPRsByYear(year),
+        enabled: !!user,
     })
 
     return {
-        data: queries.flatMap((query) => query.data ?? []),
-        isFetching: queries.some((query) => query.isFetching),
+        data: query.data ?? [],
+        isFetching: query.isFetching,
     }
 }
 
@@ -63,7 +65,7 @@ export function useMyFastestMergedPr(year: number) {
             return null
         }
 
-        let fastest: ((typeof mergedPrs)[0] & {mergeTimeMs?: number}) | null = null
+        let fastest: (MergedPr & {mergeTimeMs?: number}) | null = null
 
         for (const pr of mergedPrs) {
             const createdTime = new Date(pr.createdAt).getTime()
@@ -106,7 +108,7 @@ export function useMySlowestMergedPr(year: number) {
             return null
         }
 
-        let slowest: ((typeof mergedPrs)[0] & {mergeTimeMs?: number}) | null = null
+        let slowest: (MergedPr & {mergeTimeMs?: number}) | null = null
 
         for (const pr of mergedPrs) {
             const createdTime = new Date(pr.createdAt).getTime()

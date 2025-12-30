@@ -1,20 +1,11 @@
-// Query key prefixes for selective invalidation
+// Query key prefix for selective invalidation
 export const QUERY_PREFIX = {
     YEAR: 'year', // Year-based queries (past years are immutable)
-    YEAR_MONTH: 'year-month', // Year-month based queries (past months are immutable)
 } as const
 
 export const queryKeys = {
     // Batched counts query (all year-based counts in single request)
     useAllCounts: (year: number) => [QUERY_PREFIX.YEAR, year, 'useAllCounts'] as const,
-
-    // Year-month based queries: ['year-month', year, month, 'queryName']
-    useCommits: (year: number, month: number) =>
-        [QUERY_PREFIX.YEAR_MONTH, year, month, 'useCommits'] as const,
-    useMyMergedPrs: (year: number, month: number) =>
-        [QUERY_PREFIX.YEAR_MONTH, year, month, 'useMyMergedPrs'] as const,
-    usePeopleToMentionMe: (year: number, month: number) =>
-        [QUERY_PREFIX.YEAR_MONTH, year, month, 'usePeopleToMentionMe'] as const,
 
     // Year based queries: ['year', year, 'queryName']
     useCountOfCommits: (year: number) => [QUERY_PREFIX.YEAR, year, 'useCountOfCommits'] as const,

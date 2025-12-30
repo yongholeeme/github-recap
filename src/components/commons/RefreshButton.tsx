@@ -12,22 +12,15 @@ export default function RefreshButton() {
     const [fetchingCount, setFetchingCount] = useState(0)
 
     const handleRefresh = async () => {
-        const now = new Date()
-        const currentYear = now.getFullYear()
-        const currentMonth = now.getMonth()
+        const currentYear = new Date().getFullYear()
 
         // 1. 에러난 쿼리들 재시도
         await queryClient.refetchQueries({
             predicate: (query) => query.state.status === 'error',
         })
 
-        // 2. 현재 시점 데이터만 갱신 (과거 데이터는 변하지 않음)
-        await Promise.all([
-            // 현재 연도의 year-based 쿼리들
-            queryClient.invalidateQueries({queryKey: [QUERY_PREFIX.YEAR, currentYear]}),
-            // 현재 연도/월의 year-month-based 쿼리들
-            queryClient.invalidateQueries({queryKey: [QUERY_PREFIX.YEAR_MONTH, currentYear, currentMonth]}),
-        ])
+        // 2. 현재 연도 데이터만 갱신 (과거 연도 데이터는 변하지 않음)
+        await queryClient.invalidateQueries({queryKey: [QUERY_PREFIX.YEAR, currentYear]})
     }
 
     useEffect(() => {

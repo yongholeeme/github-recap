@@ -77,7 +77,7 @@ export async function fetchMostDiscussedPR(year: number): Promise<PRDetail | nul
     }
 }
 
-interface Pr {
+export interface MergedPr {
     title: string
     url: string
     createdAt: string
@@ -85,33 +85,73 @@ interface Pr {
     closedAt: string | null
 }
 
-export async function fetchMyMergedPRs(year: number, month: number): Promise<Pr[]> {
-    const username = await getUsername()
-    const {startDate, endDate} = getMonthDateRange(year, month)
+interface PRSearchResponse {
+    items: {
+        title: string
+        html_url: string
+        created_at: string
+        pull_request?: {merged_at?: string | null}
+        closed_at: string | null
+    }[]
+    total_count: number
+}
 
-    const data = await fetcher<{
-        items: {
-            title: string
-            html_url: string
-            created_at: string
-            pull_request?: {merged_at?: string | null}
-            closed_at: string | null
-        }[]
-        total_count: number
-    }>({
-        pathname: '/search/issues',
-        q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
-        per_page: 100,
-        fetchAll: true,
-    })
-
-    const prs = data.items.map((item) => ({
+function mapMergedPRs(data: PRSearchResponse): MergedPr[] {
+    return data.items.map((item) => ({
         title: item.title,
         url: item.html_url,
         createdAt: item.created_at,
         mergedAt: item.pull_request?.merged_at,
         closedAt: item.closed_at,
     }))
+}
 
-    return prs
+/**
+ * Fetches all merged PRs for a year in a single request.
+ * If total_count > 1000 (GitHub limit), falls back to monthly requests.
+ */
+export async function fetchMyMergedPRsByYear(year: number): Promise<MergedPr[]> {
+    const username = await getUsername()
+    const {startDate, endDate} = getDateRange(year)
+
+    // First, check total count
+    const countData = await fetcher<PRSearchResponse>({
+        pathname: '/search/issues',
+        q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
+        per_page: 1,
+    })
+
+    // If over 1000, fall back to monthly requests
+    if (countData.total_count > 1000) {
+        return fetchMyMergedPRsMonthly(username, year)
+    }
+
+    // Fetch all PRs in single paginated request
+    const data = await fetcher<PRSearchResponse>({
+        pathname: '/search/issues',
+        q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
+        per_page: 100,
+        fetchAll: true,
+    })
+
+    return mapMergedPRs(data)
+}
+
+async function fetchMyMergedPRsMonthly(username: string, year: number): Promise<MergedPr[]> {
+    const allPRs: MergedPr[] = []
+
+    for (let month = 1; month <= 12; month++) {
+        const {startDate, endDate} = getMonthDateRange(year, month)
+
+        const data = await fetcher<PRSearchResponse>({
+            pathname: '/search/issues',
+            q: `author:${username} type:pr is:merged merged:${startDate}..${endDate}`,
+            per_page: 100,
+            fetchAll: true,
+        })
+
+        allPRs.push(...mapMergedPRs(data))
+    }
+
+    return allPRs
 }

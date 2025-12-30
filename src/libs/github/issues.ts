@@ -65,23 +65,63 @@ export interface MentionDetail {
     count: number
 }
 
-export async function fetchMentionsByMonth(year: number, month: number): Promise<(string | null)[]> {
-    const username = await getUsername()
-    const {startDate, endDate} = getMonthDateRange(year, month)
+interface MentionSearchResponse {
+    items: {user?: {login: string} | null}[]
+    total_count: number
+}
 
-    const data = await fetcher<{
-        items: {user?: {login: string} | null}[]
-        total_count: number
-    }>({
+function mapMentions(data: MentionSearchResponse): (string | null)[] {
+    return data.items.map((item) => item.user?.login ?? null)
+}
+
+/**
+ * Fetches all mentions for a year in a single request.
+ * If total_count > 1000 (GitHub limit), falls back to monthly requests.
+ */
+export async function fetchMentionsByYear(year: number): Promise<(string | null)[]> {
+    const username = await getUsername()
+    const {startDate, endDate} = getDateRange(year)
+
+    // First, check total count
+    const countData = await fetcher<MentionSearchResponse>({
+        pathname: '/search/issues',
+        q: `mentions:${username} created:${startDate}..${endDate}`,
+        per_page: 1,
+    })
+
+    // If over 1000, fall back to monthly requests
+    if (countData.total_count > 1000) {
+        return fetchMentionsMonthly(username, year)
+    }
+
+    // Fetch all mentions in single paginated request
+    const data = await fetcher<MentionSearchResponse>({
         pathname: '/search/issues',
         q: `mentions:${username} created:${startDate}..${endDate}`,
         per_page: 100,
         fetchAll: true,
     })
 
-    const items = data.items.map((item) => item.user?.login ?? null)
+    return mapMentions(data)
+}
 
-    return items
+async function fetchMentionsMonthly(username: string, year: number): Promise<(string | null)[]> {
+    const allMentions: (string | null)[] = []
+
+    for (let month = 1; month <= 12; month++) {
+        const {startDate, endDate} = getMonthDateRange(year, month)
+
+        const data = await fetcher<MentionSearchResponse>({
+            pathname: '/search/issues',
+            q: `mentions:${username} created:${startDate}..${endDate}`,
+            per_page: 100,
+            fetchAll: true,
+        })
+
+        allMentions.push(...mapMentions(data))
+    }
+
+    return allMentions
 }
 
 interface IssueDetail {

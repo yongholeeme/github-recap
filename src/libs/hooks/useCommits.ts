@@ -1,22 +1,26 @@
-import {useQueries} from '@tanstack/react-query'
+import {useQuery} from '@tanstack/react-query'
 
 import {useUser} from '@/contexts/UserContext'
-import {fetchCommitsByMonth} from '@/libs/github/commits'
-import {queryKeys} from '@/libs/queryKeys'
+import {fetchCommitsByYear} from '@/libs/github/commits'
+import {QUERY_PREFIX} from '@/libs/queryKeys'
 
+/**
+ * Fetches all commits for a year using a single request.
+ * Falls back to monthly requests only if total exceeds 1000 (GitHub limit).
+ *
+ * Optimization: Reduced from 12 parallel requests to 1 request for most users.
+ */
 export function useCommits(year: number) {
     const user = useUser()
 
-    const queries = useQueries({
-        queries: Array.from({length: 12}, (_, i) => i + 1).map((month) => ({
-            queryKey: queryKeys.useCommits(year, month),
-            queryFn: () => fetchCommitsByMonth(year, month),
-            enabled: !!user,
-        })),
+    const query = useQuery({
+        queryKey: [QUERY_PREFIX.YEAR, year, 'useCommits'] as const,
+        queryFn: () => fetchCommitsByYear(year),
+        enabled: !!user,
     })
 
     return {
-        data: queries.flatMap((query) => query.data ?? []),
-        isFetching: queries.some((query) => query.isFetching),
+        data: query.data ?? [],
+        isFetching: query.isFetching,
     }
 }
