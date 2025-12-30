@@ -7,7 +7,7 @@ export default {
      */
     entry: ['src/main.tsx', 'src/routes/**/*.{js,ts,tsx}'],
     project: ['src/**/*.{js,jsx,ts,tsx,css}'],
-    ignoreDependencies: ['@naverpay/editorconfig'],
+    ignoreDependencies: ['@naverpay/editorconfig', 'babel-plugin-react-compiler'],
     ignoreBinaries: [],
     ignore: ['src/routeTree.gen.ts'],
     /**

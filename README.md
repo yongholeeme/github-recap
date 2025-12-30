@@ -25,7 +25,28 @@ GitHub Recap visualizes your GitHub activity in a beautiful way. It displays you
 
 For self-hosted deployments, OAuth from the public instance is not available. You'll need to use Personal Access Token (PAT) authentication.
 
-### 1. Configuration
+### 1. Environment Configuration
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+```
+
+```bash
+# GitHub Configuration (for GitHub Enterprise)
+VITE_GITHUB_URL=https://github.example.com
+VITE_GITHUB_API_URL=https://github.example.com/api/v3
+
+# Supabase (for OAuth - public keys, safe to expose)
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+
+# Base path (if deployed to subdirectory, e.g., /github-recap)
+VITE_BASE_PATH=/
+```
+
+### 2. Auth Configuration
 
 Set the auth method to `pat` in `config.ts`:
 
@@ -38,7 +59,7 @@ export const config = {
 }
 ```
 
-### 2. Create GitHub PAT
+### 3. Create GitHub PAT
 
 1. Go to GitHub Settings > Developer settings > [Personal access tokens](https://github.com/settings/tokens)
 2. Click "Generate new token (classic)"
@@ -46,6 +67,14 @@ export const config = {
     - `repo` - Access to private repositories
     - `read:user` - Read user information
 4. Generate and copy the token
+
+### 4. Build & Deploy
+
+```bash
+pnpm install
+pnpm build
+# Deploy dist/ folder to your server
+```
 
 ## Tech Stack
 
