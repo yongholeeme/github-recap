@@ -5,6 +5,9 @@ export const QUERY_PREFIX = {
 } as const
 
 export const queryKeys = {
+    // Batched counts query (all year-based counts in single request)
+    useAllCounts: (year: number) => [QUERY_PREFIX.YEAR, year, 'useAllCounts'] as const,
+
     // Year-month based queries: ['year-month', year, month, 'queryName']
     useCommits: (year: number, month: number) =>
         [QUERY_PREFIX.YEAR_MONTH, year, month, 'useCommits'] as const,

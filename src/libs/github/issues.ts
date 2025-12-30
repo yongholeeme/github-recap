@@ -1,45 +1,6 @@
 import {getOctokit, getUsername} from '@/libs/github/auth'
 import {fetcher, getDateRange, getMonthDateRange} from '@/libs/github/utils'
 
-export async function fetchCountOfIssueComments(year: number): Promise<number> {
-    const username = await getUsername()
-    const {startDate, endDate} = getDateRange(year)
-
-    const data = await fetcher<{total_count: number}>({
-        pathname: '/search/issues',
-        q: `commenter:${username} type:issue updated:${startDate}..${endDate}`,
-        per_page: 1,
-    })
-
-    return data.total_count || 0
-}
-
-export async function fetchCountOfParticipatedIssues(year: number): Promise<number> {
-    const username = await getUsername()
-    const {startDate, endDate} = getDateRange(year)
-
-    const data = await fetcher<{total_count: number}>({
-        pathname: '/search/issues',
-        q: `involves:${username} type:issue created:${startDate}..${endDate}`,
-        per_page: 1,
-    })
-
-    return data.total_count || 0
-}
-
-export async function fetchCountOfMentionsMe(year: number): Promise<number> {
-    const username = await getUsername()
-    const {startDate, endDate} = getDateRange(year)
-
-    const data = await fetcher<{total_count: number}>({
-        pathname: '/search/issues',
-        q: `mentions:${username} created:${startDate}..${endDate}`,
-        per_page: 1,
-    })
-
-    return data.total_count || 0
-}
-
 export async function fetchInvolvedIssues(username: string, year: number): Promise<{repository_url: string}[]> {
     const {startDate, endDate} = getDateRange(year)
 
@@ -123,110 +84,6 @@ export async function fetchMentionsByMonth(year: number, month: number): Promise
     return items
 }
 
-// GitHub Discussions APIs (using GraphQL)
-interface DiscussionCountResponse {
-    search: {
-        discussionCount: number
-    }
-}
-
-interface DiscussionCommentsResponse {
-    search: {
-        nodes: {
-            comments?: {
-                nodes: {
-                    author: {
-                        login: string
-                    } | null
-                    createdAt: string
-                }[]
-            }
-        }[]
-    }
-}
-
-export async function fetchCountOfDiscussionComments(year: number): Promise<number> {
-    const octokit = await getOctokit()
-    const username = await getUsername()
-    const {startDate, endDate} = getDateRange(year)
-
-    try {
-        // Get all discussions the user commented on
-        const query = `
-      query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 100) {
-          nodes {
-            ... on Discussion {
-              comments(first: 100) {
-                nodes {
-                  author {
-                    login
-                  }
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }
-    `
-
-        const searchQuery = `commenter:${username} created:${startDate}..${endDate}`
-        const response = await octokit.graphql<DiscussionCommentsResponse>(query, {
-            searchQuery,
-        })
-
-        let totalComments = 0
-        const start = new Date(startDate)
-        const end = new Date(endDate)
-
-        for (const discussion of response.search.nodes || []) {
-            if (discussion?.comments?.nodes) {
-                for (const comment of discussion.comments.nodes) {
-                    if (comment.author?.login === username) {
-                        const commentDate = new Date(comment.createdAt)
-                        if (commentDate >= start && commentDate <= end) {
-                            totalComments++
-                        }
-                    }
-                }
-            }
-        }
-
-        return totalComments
-    } catch (error) {
-        console.error('Error fetching discussion comments count:', error)
-        return 0
-    }
-}
-
-export async function fetchCountOfParticipatedDiscussions(year: number): Promise<number> {
-    const octokit = await getOctokit()
-    const username = await getUsername()
-    const {startDate, endDate} = getDateRange(year)
-
-    try {
-        // Get discussions where user is involved (author or commenter)
-        const query = `
-      query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 1) {
-          discussionCount
-        }
-      }
-    `
-
-        const searchQuery = `involves:${username} created:${startDate}..${endDate}`
-        const response = await octokit.graphql<DiscussionCountResponse>(query, {
-            searchQuery,
-        })
-
-        return response.search.discussionCount || 0
-    } catch (error) {
-        console.error('Error fetching participated discussions count:', error)
-        return 0
-    }
-}
-
 interface IssueDetail {
     title: string
     url: string
@@ -281,10 +138,11 @@ export async function fetchMostDiscussedDiscussion(year: number): Promise<IssueD
     const {startDate, endDate} = getDateRange(year)
 
     try {
-        // Limit: 50 discussions × 50 comments × 100 replies = 250,000 nodes (within 500k limit)
+        // Optimized: Only fetch totalCount for replies, no need for reply nodes
+        // 20 discussions × 20 comments = 400 nodes (much smaller than before)
         const query = `
       query($searchQuery: String!) {
-        search(query: $searchQuery, type: DISCUSSION, first: 50) {
+        search(query: $searchQuery, type: DISCUSSION, first: 20) {
           nodes {
             ... on Discussion {
               title
@@ -293,10 +151,10 @@ export async function fetchMostDiscussedDiscussion(year: number): Promise<IssueD
               repository {
                 nameWithOwner
               }
-              comments(first: 50) {
+              comments(first: 20) {
                 totalCount
                 nodes {
-                  replies(first: 100) {
+                  replies {
                     totalCount
                   }
                 }
