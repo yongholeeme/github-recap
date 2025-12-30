@@ -1,8 +1,11 @@
+/// <reference types="vite/client" />
+
 const githubUrl = import.meta.env.VITE_GITHUB_URL || 'https://github.com'
 const githubApiUrl = import.meta.env.VITE_GITHUB_API_URL || 'https://api.github.com'
 const isSelfHosted = githubUrl !== 'https://github.com'
 
 export const config = {
+    basepath: import.meta.env.VITE_BASE_PATH || '/',
     github: {
         url: githubUrl,
         apiUrl: githubApiUrl,
