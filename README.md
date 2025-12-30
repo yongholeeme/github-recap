@@ -38,10 +38,6 @@ cp .env.example .env
 VITE_GITHUB_URL=https://github.example.com
 VITE_GITHUB_API_URL=https://github.example.com/api/v3
 
-# Supabase (for OAuth - public keys, safe to expose)
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-
 # Base path (if deployed to subdirectory, e.g., /github-recap)
 VITE_BASE_PATH=/
 ```

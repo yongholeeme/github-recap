@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm knip:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(npx @naverpay/editorconfig:*)",
+      "Bash(cat:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm dlx storybook@latest init:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(curl:*)",
+      "Bash(pnpm exec test-storybook:*)",
+      "Bash(pnpm exec playwright install:*)",
+      "Bash(node /Users/user/dev/github-recap/test-stories.mjs:*)",
+      "Bash(done)",
+      "Bash(pnpm eslint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm tsc:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

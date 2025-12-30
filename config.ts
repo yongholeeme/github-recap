@@ -12,8 +12,8 @@ export const config = {
         isSelfHosted,
     },
     supabase: {
-        url: import.meta.env.VITE_SUPABASE_URL || '',
-        anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+        url: 'https://uplaquwjknzeuzsepgwm.supabase.co',
+        anonKey: 'sb_publishable_BqzH4G8uFLEyxK5xqb6AzA_mOumc6Dv',
     },
     auth: {
         // self-hosted: PAT 기반 인증, 그 외: OAuth 기반 인증
