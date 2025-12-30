@@ -8,5 +8,5 @@ export const Route = createFileRoute('/')({
 
 function Index() {
     // Default to current year
-    return <YearRecap />
+    return <YearRecap year={2025} />
 }
